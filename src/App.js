@@ -1,12 +1,13 @@
+/** @format */
+
 import React from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
 
-function App() {
+function App () {
   return (
     <>
       <AppBar position="fixed">
@@ -16,7 +17,9 @@ function App() {
       </AppBar>
       <Toolbar />
       <h1>Hello world</h1>
-      <Button variant="contained" color="primary">Test button</Button>
+      <Button variant="contained" color="primary">
+        Test button
+      </Button>
       <Typography color="warning.main">Test typography</Typography>
     </>
   );

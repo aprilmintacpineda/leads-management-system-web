@@ -1,3 +1,5 @@
+/** @format */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { initializeStore } from 'fluxible-js';
