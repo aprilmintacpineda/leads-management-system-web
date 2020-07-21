@@ -2,7 +2,7 @@ type User
   @model
   @auth (
     rules: [
-      { allow: private, group: ["admins"] }
+      { allow: private, groups: ["admins"] }
       { allow: public, provider: iam }
     ]
   ) {
