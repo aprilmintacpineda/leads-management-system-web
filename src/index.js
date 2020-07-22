@@ -3,16 +3,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { initializeStore } from 'fluxible-js';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
+import Amplify from 'aws-amplify';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import theme from './theme';
+import awsExports from './aws-exports';
+import getInitialStore from './fluxible/getInitialStore';
+
+Amplify.configure(awsExports);
 
 initializeStore({
-  initialStore: {
-    authUser: null
-  },
+  initialStore: getInitialStore(),
   persist: {
     syncStorage: window.localStorage,
     restore ({ authUser }) {
@@ -23,6 +27,7 @@ initializeStore({
 
 ReactDOM.render(
   <React.StrictMode>
+    <CssBaseline />
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
