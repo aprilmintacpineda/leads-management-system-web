@@ -27,9 +27,9 @@ function Form ({ title, subtitle, submitLabel, onSubmit, isSubmitting, children 
   const handleSubmit = React.useCallback(
     ev => {
       ev.preventDefault();
-      onSubmit();
+      if (!isSubmitting) onSubmit();
     },
-    [onSubmit]
+    [onSubmit, isSubmitting]
   );
 
   return (

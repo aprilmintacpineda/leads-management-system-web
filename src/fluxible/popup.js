@@ -21,3 +21,9 @@ export function alertMessage ({ message }) {
     }
   });
 }
+
+export function unknownError () {
+  alertMessage({
+    message: 'An unknown error occurred. If this error persists, please file a ticket.'
+  });
+}
