@@ -7,6 +7,7 @@ import { Auth } from 'aws-amplify';
 import TextField from '../../../components/TextField';
 import { alertMessage, unknownError } from '../../../fluxible/popup';
 import useForm from '../../../hooks/useForm';
+import validate from '../../../libs/validate';
 import Form from './Form';
 
 const formOptions = {
@@ -19,21 +20,10 @@ const formOptions = {
   },
   validators: {
     email ({ email }) {
-      if (!email) return 'Required.';
-      if (
-        email.length > 320 ||
-        // eslint-disable-next-line
-        !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-          email
-        )
-      )
-        return 'Invalid email.';
-
-      return '';
+      return validate(email, ['required', 'email']);
     },
     password ({ password }) {
-      if (!password) return 'Required.';
-      return '';
+      return validate(password, ['required']);
     }
   },
   async onSubmit ({ formValues, setContext }) {

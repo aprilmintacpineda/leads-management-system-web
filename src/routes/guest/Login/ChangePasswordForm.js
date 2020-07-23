@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify';
 
 import TextField from '../../../components/TextField';
 import useForm from '../../../hooks/useForm';
+import validate from '../../../libs/validate';
 
 import Form from './Form';
 
@@ -15,8 +16,7 @@ const formOptions = {
   },
   validators: {
     newPassword ({ newPassword }) {
-      if (!newPassword) return 'Required.';
-      return '';
+      return validate(newPassword, ['required']);
     }
   },
   async onSubmit ({ formValues, formContext }) {
