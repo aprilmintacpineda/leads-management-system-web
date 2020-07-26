@@ -13,3 +13,23 @@ type User
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
+
+enum Genders {
+  Male
+  Female
+}
+
+type Lead
+  @model
+  @auth (
+    rules: [
+      { allow: private }
+      { allow: public, provider: iam }
+    ]
+  ) {
+  id: ID!
+  firstName: String
+  middleName: String
+  lastName: String
+  gender: Genders
+}
