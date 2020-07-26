@@ -42,3 +42,42 @@ export const onDeleteUser = /* GraphQL */ `
     }
   }
 `;
+export const onCreateLead = /* GraphQL */ `
+  subscription OnCreateLead {
+    onCreateLead {
+      id
+      firstName
+      middleName
+      lastName
+      gender
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLead = /* GraphQL */ `
+  subscription OnUpdateLead {
+    onUpdateLead {
+      id
+      firstName
+      middleName
+      lastName
+      gender
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLead = /* GraphQL */ `
+  subscription OnDeleteLead {
+    onDeleteLead {
+      id
+      firstName
+      middleName
+      lastName
+      gender
+      createdAt
+      updatedAt
+    }
+  }
+`;

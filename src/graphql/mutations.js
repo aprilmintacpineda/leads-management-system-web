@@ -42,3 +42,42 @@ export const deleteUser = /* GraphQL */ `
     }
   }
 `;
+export const createLead = /* GraphQL */ `
+  mutation CreateLead($input: CreateLeadInput!, $condition: ModelLeadConditionInput) {
+    createLead(input: $input, condition: $condition) {
+      id
+      firstName
+      middleName
+      lastName
+      gender
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLead = /* GraphQL */ `
+  mutation UpdateLead($input: UpdateLeadInput!, $condition: ModelLeadConditionInput) {
+    updateLead(input: $input, condition: $condition) {
+      id
+      firstName
+      middleName
+      lastName
+      gender
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLead = /* GraphQL */ `
+  mutation DeleteLead($input: DeleteLeadInput!, $condition: ModelLeadConditionInput) {
+    deleteLead(input: $input, condition: $condition) {
+      id
+      firstName
+      middleName
+      lastName
+      gender
+      createdAt
+      updatedAt
+    }
+  }
+`;

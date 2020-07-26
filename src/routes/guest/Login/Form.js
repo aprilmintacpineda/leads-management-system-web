@@ -24,16 +24,8 @@ const useStyles = makeStyles(({ spacing }) => ({
 function Form ({ title, subtitle, submitLabel, onSubmit, isSubmitting, children }) {
   const classes = useStyles();
 
-  const handleSubmit = React.useCallback(
-    ev => {
-      ev.preventDefault();
-      if (!isSubmitting) onSubmit();
-    },
-    [onSubmit, isSubmitting]
-  );
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <Box className={classes.wrapper}>
         <Paper>
           <Box p={2}>
