@@ -21,6 +21,7 @@ enum Genders {
 
 type Lead
   @model
+  @searchable
   @auth (
     rules: [
       { allow: private }
