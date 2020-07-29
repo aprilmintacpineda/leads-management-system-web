@@ -4,9 +4,9 @@ import React from 'react';
 
 import { Auth } from 'aws-amplify';
 
-import TextField from '../../../components/TextField';
-import useForm from '../../../hooks/useForm';
-import validate from '../../../libs/validate';
+import TextField from 'components/TextField';
+import useForm from 'hooks/useForm';
+import validate from 'libs/validate';
 
 import Form from './Form';
 

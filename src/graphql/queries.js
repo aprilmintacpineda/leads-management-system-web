@@ -33,6 +33,27 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
+export const searchUsers = /* GraphQL */ `
+  query SearchUsers(
+    $filter: SearchableUserFilterInput
+    $sort: SearchableUserSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchUsers(filter: $filter, sort: $sort, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        firstName
+        middleName
+        lastName
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
 export const getLead = /* GraphQL */ `
   query GetLead($id: ID!) {
     getLead(id: $id) {
@@ -59,6 +80,28 @@ export const listLeads = /* GraphQL */ `
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const searchLeads = /* GraphQL */ `
+  query SearchLeads(
+    $filter: SearchableLeadFilterInput
+    $sort: SearchableLeadSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchLeads(filter: $filter, sort: $sort, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        firstName
+        middleName
+        lastName
+        gender
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
     }
   }
 `;

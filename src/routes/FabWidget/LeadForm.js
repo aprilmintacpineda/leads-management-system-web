@@ -12,14 +12,14 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import TextField from '../../components/TextField';
-import Select from '../../components/Select';
+import TextField from 'components/TextField';
+import Select from 'components/Select';
 
-import validate from '../../libs/validate';
-import { sanitizeInput } from '../../libs/inputs';
+import validate from 'libs/validate';
+import { sanitizeInput } from 'libs/inputs';
 
-import useForm from '../../hooks/useForm';
-import { createLead } from '../../graphql/mutations';
+import useForm from 'hooks/useForm';
+import { createLead } from 'graphql/mutations';
 
 const formOptions = {
   initialContext: {
@@ -105,7 +105,7 @@ function LeadForm () {
           <TextField
             value={formValues.middleName}
             error={formErrors.middleName}
-            label="Middle name"
+            label="Middle name (optional)"
             onChange={onChangeHandlers.middleName}
             disabled={isSubmitting}
           />

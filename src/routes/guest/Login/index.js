@@ -5,8 +5,8 @@ import React from 'react';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { updateStore } from 'fluxible-js';
 
-import { getUser } from '../../../graphql/queries';
-import getInitialStore from '../../../fluxible/getInitialStore';
+import { getUser } from 'graphql/queries';
+import getInitialStore from 'fluxible/getInitialStore';
 
 import LoginForm from './LoginForm';
 import ChangePasswordForm from './ChangePasswordForm';

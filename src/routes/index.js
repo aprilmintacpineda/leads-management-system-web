@@ -7,10 +7,13 @@ import useFluxibleStore from 'react-fluxible/lib/useFluxibleStore';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 
 import Login from './guest/Login';
 
 import LeadView from './auth/Lead/View';
+import LeadList from './auth/Lead/List';
 import Dashboard from './auth/Dashboard';
 
 import FabWidget from './FabWidget';
@@ -32,10 +35,15 @@ function Routes () {
         </AppBar>
         <Toolbar />
         <FabWidget />
-        <Switch>
-          <Route path="/lead/:id" component={LeadView} />
-          <Route path="/" exact component={Dashboard} />
-        </Switch>
+        <Box mt={2}>
+          <Container maxWidth="lg">
+            <Switch>
+              <Route path="/lead/list" component={LeadList} />
+              <Route path="/lead/:id" component={LeadView} />
+              <Route path="/" exact component={Dashboard} />
+            </Switch>
+          </Container>
+        </Box>
       </BrowserRouter>
     );
   }
