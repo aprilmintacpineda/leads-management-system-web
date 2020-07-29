@@ -1,5 +1,6 @@
 type User
   @model
+  @searchable
   @auth (
     rules: [
       { allow: private, groups: ["admins"] }
@@ -33,4 +34,6 @@ type Lead
   middleName: String
   lastName: String
   gender: Genders
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }
