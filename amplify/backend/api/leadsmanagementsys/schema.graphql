@@ -34,6 +34,7 @@ type Lead
   middleName: String
   lastName: String
   gender: Genders
+  profilePicture: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
