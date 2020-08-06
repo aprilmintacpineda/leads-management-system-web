@@ -33,9 +33,7 @@ function Form ({ title, subtitle, submitLabel, onSubmit, isSubmitting, children 
               <Typography variant="h4">{title}</Typography>
               <Typography>{subtitle}</Typography>
             </Box>
-            <Box mt={1} mb={1}>
-              <Divider />
-            </Box>
+            <Divider mt={1} mb={1} />
             {children}
             <Button
               variant="contained"

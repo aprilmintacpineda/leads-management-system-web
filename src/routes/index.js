@@ -39,7 +39,7 @@ function Routes () {
           <Container maxWidth="lg">
             <Switch>
               <Route path="/lead/list" component={LeadList} />
-              <Route path="/lead/:id" component={LeadView} />
+              <Route path="/lead/view/:id" component={LeadView} />
               <Route path="/" exact component={Dashboard} />
             </Switch>
           </Container>

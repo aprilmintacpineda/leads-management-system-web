@@ -9,6 +9,7 @@
     "@testing-library/react": "^10.4.7",
     "@testing-library/user-event": "^12.0.15",
     "aws-amplify": "^3.0.22",
+    "date-fns": "^2.15.0",
     "fluxible-js": "^5.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
