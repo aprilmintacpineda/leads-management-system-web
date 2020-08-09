@@ -35,7 +35,7 @@ type Lead
   lastName: String
   gender: Genders
   profilePicture: String
-  # addresses: [Address] @connection(keyName: "byLeadID", fields: ["id"])
+  addresses: [Address] @connection(keyName: "byLeadID", fields: ["id"])
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
