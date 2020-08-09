@@ -8,7 +8,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -91,9 +90,7 @@ function LeadForm () {
       fullWidth
       onExited={resetForm}>
       <form onSubmit={submitHandler}>
-        <DialogTitle>
-          <Typography variant="h6">Add lead</Typography>
-        </DialogTitle>
+        <DialogTitle>Add lead</DialogTitle>
         <DialogContent>
           <TextField
             value={formValues.firstName}

@@ -9,7 +9,7 @@ function useForm ({
   initialContext = {},
   initialFormValues,
   validators,
-  onSubmit,
+  onSubmit = null,
   onSubmitError = null,
   onSubmitSuccess = null,
   mutation = null,
@@ -153,6 +153,20 @@ function useForm ({
     ]
   );
 
+  const autocompleteHandlers = React.useMemo(
+    () =>
+      Object.keys(initialFormValues).reduce(
+        (accumulator, field) => ({
+          ...accumulator,
+          [field]: (_, value) => {
+            setField(field, value);
+          }
+        }),
+        {}
+      ),
+    [initialFormValues, setField]
+  );
+
   const onChangeHandlers = React.useMemo(
     () =>
       Object.keys(initialFormValues).reduce(
@@ -182,6 +196,7 @@ function useForm ({
     formContext,
     setField,
     onChangeHandlers,
+    autocompleteHandlers,
     status,
     isSubmitting,
     submitHandler,

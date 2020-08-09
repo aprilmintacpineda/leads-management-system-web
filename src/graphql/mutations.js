@@ -84,3 +84,57 @@ export const deleteLead = /* GraphQL */ `
     }
   }
 `;
+export const createAddress = /* GraphQL */ `
+  mutation CreateAddress(
+    $input: CreateAddressInput!
+    $condition: ModelAddressConditionInput
+  ) {
+    createAddress(input: $input, condition: $condition) {
+      id
+      type
+      country
+      state
+      line1
+      line2
+      leadId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateAddress = /* GraphQL */ `
+  mutation UpdateAddress(
+    $input: UpdateAddressInput!
+    $condition: ModelAddressConditionInput
+  ) {
+    updateAddress(input: $input, condition: $condition) {
+      id
+      type
+      country
+      state
+      line1
+      line2
+      leadId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteAddress = /* GraphQL */ `
+  mutation DeleteAddress(
+    $input: DeleteAddressInput!
+    $condition: ModelAddressConditionInput
+  ) {
+    deleteAddress(input: $input, condition: $condition) {
+      id
+      type
+      country
+      state
+      line1
+      line2
+      leadId
+      createdAt
+      updatedAt
+    }
+  }
+`;

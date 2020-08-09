@@ -108,3 +108,60 @@ export const searchLeads = /* GraphQL */ `
     }
   }
 `;
+export const getAddress = /* GraphQL */ `
+  query GetAddress($id: ID!) {
+    getAddress(id: $id) {
+      id
+      type
+      country
+      state
+      line1
+      line2
+      leadId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listAddresss = /* GraphQL */ `
+  query ListAddresss($filter: ModelAddressFilterInput, $limit: Int, $nextToken: String) {
+    listAddresss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        type
+        country
+        state
+        line1
+        line2
+        leadId
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const searchAddresss = /* GraphQL */ `
+  query SearchAddresss(
+    $filter: SearchableAddressFilterInput
+    $sort: SearchableAddressSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchAddresss(filter: $filter, sort: $sort, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        type
+        country
+        state
+        line1
+        line2
+        leadId
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;

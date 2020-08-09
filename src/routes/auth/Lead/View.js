@@ -14,6 +14,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Divider from 'components/Divider';
 import { getLead } from 'graphql/queries';
 
+import Address from './Address';
+
 const useStyles = makeStyles({
   profilePicture: {
     width: '150px',
@@ -64,8 +66,13 @@ function LeadView ({
       <Box p={2}>
         <Box display="flex">
           <Avatar src={data.profilePicture} className={classes.profilePicture} />
-          <Box ml={1}>
-            <Typography variant="h4">{fullname}</Typography>
+          <Box
+            ml={2}
+            flex="1"
+            display="flex"
+            justifyContent="center"
+            flexDirection="column">
+            <Typography variant="h5">{fullname}</Typography>
             <Typography variant="caption">
               Created at {format(new Date(data.createdAt), 'PPpp')}
             </Typography>
@@ -75,6 +82,7 @@ function LeadView ({
             </Typography>
           </Box>
         </Box>
+        <Address />
       </Box>
     </Paper>
   );
