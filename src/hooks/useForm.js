@@ -127,7 +127,7 @@ function useForm ({
           status: 'submitSuccess'
         }));
       } catch (error) {
-        console.log('useForm', error);
+        console.error('useForm', error);
 
         if (onSubmitError)
           await onSubmitError(error, { formValues, formContext, setContext });

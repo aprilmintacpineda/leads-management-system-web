@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { addEvent } from 'fluxible-js';
+import { addEvent, emitEvent } from 'fluxible-js';
 
 import Box from '@material-ui/core/Box';
 import Dialog from '@material-ui/core/Dialog';
@@ -21,6 +21,7 @@ import Select from 'components/Select';
 
 import useForm from 'hooks/useForm';
 import { createAddress } from 'graphql/mutations';
+import { unknownError } from 'fluxible/popup';
 import countries from 'countries.json';
 
 const formOptions = {
@@ -38,7 +39,8 @@ const formOptions = {
     line1: ({ line1 }) => validate(line1, ['required'])
   },
   initialContext: {
-    leadId: null
+    leadId: null,
+    createdRecord: null
   },
   transformInput: ({ formValues, formContext }) => {
     return {
@@ -48,6 +50,10 @@ const formOptions = {
       leadId: formContext.leadId
     };
   },
+  onSubmitSuccess: ({ data: { createAddress: createdRecord }, setContext }) => {
+    setContext({ createdRecord });
+  },
+  onSubmitError: unknownError,
   mutation: createAddress
 };
 
@@ -62,13 +68,13 @@ function AddressForm () {
   const {
     formValues,
     formErrors,
+    formContext: { createdRecord },
     isSubmitting,
     setContext,
     autocompleteHandlers,
     resetForm,
     onChangeHandlers,
-    submitHandler,
-    status
+    submitHandler
   } = useForm(formOptions);
 
   const close = React.useCallback(() => {
@@ -95,8 +101,11 @@ function AddressForm () {
   }, [id, setContext]);
 
   React.useEffect(() => {
-    if (status === 'submitSuccess') close();
-  }, [status, close]);
+    if (createdRecord) {
+      emitEvent('addedNewAddress', createdRecord);
+      close();
+    }
+  }, [close, createdRecord]);
 
   console.log('record to edit', addressId);
 

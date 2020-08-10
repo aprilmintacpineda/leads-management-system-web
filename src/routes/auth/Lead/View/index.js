@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import { updateStore } from 'fluxible-js';
+import { updateStore, addEvent } from 'fluxible-js';
 
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -30,7 +30,7 @@ function LeadView ({
     setState({
       data: {
         ...result,
-        addresses: result.addresses.items
+        addresses: result.addresses.items.reverse()
       },
       status: 'fetchSuccess'
     });
@@ -44,6 +44,20 @@ function LeadView ({
   React.useEffect(() => {
     fetchLead();
   }, [fetchLead]);
+
+  React.useEffect(() => {
+    const removeListener = addEvent('addedNewAddress', address => {
+      setState(oldState => ({
+        ...oldState,
+        data: {
+          ...oldState.data,
+          addresses: [address].concat(oldState.data.addresses)
+        }
+      }));
+    });
+
+    return removeListener;
+  }, []);
 
   if (!data) return null;
 
