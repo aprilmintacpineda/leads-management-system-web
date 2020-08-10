@@ -53,6 +53,20 @@ export const createLead = /* GraphQL */ `
       profilePicture
       createdAt
       updatedAt
+      addresses {
+        items {
+          id
+          type
+          country
+          state
+          line1
+          line2
+          leadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -67,6 +81,20 @@ export const updateLead = /* GraphQL */ `
       profilePicture
       createdAt
       updatedAt
+      addresses {
+        items {
+          id
+          type
+          country
+          state
+          line1
+          line2
+          leadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -81,6 +109,20 @@ export const deleteLead = /* GraphQL */ `
       profilePicture
       createdAt
       updatedAt
+      addresses {
+        items {
+          id
+          type
+          country
+          state
+          line1
+          line2
+          leadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;

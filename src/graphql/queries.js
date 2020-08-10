@@ -65,6 +65,20 @@ export const getLead = /* GraphQL */ `
       profilePicture
       createdAt
       updatedAt
+      addresses {
+        items {
+          id
+          type
+          country
+          state
+          line1
+          line2
+          leadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -80,6 +94,20 @@ export const listLeads = /* GraphQL */ `
         profilePicture
         createdAt
         updatedAt
+        addresses {
+          items {
+            id
+            type
+            country
+            state
+            line1
+            line2
+            leadId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
       }
       nextToken
     }
@@ -102,6 +130,20 @@ export const searchLeads = /* GraphQL */ `
         profilePicture
         createdAt
         updatedAt
+        addresses {
+          items {
+            id
+            type
+            country
+            state
+            line1
+            line2
+            leadId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
       }
       nextToken
       total
