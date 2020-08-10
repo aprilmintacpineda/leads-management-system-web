@@ -11,13 +11,35 @@ export function closePopup () {
   });
 }
 
-export function alertMessage ({ message }) {
+export function alertMessage ({ title = null, message }) {
   updateStore({
     popup: {
       ...store.popup,
       isOpen: true,
       type: 'message',
-      message
+      title,
+      message,
+      onConfirm: null,
+      onClose: null
+    }
+  });
+}
+
+export function alertDialog ({
+  title = null,
+  message,
+  onConfirm,
+  onCancel: onClose = null
+}) {
+  updateStore({
+    popup: {
+      ...store.popup,
+      isOpen: true,
+      type: 'dialog',
+      title,
+      message,
+      onConfirm,
+      onClose
     }
   });
 }

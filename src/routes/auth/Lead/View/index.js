@@ -46,7 +46,7 @@ function LeadView ({
   }, [fetchLead]);
 
   React.useEffect(() => {
-    const removeListener = addEvent('addedNewAddress', address => {
+    const removeAddAddressListener = addEvent('addedNewAddress', address => {
       setState(oldState => ({
         ...oldState,
         data: {
@@ -56,7 +56,20 @@ function LeadView ({
       }));
     });
 
-    return removeListener;
+    const removeDeleteAddressListener = addEvent('deletedAddress', targetId => {
+      setState(oldState => ({
+        ...oldState,
+        data: {
+          ...oldState.data,
+          addresses: oldState.data.addresses.filter(({ id }) => id !== targetId)
+        }
+      }));
+    });
+
+    return () => {
+      removeAddAddressListener();
+      removeDeleteAddressListener();
+    };
   }, []);
 
   if (!data) return null;

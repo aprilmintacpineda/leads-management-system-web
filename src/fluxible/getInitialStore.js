@@ -6,6 +6,8 @@ export default () => ({
   popup: {
     type: '',
     isOpen: false,
-    message: ''
+    message: '',
+    onCancel: null,
+    onConfirm: null
   }
 });
