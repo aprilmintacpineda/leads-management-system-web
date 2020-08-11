@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import { addEvent } from 'fluxible-js';
+import { addEvent, emitEvent } from 'fluxible-js';
 import { useHistory } from 'react-router-dom';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -18,11 +18,11 @@ import validate from 'libs/validate';
 import { sanitizeInput } from 'libs/inputs';
 
 import useForm from 'hooks/useForm';
-import { createLead } from 'graphql/mutations';
+import { createLead, updateLead } from 'graphql/mutations';
 
 const formOptions = {
   initialContext: {
-    record: null
+    resultRecord: null
   },
   initialFormValues: {
     firstName: '',
@@ -32,6 +32,7 @@ const formOptions = {
   },
   isGraphql: true,
   createMutation: createLead,
+  updateMutation: updateLead,
   validators: {
     firstName: ({ firstName }) => validate(firstName, ['required', 'maxLength:255']),
     middleName: ({ middleName }) => validate(middleName, ['maxLength:255']),
@@ -47,10 +48,17 @@ const formOptions = {
       {}
     );
   },
-  onSubmitSuccess ({ data, setContext }) {
-    setContext({
-      record: data.createLead
-    });
+  onSubmitSuccess ({ data, setContext, operation }) {
+    if (operation === 'update') {
+      setContext({
+        resultRecord: data.updateLead
+      });
+    } else {
+      // create
+      setContext({
+        resultRecord: data.createLead
+      });
+    }
   }
 };
 
@@ -61,8 +69,10 @@ function LeadForm () {
     onChangeHandlers,
     isSubmitting,
     submitHandler,
-    formContext: { record },
-    resetForm
+    formContext: { resultRecord },
+    resetForm,
+    setEditMode,
+    operation
   } = useForm(formOptions);
   const [isOpen, setIsOpen] = React.useState(false);
   const history = useHistory();
@@ -72,16 +82,39 @@ function LeadForm () {
   }, []);
 
   React.useEffect(() => {
-    const removeListener = addEvent('toggleLeadForm', toggle);
+    const removeListener = addEvent(
+      'toggleLeadForm',
+      targetLead => {
+        if (targetLead) {
+          const { id, firstName, middleName, lastName, gender } = targetLead;
+
+          setEditMode(({ formValues }) => ({
+            targetRecordId: id,
+            formValues: {
+              ...formValues,
+              firstName,
+              middleName,
+              lastName,
+              gender
+            }
+          }));
+        }
+
+        toggle();
+      },
+      []
+    );
+
     return removeListener;
-  }, [toggle]);
+  }, [toggle, setEditMode]);
 
   React.useEffect(() => {
-    if (record) {
+    if (resultRecord) {
       toggle();
-      history.push(`/lead/${record.id}`);
+      if (operation === 'create') history.push(`/lead/view/${resultRecord.id}`);
+      else emitEvent('leadEditSuccess', resultRecord);
     }
-  }, [record, toggle, history, resetForm]);
+  }, [resultRecord, toggle, history, resetForm, operation]);
 
   return (
     <Dialog
@@ -91,7 +124,7 @@ function LeadForm () {
       fullWidth
       onExited={resetForm}>
       <form onSubmit={submitHandler}>
-        <DialogTitle>Add lead</DialogTitle>
+        <DialogTitle>{operation === 'update' ? 'Update lead' : 'Add lead'}</DialogTitle>
         <DialogContent>
           <TextField
             value={formValues.firstName}
