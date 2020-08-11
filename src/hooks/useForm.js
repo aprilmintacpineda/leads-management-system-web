@@ -42,7 +42,11 @@ function useForm ({
 
   const setEditMode = React.useCallback(callback => {
     setState(oldState => {
-      const { formValues = oldState.formValues, targetRecordId = null } = callback({
+      const {
+        formValues = oldState.formValues,
+        targetRecordId = null,
+        formContext = oldState.formContext
+      } = callback({
         formValues: oldState.formValues,
         formContext: oldState.formContext
       });
@@ -50,6 +54,7 @@ function useForm ({
       return {
         ...oldState,
         previousFormValues: { ...formValues },
+        formContext,
         formValues,
         targetRecordId
       };
