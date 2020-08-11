@@ -46,15 +46,31 @@ function LeadView ({
   }, [fetchLead]);
 
   React.useEffect(() => {
-    const removeAddAddressListener = addEvent('addedNewAddress', address => {
-      setState(oldState => ({
-        ...oldState,
-        data: {
-          ...oldState.data,
-          addresses: [address].concat(oldState.data.addresses)
-        }
-      }));
-    });
+    const removeAddAddressListener = addEvent(
+      'addedNewAddress',
+      ({ resultRecord, operation }) => {
+        setState(oldState => {
+          let addresses = oldState.data.addresses;
+
+          if (operation === 'update') {
+            addresses = addresses.map(address => {
+              if (address.id === resultRecord.id) return resultRecord;
+              return address;
+            });
+          } else {
+            addresses = [resultRecord].concat(addresses);
+          }
+
+          return {
+            ...oldState,
+            data: {
+              ...oldState.data,
+              addresses
+            }
+          };
+        });
+      }
+    );
 
     const removeDeleteAddressListener = addEvent('deletedAddress', targetId => {
       setState(oldState => ({

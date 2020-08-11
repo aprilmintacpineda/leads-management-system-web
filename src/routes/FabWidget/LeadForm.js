@@ -30,7 +30,8 @@ const formOptions = {
     lastName: '',
     gender: ''
   },
-  mutation: createLead,
+  isGraphql: true,
+  createMutation: createLead,
   validators: {
     firstName: ({ firstName }) => validate(firstName, ['required', 'maxLength:255']),
     middleName: ({ middleName }) => validate(middleName, ['maxLength:255']),

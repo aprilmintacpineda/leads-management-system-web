@@ -20,7 +20,7 @@ import Autocomplete from 'components/Autocomplete';
 import Select from 'components/Select';
 
 import useForm from 'hooks/useForm';
-import { createAddress } from 'graphql/mutations';
+import { createAddress, updateAddress } from 'graphql/mutations';
 import { unknownError } from 'fluxible/popup';
 import countries from 'countries.json';
 
@@ -40,7 +40,7 @@ const formOptions = {
   },
   initialContext: {
     leadId: null,
-    createdRecord: null
+    resultRecord: null
   },
   transformInput: ({ formValues, formContext }) => {
     return {
@@ -50,64 +50,110 @@ const formOptions = {
       leadId: formContext.leadId
     };
   },
-  onSubmitSuccess: ({ data: { createAddress: createdRecord }, setContext }) => {
-    setContext({ createdRecord });
+  onSubmitSuccess: ({ data, setContext, operation }) => {
+    if (operation === 'update') {
+      setContext({
+        resultRecord: data.updateAddress
+      });
+    } else {
+      // create
+      setContext({
+        resultRecord: data.createAddress
+      });
+    }
   },
   onSubmitError: unknownError,
-  mutation: createAddress
+  isGraphql: true,
+  createMutation: createAddress,
+  updateMutation: updateAddress
 };
 
 function AddressForm () {
-  const [{ isOpen, addressId }, setState] = React.useState({
-    isOpen: false,
-    addressId: null
-  });
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  const { id } = useParams();
+  const { id: leadId } = useParams();
 
   const {
+    previousFormValues,
     formValues,
     formErrors,
-    formContext: { createdRecord },
+    formContext: { resultRecord },
     isSubmitting,
     setContext,
     autocompleteHandlers,
     resetForm,
     onChangeHandlers,
-    submitHandler
+    submitHandler,
+    setEditMode,
+    operation,
+    setField
   } = useForm(formOptions);
 
   const close = React.useCallback(() => {
-    setState(oldState => ({
-      ...oldState,
-      isOpen: false
-    }));
+    setIsOpen(false);
   }, []);
 
   React.useEffect(() => {
-    const removeListener = addEvent('toggleAddressForm', (addressId = null) => {
-      setState(oldState => ({
-        ...oldState,
-        addressId,
-        isOpen: true
-      }));
+    const removeListener = addEvent('toggleAddressForm', targetAddress => {
+      if (targetAddress) {
+        const {
+          id,
+          type,
+          line1,
+          line2 = '',
+          country: _country,
+          state: _state
+        } = targetAddress;
+
+        setEditMode(({ formValues, formContext }) => {
+          const country = countries.find(({ name }) => name === _country);
+          const state = country.states.find(({ name }) => name === _state);
+
+          return {
+            targetRecordId: id,
+            formValues: {
+              ...formValues,
+              type,
+              country,
+              state,
+              line1,
+              line2
+            },
+            formContext: {
+              ...formContext,
+              leadId
+            }
+          };
+        });
+      } else {
+        setContext({ leadId });
+      }
+
+      setIsOpen(true);
     });
 
     return removeListener;
-  }, []);
+  }, [setEditMode, leadId, setContext]);
 
   React.useEffect(() => {
-    setContext({ leadId: id });
-  }, [id, setContext]);
+    if (
+      (formValues.country &&
+        previousFormValues.country &&
+        formValues.country.name !== previousFormValues.country.name) ||
+      (!formValues.country && previousFormValues.country)
+    )
+      setField('state', null);
+  }, [previousFormValues, formValues, setField]);
 
   React.useEffect(() => {
-    if (createdRecord) {
-      emitEvent('addedNewAddress', createdRecord);
+    if (resultRecord) {
+      emitEvent('addedNewAddress', {
+        operation,
+        resultRecord
+      });
       close();
     }
-  }, [close, createdRecord]);
-
-  console.log('record to edit', addressId);
+  }, [close, resultRecord, operation]);
 
   return (
     <Dialog

@@ -12,19 +12,25 @@ function useForm ({
   onSubmit = null,
   onSubmitError = null,
   onSubmitSuccess = null,
-  mutation = null,
+  createMutation = null,
+  isGraphql = false,
+  updateMutation = null,
   transformInput = null
 }) {
-  const [{ formContext, formValues, formErrors, status }, setState] = React.useState(
-    () => ({
-      formValues: { ...initialFormValues },
-      formErrors: {},
-      formContext: { ...initialContext },
-      status: 'initial'
-    })
-  );
+  const [
+    { formContext, formValues, formErrors, status, targetRecordId, previousFormValues },
+    setState
+  ] = React.useState(() => ({
+    previousFormValues: { ...initialFormValues },
+    formValues: { ...initialFormValues },
+    formErrors: {},
+    formContext: { ...initialContext },
+    status: 'initial',
+    targetRecordId: null
+  }));
 
   const isSubmitting = status === 'submitting';
+  const operation = targetRecordId ? 'update' : 'create';
 
   const validateField = React.useCallback(
     (field, values) => {
@@ -33,6 +39,22 @@ function useForm ({
     },
     [validators]
   );
+
+  const setEditMode = React.useCallback(callback => {
+    setState(oldState => {
+      const { formValues = oldState.formValues, targetRecordId = null } = callback({
+        formValues: oldState.formValues,
+        formContext: oldState.formContext
+      });
+
+      return {
+        ...oldState,
+        previousFormValues: { ...formValues },
+        formValues,
+        targetRecordId
+      };
+    });
+  }, []);
 
   const setField = React.useCallback(
     (field, value) => {
@@ -44,6 +66,7 @@ function useForm ({
 
         return {
           ...oldState,
+          previousFormValues: { ...oldState.formValues },
           formValues: newFormValues,
           formErrors: {
             ...oldState.formErrors,
@@ -99,38 +122,57 @@ function useForm ({
         }));
 
         updateStore({ loading: true });
+        let data = null;
 
-        if (mutation) {
+        if (isGraphql) {
           const inputData = transformInput
             ? transformInput({ formValues, formContext })
             : formValues;
 
-          const { data } = await API.graphql(
+          let input = {};
+          let mutation = null;
+
+          if (operation === 'create') {
+            mutation = createMutation;
+            input = {
+              id: uuid(),
+              ...inputData
+            };
+          } else {
+            // update
+            mutation = updateMutation;
+            input = {
+              id: targetRecordId,
+              ...inputData
+            };
+          }
+
+          const result = await API.graphql(
             graphqlOperation(mutation, {
-              input: {
-                id: uuid(),
-                ...inputData
-              }
+              input
             })
           );
 
-          if (onSubmitSuccess)
-            onSubmitSuccess({ data, formValues, formContext, setContext });
+          data = result.data;
         } else {
           await onSubmit({ formValues, formContext, setContext });
         }
 
-        updateStore({ loading: false });
+        if (onSubmitSuccess)
+          onSubmitSuccess({ data, formValues, formContext, setContext, operation });
 
         setState(oldState => ({
           ...oldState,
           status: 'submitSuccess'
         }));
+
+        updateStore({ loading: false });
       } catch (error) {
         console.error('useForm', error);
 
         if (onSubmitError)
           await onSubmitError(error, { formValues, formContext, setContext });
+
         updateStore({ loading: false });
 
         setState(oldState => ({
@@ -146,10 +188,14 @@ function useForm ({
       formContext,
       setContext,
       onSubmitError,
-      mutation,
       onSubmitSuccess,
       isSubmitting,
-      transformInput
+      transformInput,
+      operation,
+      isGraphql,
+      targetRecordId,
+      updateMutation,
+      createMutation
     ]
   );
 
@@ -183,6 +229,7 @@ function useForm ({
 
   const resetForm = React.useCallback(() => {
     setState({
+      previousFormValues: { ...initialFormValues },
       formValues: { ...initialFormValues },
       formErrors: {},
       formContext: { ...initialContext },
@@ -191,6 +238,7 @@ function useForm ({
   }, [initialFormValues, initialContext]);
 
   return {
+    previousFormValues,
     formValues,
     formErrors,
     formContext,
@@ -201,6 +249,8 @@ function useForm ({
     isSubmitting,
     submitHandler,
     setContext,
+    setEditMode,
+    operation,
     resetForm
   };
 }

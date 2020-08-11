@@ -12,8 +12,8 @@ let count = 0;
 function Select ({ label, error, children, ...selectProps }) {
   const labelId = React.useMemo(() => {
     count++;
-    return count;
-  }, []);
+    return `${label.replace(/\s/g, '_')}-${count.toString()}`;
+  }, [label]);
 
   return (
     <FormControl fullWidth margin="dense" variant="outlined" error={Boolean(error)}>

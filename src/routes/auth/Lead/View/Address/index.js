@@ -29,7 +29,7 @@ function Address ({ data: { addresses } }) {
 
   return (
     <>
-      <Box mt={7} p={2} display="flex" alignItem="center">
+      <Box mt={7} p={2} display="flex" alignItems="center">
         <Typography variant="h4">Addresses</Typography>
         <Box ml={1}>
           <Button variant="contained" color="primary" onClick={toggle}>

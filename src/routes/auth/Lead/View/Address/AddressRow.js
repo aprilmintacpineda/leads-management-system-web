@@ -35,9 +35,8 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-function AddressRow ({
-  address: { id, type, country: _country, state: _state, line1, line2 }
-}) {
+function AddressRow ({ address }) {
+  const { id, type, country: _country, state: _state, line1, line2 } = address;
   const [isDeleting, setIsDeleting] = React.useState(false);
   const classes = useStyles();
 
@@ -76,6 +75,10 @@ function AddressRow ({
     });
   }, [onConfirm]);
 
+  const editAddress = React.useCallback(() => {
+    emitEvent('toggleAddressForm', address);
+  }, [address]);
+
   let Icon = null;
 
   switch (type) {
@@ -105,7 +108,7 @@ function AddressRow ({
           <Box mr={2}>
             <Typography variant="caption">{type}</Typography>
           </Box>
-          <IconButton size="small" disabled={isDeleting}>
+          <IconButton size="small" disabled={isDeleting} onClick={editAddress}>
             <EditIcon fontSize="small" />
           </IconButton>
           <IconButton size="small" disabled={isDeleting} onClick={confirmDelete}>
