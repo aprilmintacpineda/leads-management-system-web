@@ -204,30 +204,46 @@ function useForm ({
     ]
   );
 
-  const autocompleteHandlers = React.useMemo(
+  const {
+    textField: onChangeHandlers,
+    autocomplete: autocompleteHandlers,
+    fileSelect,
+    valueChanged
+  } = React.useMemo(
     () =>
       Object.keys(initialFormValues).reduce(
         (accumulator, field) => ({
-          ...accumulator,
-          [field]: (_, value) => {
-            setField(field, value);
+          valueChanged: {
+            ...accumulator.valueChanged,
+            [field]: value => {
+              setField(field, value);
+            }
+          },
+          textField: {
+            ...accumulator.textField,
+            [field]: ev => {
+              setField(field, ev.target.value);
+            }
+          },
+          autocomplete: {
+            ...accumulator.autocomplete,
+            [field]: (_, value) => {
+              setField(field, value);
+            }
+          },
+          fileSelect: {
+            ...accumulator.fileSelect,
+            [field]: ev => {
+              setField(field, ev.target.files);
+            }
           }
         }),
-        {}
-      ),
-    [initialFormValues, setField]
-  );
-
-  const onChangeHandlers = React.useMemo(
-    () =>
-      Object.keys(initialFormValues).reduce(
-        (accumulator, field) => ({
-          ...accumulator,
-          [field]: ev => {
-            setField(field, ev.target.value);
-          }
-        }),
-        {}
+        {
+          textField: {},
+          autocomplete: {},
+          fileSelect: {},
+          valueChanged: {}
+        }
       ),
     [initialFormValues, setField]
   );
@@ -256,7 +272,9 @@ function useForm ({
     setContext,
     setEditMode,
     operation,
-    resetForm
+    resetForm,
+    fileSelect,
+    valueChanged
   };
 }
 

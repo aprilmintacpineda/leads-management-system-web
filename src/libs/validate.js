@@ -21,6 +21,10 @@ const validationRules = {
     if (value.length > max) return `Should be less than ${max} characters.`;
     return '';
   },
+  len (value, len) {
+    if (value.length !== Number(len)) return `Please select only ${len} item(s).`;
+    return '';
+  },
   options (value, ...options) {
     if (!options.includes(value)) return 'Please select from the options.';
     return '';

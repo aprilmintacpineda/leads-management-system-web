@@ -16,9 +16,11 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-fluxible": "^5.0.3",
+    "react-image-crop": "^8.6.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "react-window": "^1.8.5"
+    "react-window": "^1.8.5",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

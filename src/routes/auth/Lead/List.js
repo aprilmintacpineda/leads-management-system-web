@@ -3,7 +3,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import Box from '@material-ui/core/Box';
+
 import PaginatorTable from 'components/PaginatorTable';
+import Avatar from 'components/Avatar';
 import { TableRow, TableCell } from 'components/Table';
 
 import { searchLeads } from 'graphql/queries';
@@ -12,14 +15,21 @@ function LeadList () {
   const history = useHistory();
 
   const renderRow = React.useCallback(
-    ({ id, firstName, middleName, lastName, gender }) => (
+    ({ id, firstName, middleName, lastName, gender, profilePicture }) => (
       <TableRow
         key={id}
         hover
         onClick={() => {
           history.push(`/lead/view/${id}`);
         }}>
-        <TableCell>{firstName}</TableCell>
+        <TableCell>
+          <Box display="flex" alignItems="center">
+            <Box mr={1}>
+              <Avatar src={profilePicture} firstName={firstName} lastName={lastName} />
+            </Box>
+            {firstName}
+          </Box>
+        </TableCell>
         <TableCell>{middleName}</TableCell>
         <TableCell>{lastName}</TableCell>
         <TableCell>{gender}</TableCell>
