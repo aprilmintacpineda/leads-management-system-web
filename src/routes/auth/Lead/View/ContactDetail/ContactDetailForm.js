@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import { addEvent } from 'fluxible-js';
+import { addEvent, emitEvent } from 'fluxible-js';
 import { useParams } from 'react-router-dom';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -17,7 +17,7 @@ import TextField from 'components/TextField';
 import validate from 'libs/validate';
 import useForm from 'hooks/useForm';
 import { unknownError } from 'fluxible/popup';
-import { createContactDetail } from 'graphql/mutations';
+import { createContactDetail, updateContactDetail } from 'graphql/mutations';
 
 const formOptions = {
   initialFormValues: {
@@ -38,10 +38,19 @@ const formOptions = {
     leadId: null,
     resultRecord: null
   },
+  updateMutation: updateContactDetail,
   createMutation: createContactDetail,
   isGraphql: true,
-  onSubmitSuccess: ({ data, setContext }) => {
-    setContext({ resultRecord: data.createContactDetail });
+  onSubmitSuccess: ({ data, setContext, operation }) => {
+    if (operation === 'update') {
+      setContext({
+        resultRecord: data.updateContactDetail
+      });
+    } else {
+      setContext({
+        resultRecord: data.createContactDetail
+      });
+    }
   },
   onSubmitError: () => {
     unknownError();
@@ -63,7 +72,10 @@ function ContactDetailForm () {
     onChangeHandlers,
     submitHandler,
     setContext,
-    isSubmitting
+    isSubmitting,
+    operation,
+    resetForm,
+    setEditMode
   } = useForm(formOptions);
 
   const toggle = React.useCallback(() => {
@@ -72,23 +84,47 @@ function ContactDetailForm () {
 
   React.useEffect(() => {
     const removeListener = addEvent('toggleContactDetailForm', contactDetail => {
-      console.log(contactDetail);
+      if (contactDetail) {
+        const { id, category, type, description, value } = contactDetail;
+
+        setEditMode(({ formValues, formContext }) => ({
+          targetRecordId: id,
+          formValues: {
+            ...formValues,
+            category,
+            type,
+            description,
+            value
+          },
+          formContext: {
+            ...formContext,
+            leadId
+          }
+        }));
+      } else {
+        setContext({ leadId });
+      }
+
       toggle();
     });
 
     return removeListener;
-  }, [toggle]);
+  }, [toggle, leadId, setEditMode, setContext]);
 
   React.useEffect(() => {
-    if (resultRecord) toggle();
-  }, [resultRecord, toggle]);
-
-  React.useEffect(() => {
-    setContext({ leadId });
-  }, [setContext, leadId]);
+    if (resultRecord) {
+      emitEvent('addedNewContactDetail', { resultRecord, operation });
+      toggle();
+    }
+  }, [resultRecord, toggle, operation]);
 
   return (
-    <Dialog open={isOpen} disableBackdropClick disableEscapeKeyDown fullWidth>
+    <Dialog
+      open={isOpen}
+      disableBackdropClick
+      disableEscapeKeyDown
+      fullWidth
+      onExit={resetForm}>
       <form onSubmit={submitHandler}>
         <DialogTitle>Add contact detail</DialogTitle>
         <DialogContent>

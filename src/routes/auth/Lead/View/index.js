@@ -85,6 +85,39 @@ function LeadView ({
           ...oldState,
           data
         }));
+      }),
+      addEvent('deletedContactDetail', targetId => {
+        setState(oldState => ({
+          ...oldState,
+          data: {
+            ...oldState.data,
+            contactDetails: oldState.data.contactDetails.filter(
+              ({ id }) => id !== targetId
+            )
+          }
+        }));
+      }),
+      addEvent('addedNewContactDetail', ({ resultRecord, operation }) => {
+        setState(oldState => {
+          let contactDetails = oldState.data.contactDetails;
+
+          if (operation === 'update') {
+            contactDetails = contactDetails.map(contactDetail => {
+              if (contactDetail.id === resultRecord.id) return resultRecord;
+              return contactDetail;
+            });
+          } else {
+            contactDetails = [resultRecord].concat(contactDetails);
+          }
+
+          return {
+            ...oldState,
+            data: {
+              ...oldState.data,
+              contactDetails
+            }
+          };
+        });
       })
     ];
 

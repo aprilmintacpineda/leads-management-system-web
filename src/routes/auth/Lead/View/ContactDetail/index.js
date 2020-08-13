@@ -4,12 +4,15 @@ import React from 'react';
 
 import DataListSection from '../components/DataListSection';
 import ContactDetailForm from './ContactDetailForm';
+import ContactDetailRow from './ContactDetailRow';
 
 function ContactDetail ({ data: { contactDetails } }) {
-  const renderRow = React.useCallback(contactDetail => {
-    console.log('contactDetail', contactDetail);
-    return null;
-  }, []);
+  const renderRow = React.useCallback(
+    contactDetail => (
+      <ContactDetailRow key={contactDetail.id} contactDetail={contactDetail} />
+    ),
+    []
+  );
 
   return (
     <>
