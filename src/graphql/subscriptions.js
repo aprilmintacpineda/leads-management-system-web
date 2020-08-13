@@ -67,6 +67,19 @@ export const onCreateLead = /* GraphQL */ `
         }
         nextToken
       }
+      contactDetails {
+        items {
+          id
+          leadId
+          category
+          type
+          description
+          value
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -95,6 +108,19 @@ export const onUpdateLead = /* GraphQL */ `
         }
         nextToken
       }
+      contactDetails {
+        items {
+          id
+          leadId
+          category
+          type
+          description
+          value
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -118,6 +144,19 @@ export const onDeleteLead = /* GraphQL */ `
           line1
           line2
           leadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      contactDetails {
+        items {
+          id
+          leadId
+          category
+          type
+          description
+          value
           createdAt
           updatedAt
         }
@@ -166,6 +205,48 @@ export const onDeleteAddress = /* GraphQL */ `
       line1
       line2
       leadId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateContactDetail = /* GraphQL */ `
+  subscription OnCreateContactDetail {
+    onCreateContactDetail {
+      id
+      leadId
+      category
+      type
+      description
+      value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateContactDetail = /* GraphQL */ `
+  subscription OnUpdateContactDetail {
+    onUpdateContactDetail {
+      id
+      leadId
+      category
+      type
+      description
+      value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteContactDetail = /* GraphQL */ `
+  subscription OnDeleteContactDetail {
+    onDeleteContactDetail {
+      id
+      leadId
+      category
+      type
+      description
+      value
       createdAt
       updatedAt
     }

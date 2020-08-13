@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import { getLead } from 'graphql/queries';
 
 import Address from './Address';
+import ContactDetail from './ContactDetail';
 import BasicInformation from './BasicInformation';
 
 function LeadView ({
@@ -30,7 +31,8 @@ function LeadView ({
     setState({
       data: {
         ...result,
-        addresses: result.addresses.items.reverse()
+        addresses: result.addresses.items.reverse(),
+        contactDetails: result.contactDetails.items.reverse()
       },
       status: 'fetchSuccess'
     });
@@ -100,6 +102,7 @@ function LeadView ({
       <Paper>
         <BasicInformation data={data} />
         <Address data={data} />
+        <ContactDetail data={data} />
       </Paper>
     </Box>
   );

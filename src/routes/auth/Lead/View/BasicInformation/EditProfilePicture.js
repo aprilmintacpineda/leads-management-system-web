@@ -8,7 +8,6 @@ import { useParams } from 'react-router-dom';
 import { emitEvent } from 'fluxible-js';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
@@ -157,7 +156,6 @@ function EditProfilePicture () {
         fullWidth
         onExit={resetForm}
         onEntered={setLeadId}>
-        {isSubmitting ? <LinearProgress /> : null}
         <DialogTitle>Lead profile picture</DialogTitle>
         <DialogContent>
           {!formValues.selectedFiles ? (

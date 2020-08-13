@@ -16,26 +16,19 @@ import Button from '@material-ui/core/Button';
 import Routes from './routes';
 import { closePopup } from './fluxible/popup';
 
-const useStyles = makeStyles(
-  ({
-    palette: {
-      primary: { dark }
-    },
-    zIndex: { appBar }
-  }) => ({
-    linearProgress: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      right: 0,
-      zIndex: appBar + 1
-    },
-    barColorPrimary: {
-      backgroundColor: dark
-    }
-  })
-);
+const useStyles = makeStyles(({ palette: { primary: { dark } } }) => ({
+  linearProgress: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    right: 0,
+    zIndex: 9999
+  },
+  barColorPrimary: {
+    backgroundColor: dark
+  }
+}));
 
 function mapStates ({ loading, popup }) {
   return { loading, popup };

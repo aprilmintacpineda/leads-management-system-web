@@ -67,6 +67,19 @@ export const createLead = /* GraphQL */ `
         }
         nextToken
       }
+      contactDetails {
+        items {
+          id
+          leadId
+          category
+          type
+          description
+          value
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -95,6 +108,19 @@ export const updateLead = /* GraphQL */ `
         }
         nextToken
       }
+      contactDetails {
+        items {
+          id
+          leadId
+          category
+          type
+          description
+          value
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -118,6 +144,19 @@ export const deleteLead = /* GraphQL */ `
           line1
           line2
           leadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      contactDetails {
+        items {
+          id
+          leadId
+          category
+          type
+          description
+          value
           createdAt
           updatedAt
         }
@@ -175,6 +214,57 @@ export const deleteAddress = /* GraphQL */ `
       line1
       line2
       leadId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createContactDetail = /* GraphQL */ `
+  mutation CreateContactDetail(
+    $input: CreateContactDetailInput!
+    $condition: ModelContactDetailConditionInput
+  ) {
+    createContactDetail(input: $input, condition: $condition) {
+      id
+      leadId
+      category
+      type
+      description
+      value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateContactDetail = /* GraphQL */ `
+  mutation UpdateContactDetail(
+    $input: UpdateContactDetailInput!
+    $condition: ModelContactDetailConditionInput
+  ) {
+    updateContactDetail(input: $input, condition: $condition) {
+      id
+      leadId
+      category
+      type
+      description
+      value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteContactDetail = /* GraphQL */ `
+  mutation DeleteContactDetail(
+    $input: DeleteContactDetailInput!
+    $condition: ModelContactDetailConditionInput
+  ) {
+    deleteContactDetail(input: $input, condition: $condition) {
+      id
+      leadId
+      category
+      type
+      description
+      value
       createdAt
       updatedAt
     }
