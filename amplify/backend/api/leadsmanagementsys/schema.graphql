@@ -92,7 +92,7 @@ type ContactDetail
   )
   @key (name: "byLeadId", fields: ["leadId", "createdAt"]) {
   id: ID!
-  leadId: String
+  leadId: ID!
   category: ContactDetailCategories
   type: ContactDetailTypes
   description: String
