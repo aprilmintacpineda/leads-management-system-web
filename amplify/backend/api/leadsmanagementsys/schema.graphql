@@ -37,6 +37,7 @@ type Lead
   profilePicture: String
   addresses: [Address] @connection(keyName: "byLeadId", fields: ["id"])
   contactDetails: [ContactDetail] @connection(keyName: "byLeadId", fields: ["id"])
+  notes: [Note] @connection(keyName: "byLeadId", fields: ["id"])
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
@@ -97,6 +98,25 @@ type ContactDetail
   type: ContactDetailTypes
   description: String
   value: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Note
+  @model 
+  @searchable
+  @auth (
+    rules: [
+      { allow: private }
+      { allow: owner, ownerField: "userId", operations: ["update", "delete"] }
+      { allow: public, provider: iam }
+    ]
+  )
+  @key (name: "byLeadId", fields: ["leadId", "createdAt"]) {
+  id: ID!
+  userId: ID!
+  leadId: ID!
+  body: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
