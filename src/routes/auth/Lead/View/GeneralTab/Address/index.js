@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import DataListSection from '../components/DataListSection';
+import DataListSection from '../../components/DataListSection';
 import AddressForm from './AddressForm';
 import AddressRow from './AddressRow';
 

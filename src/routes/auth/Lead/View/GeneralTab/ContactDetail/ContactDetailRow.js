@@ -13,7 +13,7 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import { deleteContactDetail } from 'graphql/mutations';
 
 import LeadViewContext from '../../LeadViewContext';
-import DataListRow from '../components/DataListRow';
+import DataListRow from '../../components/DataListRow';
 
 function ContactDetailRow ({ contactDetail }) {
   const { setData } = React.useContext(LeadViewContext);

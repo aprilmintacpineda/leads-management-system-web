@@ -6,18 +6,6 @@
 
 // this is an auto generated file. This will be overwritten
 
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      firstName
-      middleName
-      lastName
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const listUsers = /* GraphQL */ `
   query ListUsers($filter: ModelUserFilterInput, $limit: Int, $nextToken: String) {
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -30,6 +18,18 @@ export const listUsers = /* GraphQL */ `
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      firstName
+      middleName
+      lastName
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -100,6 +100,14 @@ export const getLead = /* GraphQL */ `
           body
           createdAt
           updatedAt
+          user {
+            id
+            firstName
+            middleName
+            lastName
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -153,6 +161,14 @@ export const listLeads = /* GraphQL */ `
             body
             createdAt
             updatedAt
+            user {
+              id
+              firstName
+              middleName
+              lastName
+              createdAt
+              updatedAt
+            }
           }
           nextToken
         }
@@ -213,6 +229,14 @@ export const searchLeads = /* GraphQL */ `
             body
             createdAt
             updatedAt
+            user {
+              id
+              firstName
+              middleName
+              lastName
+              createdAt
+              updatedAt
+            }
           }
           nextToken
         }
@@ -351,6 +375,14 @@ export const getNote = /* GraphQL */ `
       body
       createdAt
       updatedAt
+      user {
+        id
+        firstName
+        middleName
+        lastName
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -364,6 +396,14 @@ export const listNotes = /* GraphQL */ `
         body
         createdAt
         updatedAt
+        user {
+          id
+          firstName
+          middleName
+          lastName
+          createdAt
+          updatedAt
+        }
       }
       nextToken
     }
@@ -384,6 +424,14 @@ export const searchNotes = /* GraphQL */ `
         body
         createdAt
         updatedAt
+        user {
+          id
+          firstName
+          middleName
+          lastName
+          createdAt
+          updatedAt
+        }
       }
       nextToken
       total

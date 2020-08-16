@@ -3,7 +3,7 @@
 import React from 'react';
 
 import LeadViewContext from '../../LeadViewContext';
-import DataListSection from '../components/DataListSection';
+import DataListSection from '../../components/DataListSection';
 import ContactDetailForm from './ContactDetailForm';
 import ContactDetailRow from './ContactDetailRow';
 

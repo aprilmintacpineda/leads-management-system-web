@@ -88,6 +88,14 @@ export const createLead = /* GraphQL */ `
           body
           createdAt
           updatedAt
+          user {
+            id
+            firstName
+            middleName
+            lastName
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -140,6 +148,14 @@ export const updateLead = /* GraphQL */ `
           body
           createdAt
           updatedAt
+          user {
+            id
+            firstName
+            middleName
+            lastName
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -192,6 +208,14 @@ export const deleteLead = /* GraphQL */ `
           body
           createdAt
           updatedAt
+          user {
+            id
+            firstName
+            middleName
+            lastName
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -312,6 +336,14 @@ export const createNote = /* GraphQL */ `
       body
       createdAt
       updatedAt
+      user {
+        id
+        firstName
+        middleName
+        lastName
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -324,6 +356,14 @@ export const updateNote = /* GraphQL */ `
       body
       createdAt
       updatedAt
+      user {
+        id
+        firstName
+        middleName
+        lastName
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -336,6 +376,14 @@ export const deleteNote = /* GraphQL */ `
       body
       createdAt
       updatedAt
+      user {
+        id
+        firstName
+        middleName
+        lastName
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

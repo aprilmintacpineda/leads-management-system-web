@@ -3,7 +3,7 @@
 import React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 
-function usePaginator ({ query, queryName }) {
+function usePaginator ({ query, queryName, sort }) {
   const [
     {
       data,
@@ -41,7 +41,8 @@ function usePaginator ({ query, queryName }) {
       } = await API.graphql(
         graphqlOperation(query, {
           limit: nextLimit || limit,
-          nextToken: refresh ? null : nextToken
+          nextToken: refresh ? null : nextToken,
+          sort
         })
       );
 
@@ -70,7 +71,7 @@ function usePaginator ({ query, queryName }) {
         status: 'fetchError'
       }));
     }
-  }, [nextToken, limit, nextLimit, refresh, query, queryName]);
+  }, [nextToken, limit, nextLimit, refresh, query, queryName, sort]);
 
   const refreshData = React.useCallback(() => {
     setState(oldState => ({
@@ -103,6 +104,13 @@ function usePaginator ({ query, queryName }) {
     [page, fetchData, maxPageReached]
   );
 
+  const setData = React.useCallback(arg => {
+    setState(oldState => ({
+      ...oldState,
+      data: arg.constructor === Function ? arg(oldState.data) : arg
+    }));
+  }, []);
+
   React.useEffect(() => {
     if (status === 'initial') fetchData();
   }, [status, fetchData]);
@@ -118,7 +126,8 @@ function usePaginator ({ query, queryName }) {
     setPage,
     setLimit,
     fetchData,
-    refreshData
+    refreshData,
+    setData
   };
 }
 

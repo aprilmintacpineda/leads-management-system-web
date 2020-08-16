@@ -1,90 +1,45 @@
 /** @format */
 
 import React from 'react';
-import { store } from 'fluxible-js';
-import { useParams } from 'react-router-dom';
+import { updateStore } from 'fluxible-js';
 
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Button from '@material-ui/core/Button';
 
-import validate from 'libs/validate';
-import useForm from 'hooks/useForm';
-import TextField from 'components/TextField';
-import { createNote } from 'graphql/mutations';
+import { searchNotes } from 'graphql/queries';
+import usePaginator from 'hooks/usePaginator';
 
-const formOptions = {
-  initialFormValues: {
-    body: ''
-  },
-  validators: {
-    body: ({ body }) => validate(body, ['required'])
-  },
-  initialContext: {
-    leadId: null
-  },
-  createMutation: createNote,
-  isGraphql: true,
-  transformInput: ({ formValues, formContext: { leadId } }) => ({
-    ...formValues,
-    leadId,
-    userId: store.authUser.id
-  })
+import NoteForm from './NoteForm';
+import NotesList from './NotesList';
+import NotesContext from './NotesContext';
+
+const paginatorOptions = {
+  query: searchNotes,
+  queryName: 'searchNotes',
+  sort: {
+    field: 'createdAt',
+    direction: 'desc'
+  }
 };
 
-const useStyles = makeStyles({
-  noteBody: {
-    '& textarea': {
-      minHeight: '100px'
-    }
-  }
-});
-
 function NotesTab () {
-  const classes = useStyles();
-  const { id: leadId } = useParams();
-
-  const {
-    formValues,
-    formErrors,
-    onChangeHandlers,
-    submitHandler,
-    setContext,
-    status,
-    resetForm,
-    isSubmitting
-  } = useForm(formOptions);
+  const { data, setData, isFetching } = usePaginator(paginatorOptions);
 
   React.useEffect(() => {
-    setContext({ leadId });
-  }, [leadId, setContext]);
+    if (isFetching) updateStore({ loading: true });
+    else updateStore({ loading: false });
+  }, [isFetching]);
 
-  React.useEffect(() => {
-    if (status === 'submitSuccess') resetForm();
-  }, [status, resetForm]);
+  if (!data) return null;
 
   return (
-    <>
-      <Typography>Notes</Typography>
+    <NotesContext.Provider value={{ data, setData }}>
       <Box p={2}>
-        <TextField
-          value={formValues.body}
-          error={formErrors.body}
-          onChange={onChangeHandlers.body}
-          multiline
-          className={classes.noteBody}
-          disabled={isSubmitting}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={submitHandler}
-          disabled={isSubmitting}>
-          Submit
-        </Button>
+        <NotesList />
       </Box>
-    </>
+      <Box p={2}>
+        <NoteForm />
+      </Box>
+    </NotesContext.Provider>
   );
 }
 

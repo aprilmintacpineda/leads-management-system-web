@@ -8,7 +8,7 @@ import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import HomeIcon from '@material-ui/icons/Home';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 
-import DataListRow from '../components/DataListRow';
+import DataListRow from '../../components/DataListRow';
 
 import { countryToFlag } from 'libs/helpers';
 import countries from 'countries.json';
