@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { addEvent, emitEvent } from 'fluxible-js';
+import { addEvent } from 'fluxible-js';
 
 import Box from '@material-ui/core/Box';
 import Dialog from '@material-ui/core/Dialog';
@@ -23,6 +23,8 @@ import useForm from 'hooks/useForm';
 import { createAddress, updateAddress } from 'graphql/mutations';
 import { unknownError } from 'fluxible/popup';
 import countries from 'countries.json';
+
+import LeadViewContext from '../../LeadViewContext';
 
 const formOptions = {
   initialFormValues: {
@@ -70,6 +72,7 @@ const formOptions = {
 
 function AddressForm () {
   const [isOpen, setIsOpen] = React.useState(false);
+  const { setData } = React.useContext(LeadViewContext);
 
   const { id: leadId } = useParams();
 
@@ -147,13 +150,27 @@ function AddressForm () {
 
   React.useEffect(() => {
     if (resultRecord) {
-      emitEvent('addedNewAddress', {
-        operation,
-        resultRecord
+      setData(oldData => {
+        let addresses = oldData.addresses;
+
+        if (operation === 'update') {
+          addresses = addresses.map(address => {
+            if (address.id === resultRecord.id) return resultRecord;
+            return address;
+          });
+        } else {
+          addresses = [resultRecord].concat(addresses);
+        }
+
+        return {
+          ...oldData,
+          addresses
+        };
       });
+
       close();
     }
-  }, [close, resultRecord, operation]);
+  }, [close, resultRecord, operation, setData]);
 
   return (
     <Dialog

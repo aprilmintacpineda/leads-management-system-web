@@ -80,6 +80,17 @@ export const createLead = /* GraphQL */ `
         }
         nextToken
       }
+      notes {
+        items {
+          id
+          userId
+          leadId
+          body
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -121,6 +132,17 @@ export const updateLead = /* GraphQL */ `
         }
         nextToken
       }
+      notes {
+        items {
+          id
+          userId
+          leadId
+          body
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -157,6 +179,17 @@ export const deleteLead = /* GraphQL */ `
           type
           description
           value
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      notes {
+        items {
+          id
+          userId
+          leadId
+          body
           createdAt
           updatedAt
         }
@@ -265,6 +298,42 @@ export const deleteContactDetail = /* GraphQL */ `
       type
       description
       value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createNote = /* GraphQL */ `
+  mutation CreateNote($input: CreateNoteInput!, $condition: ModelNoteConditionInput) {
+    createNote(input: $input, condition: $condition) {
+      id
+      userId
+      leadId
+      body
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateNote = /* GraphQL */ `
+  mutation UpdateNote($input: UpdateNoteInput!, $condition: ModelNoteConditionInput) {
+    updateNote(input: $input, condition: $condition) {
+      id
+      userId
+      leadId
+      body
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteNote = /* GraphQL */ `
+  mutation DeleteNote($input: DeleteNoteInput!, $condition: ModelNoteConditionInput) {
+    deleteNote(input: $input, condition: $condition) {
+      id
+      userId
+      leadId
+      body
       createdAt
       updatedAt
     }

@@ -12,9 +12,22 @@ import PhoneIcon from '@material-ui/icons/Phone';
 
 import { deleteContactDetail } from 'graphql/mutations';
 
+import LeadViewContext from '../../LeadViewContext';
 import DataListRow from '../components/DataListRow';
 
 function ContactDetailRow ({ contactDetail }) {
+  const { setData } = React.useContext(LeadViewContext);
+
+  const afterDelete = React.useCallback(
+    targetId => {
+      setData(oldData => ({
+        ...oldData,
+        contactDetails: oldData.contactDetails.filter(({ id }) => id !== targetId)
+      }));
+    },
+    [setData]
+  );
+
   let Icon = null;
 
   switch (contactDetail.category) {
@@ -36,7 +49,7 @@ function ContactDetailRow ({ contactDetail }) {
       title={contactDetail.category}
       deleteQuery={deleteContactDetail}
       editEventName="toggleContactDetailForm"
-      deleteEventName="deletedContactDetail">
+      afterDelete={afterDelete}>
       <Box display="flex" alignItems="center">
         <Typography>{contactDetail.value}</Typography>
         <Box ml={1}>

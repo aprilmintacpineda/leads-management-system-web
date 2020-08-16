@@ -2,16 +2,29 @@
 
 import React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import { updateStore, addEvent } from 'fluxible-js';
+import { updateStore } from 'fluxible-js';
 
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 
 import { getLead } from 'graphql/queries';
+import TabNavigation from 'components/TabNavigation';
 
-import Address from './Address';
-import ContactDetail from './ContactDetail';
+import LeadViewContext from './LeadViewContext';
 import BasicInformation from './BasicInformation';
+import GeneralTab from './GeneralTab';
+import NotesTab from './NotesTab';
+
+const tabs = [
+  {
+    Component: GeneralTab,
+    label: 'General'
+  },
+  {
+    Component: NotesTab,
+    label: 'Notes'
+  }
+];
 
 function LeadView ({
   match: {
@@ -38,6 +51,13 @@ function LeadView ({
     });
   }, [id]);
 
+  const setData = React.useCallback(arg => {
+    setState(oldState => ({
+      ...oldState,
+      data: arg.constructor === Function ? arg(oldState.data) : arg
+    }));
+  }, []);
+
   React.useEffect(() => {
     if (status === 'initial') updateStore({ loading: true });
     else updateStore({ loading: false });
@@ -47,97 +67,19 @@ function LeadView ({
     fetchLead();
   }, [fetchLead]);
 
-  React.useEffect(() => {
-    const listeners = [
-      addEvent('addedNewAddress', ({ resultRecord, operation }) => {
-        setState(oldState => {
-          let addresses = oldState.data.addresses;
-
-          if (operation === 'update') {
-            addresses = addresses.map(address => {
-              if (address.id === resultRecord.id) return resultRecord;
-              return address;
-            });
-          } else {
-            addresses = [resultRecord].concat(addresses);
-          }
-
-          return {
-            ...oldState,
-            data: {
-              ...oldState.data,
-              addresses
-            }
-          };
-        });
-      }),
-      addEvent('deletedAddress', targetId => {
-        setState(oldState => ({
-          ...oldState,
-          data: {
-            ...oldState.data,
-            addresses: oldState.data.addresses.filter(({ id }) => id !== targetId)
-          }
-        }));
-      }),
-      addEvent('leadEditSuccess', data => {
-        setState(oldState => ({
-          ...oldState,
-          data
-        }));
-      }),
-      addEvent('deletedContactDetail', targetId => {
-        setState(oldState => ({
-          ...oldState,
-          data: {
-            ...oldState.data,
-            contactDetails: oldState.data.contactDetails.filter(
-              ({ id }) => id !== targetId
-            )
-          }
-        }));
-      }),
-      addEvent('addedNewContactDetail', ({ resultRecord, operation }) => {
-        setState(oldState => {
-          let contactDetails = oldState.data.contactDetails;
-
-          if (operation === 'update') {
-            contactDetails = contactDetails.map(contactDetail => {
-              if (contactDetail.id === resultRecord.id) return resultRecord;
-              return contactDetail;
-            });
-          } else {
-            contactDetails = [resultRecord].concat(contactDetails);
-          }
-
-          return {
-            ...oldState,
-            data: {
-              ...oldState.data,
-              contactDetails
-            }
-          };
-        });
-      })
-    ];
-
-    return () => {
-      listeners.forEach(removeListenerCallback => {
-        removeListenerCallback();
-      });
-    };
-  }, []);
-
   if (!data) return null;
 
   return (
-    <Box mb={2}>
-      <Paper>
-        <BasicInformation data={data} />
-        <Address data={data} />
-        <ContactDetail data={data} />
-      </Paper>
-    </Box>
+    <LeadViewContext.Provider value={{ data, setData }}>
+      <Box mb={2}>
+        <Paper>
+          <Box mb={7}>
+            <BasicInformation />
+          </Box>
+          <TabNavigation tabs={tabs} />
+        </Paper>
+      </Box>
+    </LeadViewContext.Provider>
   );
 }
 

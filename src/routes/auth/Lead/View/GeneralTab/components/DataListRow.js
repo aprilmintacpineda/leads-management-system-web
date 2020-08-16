@@ -38,7 +38,7 @@ function DataListRow ({
   title,
   deleteQuery,
   editEventName,
-  deleteEventName,
+  afterDelete,
   children
 }) {
   const classes = useStyles();
@@ -56,13 +56,13 @@ function DataListRow ({
         })
       );
 
-      emitEvent(deleteEventName, id);
+      afterDelete(id);
       updateStore({ loading: false });
     } catch (error) {
       console.error('DataListRow onConfirm', error);
       setIsDeleting(false);
     }
-  }, [id, deleteEventName, deleteQuery]);
+  }, [id, afterDelete, deleteQuery]);
 
   const confirmDelete = React.useCallback(() => {
     alertDialog({

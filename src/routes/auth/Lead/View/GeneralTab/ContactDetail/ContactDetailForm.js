@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import { addEvent, emitEvent } from 'fluxible-js';
+import { addEvent } from 'fluxible-js';
 import { useParams } from 'react-router-dom';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -18,6 +18,8 @@ import validate from 'libs/validate';
 import useForm from 'hooks/useForm';
 import { unknownError } from 'fluxible/popup';
 import { createContactDetail, updateContactDetail } from 'graphql/mutations';
+
+import LeadViewContext from '../../LeadViewContext';
 
 const formOptions = {
   initialFormValues: {
@@ -64,6 +66,7 @@ const formOptions = {
 function ContactDetailForm () {
   const [isOpen, setIsOpen] = React.useState(false);
   const { id: leadId } = useParams();
+  const { setData } = React.useContext(LeadViewContext);
 
   const {
     formValues,
@@ -113,10 +116,27 @@ function ContactDetailForm () {
 
   React.useEffect(() => {
     if (resultRecord) {
-      emitEvent('addedNewContactDetail', { resultRecord, operation });
+      setData(oldData => {
+        let contactDetails = oldData.contactDetails;
+
+        if (operation === 'update') {
+          contactDetails = contactDetails.map(contactDetail => {
+            if (contactDetail.id === resultRecord.id) return resultRecord;
+            return contactDetail;
+          });
+        } else {
+          contactDetails = [resultRecord].concat(contactDetails);
+        }
+
+        return {
+          ...oldData,
+          contactDetails
+        };
+      });
+
       toggle();
     }
-  }, [resultRecord, toggle, operation]);
+  }, [resultRecord, toggle, operation, setData]);
 
   return (
     <Dialog

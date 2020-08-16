@@ -2,7 +2,7 @@
 
 import React from 'react';
 import format from 'date-fns/format';
-import { emitEvent } from 'fluxible-js';
+import { emitEvent, addEvent } from 'fluxible-js';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +13,8 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import Divider from 'components/Divider';
 import Avatar from 'components/Avatar';
+
+import LeadViewContext from '../LeadViewContext';
 
 import EditProfilePicture from './EditProfilePicture';
 
@@ -26,12 +28,21 @@ const useStyles = makeStyles({
   }
 });
 
-function BasicInformation ({ data }) {
+function BasicInformation () {
   const classes = useStyles();
+  const { data, setData } = React.useContext(LeadViewContext);
 
   const editLead = React.useCallback(() => {
     emitEvent('toggleLeadForm', data);
   }, [data]);
+
+  React.useEffect(() => {
+    const removeEvent = addEvent('leadEditSuccess', newData => {
+      setData(newData);
+    });
+
+    return removeEvent;
+  }, [setData]);
 
   const fullname = `${data.firstName}${data.middleName ? ` ${data.middleName} ` : ' '}${
     data.lastName

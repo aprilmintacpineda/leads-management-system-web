@@ -14,7 +14,10 @@ import { countryToFlag } from 'libs/helpers';
 import countries from 'countries.json';
 import { deleteAddress } from 'graphql/mutations';
 
+import LeadViewContext from '../../LeadViewContext';
+
 function AddressRow ({ address }) {
+  const { setData } = React.useContext(LeadViewContext);
   const { type, country: _country, state: _state, line1, line2 } = address;
 
   const { state, country } = React.useMemo(() => {
@@ -26,6 +29,16 @@ function AddressRow ({ address }) {
       country
     };
   }, [_country, _state]);
+
+  const afterDelete = React.useCallback(
+    targetId => {
+      setData(oldData => ({
+        ...oldData,
+        addresses: oldData.addresses.filter(({ id }) => id !== targetId)
+      }));
+    },
+    [setData]
+  );
 
   let Icon = null;
 
@@ -49,7 +62,7 @@ function AddressRow ({ address }) {
       data={address}
       deleteQuery={deleteAddress}
       editEventName="toggleAddressForm"
-      deleteEventName="deletedAddress">
+      afterDelete={afterDelete}>
       <Typography>
         {countryToFlag(country.code2)} {country.name}, {state.name}
       </Typography>

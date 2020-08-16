@@ -2,20 +2,24 @@
 
 import React from 'react';
 
-import Box from '@material-ui/core/Box';
-
 import DataListSection from '../components/DataListSection';
 import AddressForm from './AddressForm';
 import AddressRow from './AddressRow';
 
-function Address ({ data: { addresses } }) {
+import LeadViewContext from '../../LeadViewContext';
+
+function Address () {
+  const {
+    data: { addresses }
+  } = React.useContext(LeadViewContext);
+
   const renderRow = React.useCallback(
     address => <AddressRow key={address.id} address={address} />,
     []
   );
 
   return (
-    <Box mt={7}>
+    <>
       <DataListSection
         toggleEventName="toggleAddressForm"
         dataList={addresses}
@@ -25,7 +29,7 @@ function Address ({ data: { addresses } }) {
         btnLabel="Add address"
       />
       <AddressForm />
-    </Box>
+    </>
   );
 }
 

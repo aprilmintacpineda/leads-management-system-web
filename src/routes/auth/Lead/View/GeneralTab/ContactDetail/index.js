@@ -2,11 +2,16 @@
 
 import React from 'react';
 
+import LeadViewContext from '../../LeadViewContext';
 import DataListSection from '../components/DataListSection';
 import ContactDetailForm from './ContactDetailForm';
 import ContactDetailRow from './ContactDetailRow';
 
-function ContactDetail ({ data: { contactDetails } }) {
+function ContactDetail () {
+  const {
+    data: { contactDetails }
+  } = React.useContext(LeadViewContext);
+
   const renderRow = React.useCallback(
     contactDetail => (
       <ContactDetailRow key={contactDetail.id} contactDetail={contactDetail} />
