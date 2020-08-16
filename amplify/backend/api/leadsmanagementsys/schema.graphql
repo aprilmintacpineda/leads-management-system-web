@@ -108,8 +108,8 @@ type Note
   @auth (
     rules: [
       { allow: private }
-      { allow: owner, ownerField: "userId", operations: ["update", "delete"] }
       { allow: public, provider: iam }
+      { allow: owner, ownerField: "userId", operations: [update, delete] }
     ]
   )
   @key (name: "byLeadId", fields: ["leadId", "createdAt"]) {
