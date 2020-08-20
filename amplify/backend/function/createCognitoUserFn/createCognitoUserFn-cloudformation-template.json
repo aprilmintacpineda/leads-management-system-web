@@ -127,7 +127,11 @@
         },
         "Runtime": "nodejs12.x",
         "Layers": [],
-        "Timeout": "25"
+        "Timeout": "25",
+        "Code": {
+          "S3Bucket": "amplify-leadsmanagementsys-dev-225611-deployment",
+          "S3Key": "amplify-builds/createCognitoUserFn-7a586e33392f72316d33-build.zip"
+        }
       }
     },
     "LambdaExecutionRole": {

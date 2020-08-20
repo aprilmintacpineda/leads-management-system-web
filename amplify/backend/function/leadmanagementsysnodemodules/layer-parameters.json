@@ -1,0 +1,18 @@
+{
+  "runtimes": [],
+  "layerVersionMap": {
+    "1": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ]
+    }
+  }
+}
