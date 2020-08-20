@@ -124,12 +124,5 @@ type Note
 
 type Mutation {
   createCognitoUser (email: String): AWSJSON
-    @function (name: "createCognitoUserFn")
-    @auth (
-      rules: [
-        { allow: private }
-        { allow: public, provider: iam }
-        { allow: owner, ownerField: "userId", operations: [update, delete] }
-      ]
-    )
+    @function (name: "createCognitoUserFn-${env}")
 }
