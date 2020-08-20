@@ -20,6 +20,10 @@
                     "appId": "d3endy4meolkad",
                     "type": "cicd"
                 }
+            },
+            "function": {
+                "createCognitoUserFn": {},
+                "leadmanagementsysnodemodules": {}
             }
         }
     }

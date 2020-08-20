@@ -19,7 +19,22 @@
         {
           "type": "private"
         }
-      ]
+      ],
+      "hash": "UveOAPkZ0lD0QwTu86hhaerekebzMuv956yCEdFv86E="
+    },
+    "2": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "mb35xi1XuvWlAicQiKsA4dWSV+aNN67QZpvWpD+VvcQ="
     }
   }
 }
