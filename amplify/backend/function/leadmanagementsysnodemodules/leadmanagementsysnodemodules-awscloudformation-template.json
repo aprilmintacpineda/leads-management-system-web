@@ -14,7 +14,9 @@
     "LambdaLayer": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
-        "CompatibleRuntimes": [],
+        "CompatibleRuntimes": [
+          "nodejs12.x"
+        ],
         "Content": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
