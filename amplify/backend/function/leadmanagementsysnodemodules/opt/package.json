@@ -9,6 +9,7 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
+    "graphql": "^15.3.0",
     "graphql-request": "^3.0.0"
   }
 }
