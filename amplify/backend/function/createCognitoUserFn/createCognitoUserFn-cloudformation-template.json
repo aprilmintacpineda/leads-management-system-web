@@ -126,7 +126,9 @@
           ]
         },
         "Runtime": "nodejs12.x",
-        "Layers": [],
+        "Layers": [
+          "arn:aws:lambda:ap-southeast-1:046119459188:layer:leadmanagementsysnodemodules:1"
+        ],
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-leadsmanagementsys-dev-225611-deployment",

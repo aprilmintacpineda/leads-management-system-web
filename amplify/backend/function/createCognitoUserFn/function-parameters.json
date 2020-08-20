@@ -1,5 +1,10 @@
 {
-  "lambdaLayers": [],
+  "lambdaLayers": [
+    {
+      "type": "ExternalLayer",
+      "arn": "arn:aws:lambda:ap-southeast-1:046119459188:layer:leadmanagementsysnodemodules:1"
+    }
+  ],
   "permissions": {
     "auth": {
       "leadsmanagementsys71fd0e2271fd0e22": [
