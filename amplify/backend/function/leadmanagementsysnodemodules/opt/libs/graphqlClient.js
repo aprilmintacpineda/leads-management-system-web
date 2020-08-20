@@ -2,7 +2,7 @@
 
 const { GraphQLClient } = require('graphql-request');
 
-export default new GraphQLClient(
+module.exports = new GraphQLClient(
   process.env.API_LEADSMANAGEMENTSYS_GRAPHQLAPIENDPOINTOUTPUT,
   {
     headers: {
