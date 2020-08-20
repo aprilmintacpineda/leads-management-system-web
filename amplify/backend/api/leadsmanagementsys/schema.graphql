@@ -121,3 +121,8 @@ type Note
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
+
+type Mutation {
+  createCognitoUser (email: String): AWSJSON
+    @function (name: "createCognitoUserFn")
+}
