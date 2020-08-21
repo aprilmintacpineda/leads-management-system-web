@@ -6,6 +6,11 @@
 
 // this is an auto generated file. This will be overwritten
 
+export const createCognitoUser = /* GraphQL */ `
+  mutation CreateCognitoUser($email: String) {
+    createCognitoUser(email: $email)
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser($input: CreateUserInput!, $condition: ModelUserConditionInput) {
     createUser(input: $input, condition: $condition) {

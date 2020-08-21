@@ -38,6 +38,10 @@ function FabButton () {
     emitEvent('toggleLeadForm');
   }, []);
 
+  const inviteUser = React.useCallback(() => {
+    emitEvent('toggleInviteUserForm');
+  }, []);
+
   return (
     <>
       <Fab
@@ -53,7 +57,7 @@ function FabButton () {
           <Box mb={1}>
             <Paper className={classes.paper}>
               <MenuItem onClick={addLead}>Add lead</MenuItem>
-              <MenuItem>Invite user</MenuItem>
+              <MenuItem onClick={inviteUser}>Invite user</MenuItem>
             </Paper>
           </Box>
         </ClickAwayListener>
