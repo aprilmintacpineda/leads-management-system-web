@@ -1,8 +1,8 @@
 /** @format */
 
-const { GraphQLClient } = require('graphql-request');
+const { GraphQLClient, gql } = require('graphql-request');
 
-module.exports = new GraphQLClient(
+const graphqlClient = new GraphQLClient(
   process.env.API_LEADSMANAGEMENTSYS_GRAPHQLAPIENDPOINTOUTPUT,
   {
     headers: {
@@ -10,3 +10,6 @@ module.exports = new GraphQLClient(
     }
   }
 );
+
+module.exports.graphqlClient = graphqlClient;
+module.exports.gql = gql;
