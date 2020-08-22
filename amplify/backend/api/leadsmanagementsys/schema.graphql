@@ -1,8 +1,3 @@
-enum UserStatuses {
-  FORCE_CHANGE_PASSWORD
-  CONFIRMED
-}
-
 type User
   @model
   @searchable
@@ -16,8 +11,6 @@ type User
   firstName: String
   middleName: String
   lastName: String
-  isDisabled: Boolean
-  status: UserStatuses
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
@@ -132,11 +125,6 @@ type Note
 type Mutation {
   createCognitoUser (email: String): AWSJSON
     @function (name: "createCognitoUserFn-${env}")
-    @aws_iam
-    @aws_cognito_user_pools
-  
-  resendTempPass (email: String): AWSJSON
-    @function (name: "resendTempPass-${env}")
     @aws_iam
     @aws_cognito_user_pools
 }
