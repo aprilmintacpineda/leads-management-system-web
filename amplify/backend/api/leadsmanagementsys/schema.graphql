@@ -1,4 +1,4 @@
-enum UserStatuses = {
+enum UserStatuses {
   FORCE_CHANGE_PASSWORD
   CONFIRMED
 }
