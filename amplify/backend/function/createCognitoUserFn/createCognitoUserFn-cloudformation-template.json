@@ -1,490 +1,490 @@
 {
-	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "Lambda Function resource stack creation using Amplify CLI",
-	"Parameters": {
-		"CloudWatchRule": {
-			"Type": "String",
-			"Default": "NONE",
-			"Description": " Schedule Expression"
-		},
-		"env": {
-			"Type": "String"
-		},
-		"authleadsmanagementsys71fd0e2271fd0e22UserPoolId": {
-			"Type": "String",
-			"Default": "authleadsmanagementsys71fd0e2271fd0e22UserPoolId"
-		},
-		"storages3453d1bd4BucketName": {
-			"Type": "String",
-			"Default": "storages3453d1bd4BucketName"
-		},
-		"apileadsmanagementsysGraphQLAPIIdOutput": {
-			"Type": "String",
-			"Default": "apileadsmanagementsysGraphQLAPIIdOutput"
-		},
-		"apileadsmanagementsysGraphQLAPIEndpointOutput": {
-			"Type": "String",
-			"Default": "apileadsmanagementsysGraphQLAPIEndpointOutput"
-		},
-		"apileadsmanagementsysGraphQLAPIKeyOutput": {
-			"Type": "String",
-			"Default": "apileadsmanagementsysGraphQLAPIKeyOutput"
-		}
-	},
-	"Conditions": {
-		"ShouldNotCreateEnvResources": {
-			"Fn::Equals": [
-				{
-					"Ref": "env"
-				},
-				"NONE"
-			]
-		}
-	},
-	"Resources": {
-		"LambdaFunction": {
-			"Type": "AWS::Lambda::Function",
-			"Metadata": {
-				"aws:asset:path": "./src",
-				"aws:asset:property": "Code"
-			},
-			"Properties": {
-				"Handler": "index.handler",
-				"FunctionName": {
-					"Fn::If": [
-						"ShouldNotCreateEnvResources",
-						"createCognitoUserFn",
-						{
-							"Fn::Join": [
-								"",
-								[
-									"createCognitoUserFn",
-									"-",
-									{
-										"Ref": "env"
-									}
-								]
-							]
-						}
-					]
-				},
-				"Environment": {
-					"Variables": {
-						"ENV": {
-							"Ref": "env"
-						},
-						"REGION": {
-							"Ref": "AWS::Region"
-						},
-						"AUTH_LEADSMANAGEMENTSYS71FD0E2271FD0E22_USERPOOLID": {
-							"Ref": "authleadsmanagementsys71fd0e2271fd0e22UserPoolId"
-						},
-						"STORAGE_S3453D1BD4_BUCKETNAME": {
-							"Ref": "storages3453d1bd4BucketName"
-						},
-						"API_LEADSMANAGEMENTSYS_USERTABLE_NAME": {
-							"Fn::ImportValue": {
-								"Fn::Sub": "${apileadsmanagementsysGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
-							}
-						},
-						"API_LEADSMANAGEMENTSYS_USERTABLE_ARN": {
-							"Fn::Join": [
-								"",
-								[
-									"arn:aws:dynamodb:",
-									{
-										"Ref": "AWS::Region"
-									},
-									":",
-									{
-										"Ref": "AWS::AccountId"
-									},
-									":table/",
-									{
-										"Fn::ImportValue": {
-											"Fn::Sub": "${apileadsmanagementsysGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
-										}
-									}
-								]
-							]
-						},
-						"API_LEADSMANAGEMENTSYS_GRAPHQLAPIIDOUTPUT": {
-							"Ref": "apileadsmanagementsysGraphQLAPIIdOutput"
-						},
-						"API_LEADSMANAGEMENTSYS_GRAPHQLAPIENDPOINTOUTPUT": {
-							"Ref": "apileadsmanagementsysGraphQLAPIEndpointOutput"
-						},
-						"API_LEADSMANAGEMENTSYS_GRAPHQLAPIKEYOUTPUT": {
-							"Ref": "apileadsmanagementsysGraphQLAPIKeyOutput"
-						}
-					}
-				},
-				"Role": {
-					"Fn::GetAtt": [
-						"LambdaExecutionRole",
-						"Arn"
-					]
-				},
-				"Runtime": "nodejs12.x",
-				"Layers": [],
-				"Timeout": "25",
-				"Code": {
-					"S3Bucket": "amplify-leadsmanagementsys-dev-225611-deployment",
-					"S3Key": "amplify-builds/createCognitoUserFn-494b7536564b4e643842-build.zip"
-				}
-			}
-		},
-		"LambdaExecutionRole": {
-			"Type": "AWS::IAM::Role",
-			"Properties": {
-				"RoleName": {
-					"Fn::If": [
-						"ShouldNotCreateEnvResources",
-						"leadsmanagementsysLambdaRole11913d7f",
-						{
-							"Fn::Join": [
-								"",
-								[
-									"leadsmanagementsysLambdaRole11913d7f",
-									"-",
-									{
-										"Ref": "env"
-									}
-								]
-							]
-						}
-					]
-				},
-				"AssumeRolePolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
-						{
-							"Effect": "Allow",
-							"Principal": {
-								"Service": [
-									"lambda.amazonaws.com"
-								]
-							},
-							"Action": [
-								"sts:AssumeRole"
-							]
-						}
-					]
-				}
-			}
-		},
-		"lambdaexecutionpolicy": {
-			"DependsOn": [
-				"LambdaExecutionRole"
-			],
-			"Type": "AWS::IAM::Policy",
-			"Properties": {
-				"PolicyName": "lambda-execution-policy",
-				"Roles": [
-					{
-						"Ref": "LambdaExecutionRole"
-					}
-				],
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
-						{
-							"Effect": "Allow",
-							"Action": [
-								"logs:CreateLogGroup",
-								"logs:CreateLogStream",
-								"logs:PutLogEvents"
-							],
-							"Resource": {
-								"Fn::Sub": [
-									"arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
-									{
-										"region": {
-											"Ref": "AWS::Region"
-										},
-										"account": {
-											"Ref": "AWS::AccountId"
-										},
-										"lambda": {
-											"Ref": "LambdaFunction"
-										}
-									}
-								]
-							}
-						}
-					]
-				}
-			}
-		},
-		"AmplifyResourcesPolicy": {
-			"DependsOn": [
-				"LambdaExecutionRole"
-			],
-			"Type": "AWS::IAM::Policy",
-			"Properties": {
-				"PolicyName": "amplify-lambda-execution-policy",
-				"Roles": [
-					{
-						"Ref": "LambdaExecutionRole"
-					}
-				],
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
-						{
-							"Effect": "Allow",
-							"Action": [
-								"cognito-idp:ConfirmSignUp",
-								"cognito-idp:AdminCreateUser",
-								"cognito-idp:CreateUserImportJob",
-								"cognito-idp:AdminSetUserSettings",
-								"cognito-idp:AdminLinkProviderForUser",
-								"cognito-idp:CreateIdentityProvider",
-								"cognito-idp:AdminConfirmSignUp",
-								"cognito-idp:AdminDisableUser",
-								"cognito-idp:AdminRemoveUserFromGroup",
-								"cognito-idp:SetUserMFAPreference",
-								"cognito-idp:SetUICustomization",
-								"cognito-idp:SignUp",
-								"cognito-idp:VerifyUserAttribute",
-								"cognito-idp:SetRiskConfiguration",
-								"cognito-idp:StartUserImportJob",
-								"cognito-idp:AdminSetUserPassword",
-								"cognito-idp:AssociateSoftwareToken",
-								"cognito-idp:CreateResourceServer",
-								"cognito-idp:RespondToAuthChallenge",
-								"cognito-idp:CreateUserPoolClient",
-								"cognito-idp:AdminUserGlobalSignOut",
-								"cognito-idp:GlobalSignOut",
-								"cognito-idp:AddCustomAttributes",
-								"cognito-idp:CreateGroup",
-								"cognito-idp:CreateUserPool",
-								"cognito-idp:AdminForgetDevice",
-								"cognito-idp:AdminAddUserToGroup",
-								"cognito-idp:AdminRespondToAuthChallenge",
-								"cognito-idp:ForgetDevice",
-								"cognito-idp:CreateUserPoolDomain",
-								"cognito-idp:AdminEnableUser",
-								"cognito-idp:AdminUpdateDeviceStatus",
-								"cognito-idp:StopUserImportJob",
-								"cognito-idp:InitiateAuth",
-								"cognito-idp:AdminInitiateAuth",
-								"cognito-idp:AdminSetUserMFAPreference",
-								"cognito-idp:ConfirmForgotPassword",
-								"cognito-idp:SetUserSettings",
-								"cognito-idp:VerifySoftwareToken",
-								"cognito-idp:AdminDisableProviderForUser",
-								"cognito-idp:SetUserPoolMfaConfig",
-								"cognito-idp:ChangePassword",
-								"cognito-idp:ConfirmDevice",
-								"cognito-idp:AdminResetUserPassword",
-								"cognito-idp:ResendConfirmationCode",
-								"cognito-identity:Describe*",
-								"cognito-identity:Get*",
-								"cognito-identity:List*",
-								"cognito-idp:Describe*",
-								"cognito-idp:AdminGetDevice",
-								"cognito-idp:AdminGetUser",
-								"cognito-idp:AdminList*",
-								"cognito-idp:List*",
-								"cognito-sync:Describe*",
-								"cognito-sync:Get*",
-								"cognito-sync:List*",
-								"iam:ListOpenIdConnectProviders",
-								"iam:ListRoles",
-								"sns:ListPlatformApplications",
-								"cognito-idp:ForgotPassword",
-								"cognito-idp:UpdateAuthEventFeedback",
-								"cognito-idp:UpdateResourceServer",
-								"cognito-idp:UpdateUserPoolClient",
-								"cognito-idp:AdminUpdateUserAttributes",
-								"cognito-idp:UpdateUserAttributes",
-								"cognito-idp:UpdateUserPoolDomain",
-								"cognito-idp:UpdateIdentityProvider",
-								"cognito-idp:UpdateGroup",
-								"cognito-idp:AdminUpdateAuthEventFeedback",
-								"cognito-idp:UpdateDeviceStatus",
-								"cognito-idp:UpdateUserPool",
-								"cognito-idp:DeleteUserPoolDomain",
-								"cognito-idp:DeleteResourceServer",
-								"cognito-idp:DeleteGroup",
-								"cognito-idp:AdminDeleteUserAttributes",
-								"cognito-idp:DeleteUserPoolClient",
-								"cognito-idp:DeleteUserAttributes",
-								"cognito-idp:DeleteUserPool",
-								"cognito-idp:AdminDeleteUser",
-								"cognito-idp:DeleteIdentityProvider",
-								"cognito-idp:DeleteUser"
-							],
-							"Resource": [
-								{
-									"Fn::Join": [
-										"",
-										[
-											"arn:aws:cognito-idp:",
-											{
-												"Ref": "AWS::Region"
-											},
-											":",
-											{
-												"Ref": "AWS::AccountId"
-											},
-											":userpool/",
-											{
-												"Ref": "authleadsmanagementsys71fd0e2271fd0e22UserPoolId"
-											}
-										]
-									]
-								}
-							]
-						},
-						{
-							"Effect": "Allow",
-							"Action": [
-								"s3:PutObject",
-								"s3:GetObject",
-								"s3:ListBucket",
-								"s3:DeleteObject"
-							],
-							"Resource": [
-								{
-									"Fn::Join": [
-										"",
-										[
-											"arn:aws:s3:::",
-											{
-												"Ref": "storages3453d1bd4BucketName"
-											},
-											"/*"
-										]
-									]
-								}
-							]
-						},
-						{
-							"Effect": "Allow",
-							"Action": [
-								"dynamodb:Put*",
-								"dynamodb:Create*",
-								"dynamodb:BatchWriteItem",
-								"dynamodb:Get*",
-								"dynamodb:BatchGetItem",
-								"dynamodb:List*",
-								"dynamodb:Describe*",
-								"dynamodb:Scan",
-								"dynamodb:Query",
-								"dynamodb:Update*",
-								"dynamodb:RestoreTable*",
-								"dynamodb:Delete*"
-							],
-							"Resource": [
-								{
-									"Fn::Join": [
-										"",
-										[
-											"arn:aws:dynamodb:",
-											{
-												"Ref": "AWS::Region"
-											},
-											":",
-											{
-												"Ref": "AWS::AccountId"
-											},
-											":table/",
-											{
-												"Fn::ImportValue": {
-													"Fn::Sub": "${apileadsmanagementsysGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
-												}
-											}
-										]
-									]
-								},
-								{
-									"Fn::Join": [
-										"",
-										[
-											"arn:aws:dynamodb:",
-											{
-												"Ref": "AWS::Region"
-											},
-											":",
-											{
-												"Ref": "AWS::AccountId"
-											},
-											":table/",
-											{
-												"Fn::ImportValue": {
-													"Fn::Sub": "${apileadsmanagementsysGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
-												}
-											},
-											"/index/*"
-										]
-									]
-								}
-							]
-						},
-						{
-							"Effect": "Allow",
-							"Action": [
-								"appsync:Create*",
-								"appsync:StartSchemaCreation",
-								"appsync:GraphQL",
-								"appsync:Get*",
-								"appsync:List*",
-								"appsync:Update*",
-								"appsync:Delete*"
-							],
-							"Resource": [
-								{
-									"Fn::Join": [
-										"",
-										[
-											"arn:aws:appsync:",
-											{
-												"Ref": "AWS::Region"
-											},
-											":",
-											{
-												"Ref": "AWS::AccountId"
-											},
-											":apis/",
-											{
-												"Ref": "apileadsmanagementsysGraphQLAPIIdOutput"
-											},
-											"/*"
-										]
-									]
-								}
-							]
-						}
-					]
-				}
-			}
-		}
-	},
-	"Outputs": {
-		"Name": {
-			"Value": {
-				"Ref": "LambdaFunction"
-			}
-		},
-		"Arn": {
-			"Value": {
-				"Fn::GetAtt": [
-					"LambdaFunction",
-					"Arn"
-				]
-			}
-		},
-		"Region": {
-			"Value": {
-				"Ref": "AWS::Region"
-			}
-		},
-		"LambdaExecutionRole": {
-			"Value": {
-				"Ref": "LambdaExecutionRole"
-			}
-		}
-	}
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Parameters": {
+    "CloudWatchRule": {
+      "Type": "String",
+      "Default": "NONE",
+      "Description": " Schedule Expression"
+    },
+    "env": {
+      "Type": "String"
+    },
+    "authleadsmanagementsys71fd0e2271fd0e22UserPoolId": {
+      "Type": "String",
+      "Default": "authleadsmanagementsys71fd0e2271fd0e22UserPoolId"
+    },
+    "storages3453d1bd4BucketName": {
+      "Type": "String",
+      "Default": "storages3453d1bd4BucketName"
+    },
+    "apileadsmanagementsysGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apileadsmanagementsysGraphQLAPIIdOutput"
+    },
+    "apileadsmanagementsysGraphQLAPIEndpointOutput": {
+      "Type": "String",
+      "Default": "apileadsmanagementsysGraphQLAPIEndpointOutput"
+    },
+    "apileadsmanagementsysGraphQLAPIKeyOutput": {
+      "Type": "String",
+      "Default": "apileadsmanagementsysGraphQLAPIKeyOutput"
+    }
+  },
+  "Conditions": {
+    "ShouldNotCreateEnvResources": {
+      "Fn::Equals": [
+        {
+          "Ref": "env"
+        },
+        "NONE"
+      ]
+    }
+  },
+  "Resources": {
+    "LambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Metadata": {
+        "aws:asset:path": "./src",
+        "aws:asset:property": "Code"
+      },
+      "Properties": {
+        "Handler": "index.handler",
+        "FunctionName": {
+          "Fn::If": [
+            "ShouldNotCreateEnvResources",
+            "createCognitoUserFn",
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "createCognitoUserFn",
+                  "-",
+                  {
+                    "Ref": "env"
+                  }
+                ]
+              ]
+            }
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "ENV": {
+              "Ref": "env"
+            },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
+            "AUTH_LEADSMANAGEMENTSYS71FD0E2271FD0E22_USERPOOLID": {
+              "Ref": "authleadsmanagementsys71fd0e2271fd0e22UserPoolId"
+            },
+            "STORAGE_S3453D1BD4_BUCKETNAME": {
+              "Ref": "storages3453d1bd4BucketName"
+            },
+            "API_LEADSMANAGEMENTSYS_USERTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apileadsmanagementsysGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
+              }
+            },
+            "API_LEADSMANAGEMENTSYS_USERTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apileadsmanagementsysGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_LEADSMANAGEMENTSYS_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apileadsmanagementsysGraphQLAPIIdOutput"
+            },
+            "API_LEADSMANAGEMENTSYS_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apileadsmanagementsysGraphQLAPIEndpointOutput"
+            },
+            "API_LEADSMANAGEMENTSYS_GRAPHQLAPIKEYOUTPUT": {
+              "Ref": "apileadsmanagementsysGraphQLAPIKeyOutput"
+            }
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Layers": [],
+        "Timeout": "25",
+        "Code": {
+          "S3Bucket": "amplify-leadsmanagementsys-dev-225611-deployment",
+          "S3Key": "amplify-builds/createCognitoUserFn-494b7536564b4e643842-build.zip"
+        }
+      }
+    },
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::If": [
+            "ShouldNotCreateEnvResources",
+            "leadsmanagementsysLambdaRole11913d7f",
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "leadsmanagementsysLambdaRole11913d7f",
+                  "-",
+                  {
+                    "Ref": "env"
+                  }
+                ]
+              ]
+            }
+          ]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "lambdaexecutionpolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    },
+                    "lambda": {
+                      "Ref": "LambdaFunction"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "cognito-idp:ConfirmSignUp",
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:CreateUserImportJob",
+                "cognito-idp:AdminSetUserSettings",
+                "cognito-idp:AdminLinkProviderForUser",
+                "cognito-idp:CreateIdentityProvider",
+                "cognito-idp:AdminConfirmSignUp",
+                "cognito-idp:AdminDisableUser",
+                "cognito-idp:AdminRemoveUserFromGroup",
+                "cognito-idp:SetUserMFAPreference",
+                "cognito-idp:SetUICustomization",
+                "cognito-idp:SignUp",
+                "cognito-idp:VerifyUserAttribute",
+                "cognito-idp:SetRiskConfiguration",
+                "cognito-idp:StartUserImportJob",
+                "cognito-idp:AdminSetUserPassword",
+                "cognito-idp:AssociateSoftwareToken",
+                "cognito-idp:CreateResourceServer",
+                "cognito-idp:RespondToAuthChallenge",
+                "cognito-idp:CreateUserPoolClient",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:GlobalSignOut",
+                "cognito-idp:AddCustomAttributes",
+                "cognito-idp:CreateGroup",
+                "cognito-idp:CreateUserPool",
+                "cognito-idp:AdminForgetDevice",
+                "cognito-idp:AdminAddUserToGroup",
+                "cognito-idp:AdminRespondToAuthChallenge",
+                "cognito-idp:ForgetDevice",
+                "cognito-idp:CreateUserPoolDomain",
+                "cognito-idp:AdminEnableUser",
+                "cognito-idp:AdminUpdateDeviceStatus",
+                "cognito-idp:StopUserImportJob",
+                "cognito-idp:InitiateAuth",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminSetUserMFAPreference",
+                "cognito-idp:ConfirmForgotPassword",
+                "cognito-idp:SetUserSettings",
+                "cognito-idp:VerifySoftwareToken",
+                "cognito-idp:AdminDisableProviderForUser",
+                "cognito-idp:SetUserPoolMfaConfig",
+                "cognito-idp:ChangePassword",
+                "cognito-idp:ConfirmDevice",
+                "cognito-idp:AdminResetUserPassword",
+                "cognito-idp:ResendConfirmationCode",
+                "cognito-identity:Describe*",
+                "cognito-identity:Get*",
+                "cognito-identity:List*",
+                "cognito-idp:Describe*",
+                "cognito-idp:AdminGetDevice",
+                "cognito-idp:AdminGetUser",
+                "cognito-idp:AdminList*",
+                "cognito-idp:List*",
+                "cognito-sync:Describe*",
+                "cognito-sync:Get*",
+                "cognito-sync:List*",
+                "iam:ListOpenIdConnectProviders",
+                "iam:ListRoles",
+                "sns:ListPlatformApplications",
+                "cognito-idp:ForgotPassword",
+                "cognito-idp:UpdateAuthEventFeedback",
+                "cognito-idp:UpdateResourceServer",
+                "cognito-idp:UpdateUserPoolClient",
+                "cognito-idp:AdminUpdateUserAttributes",
+                "cognito-idp:UpdateUserAttributes",
+                "cognito-idp:UpdateUserPoolDomain",
+                "cognito-idp:UpdateIdentityProvider",
+                "cognito-idp:UpdateGroup",
+                "cognito-idp:AdminUpdateAuthEventFeedback",
+                "cognito-idp:UpdateDeviceStatus",
+                "cognito-idp:UpdateUserPool",
+                "cognito-idp:DeleteUserPoolDomain",
+                "cognito-idp:DeleteResourceServer",
+                "cognito-idp:DeleteGroup",
+                "cognito-idp:AdminDeleteUserAttributes",
+                "cognito-idp:DeleteUserPoolClient",
+                "cognito-idp:DeleteUserAttributes",
+                "cognito-idp:DeleteUserPool",
+                "cognito-idp:AdminDeleteUser",
+                "cognito-idp:DeleteIdentityProvider",
+                "cognito-idp:DeleteUser"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:cognito-idp:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":userpool/",
+                      {
+                        "Ref": "authleadsmanagementsys71fd0e2271fd0e22UserPoolId"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storages3453d1bd4BucketName"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apileadsmanagementsysGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apileadsmanagementsysGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apileadsmanagementsysGraphQLAPIIdOutput"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "Name": {
+      "Value": {
+        "Ref": "LambdaFunction"
+      }
+    },
+    "Arn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaFunction",
+          "Arn"
+        ]
+      }
+    },
+    "Region": {
+      "Value": {
+        "Ref": "AWS::Region"
+      }
+    },
+    "LambdaExecutionRole": {
+      "Value": {
+        "Ref": "LambdaExecutionRole"
+      }
+    }
+  }
 }

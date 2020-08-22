@@ -9,7 +9,6 @@
  * 	ENV
  * 	REGION
  * 	STORAGE_S3453D1BD4_BUCKETNAME
- * Amplify Params - DO NOT EDIT
  *
  * @format
  */
