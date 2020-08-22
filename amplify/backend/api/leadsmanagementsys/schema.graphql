@@ -134,4 +134,9 @@ type Mutation {
     @function (name: "createCognitoUserFn-${env}")
     @aws_iam
     @aws_cognito_user_pools
+  
+  resendTempPass (email: String): AWSJSON
+    @function (name: "resendTempPass-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
 }
