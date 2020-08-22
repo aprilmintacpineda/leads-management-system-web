@@ -63,6 +63,34 @@
         }
       ],
       "hash": "mDoycY6VaKqTxTbejwTEn9Djv2BKkgkdgkZHdmOkgg0="
+    },
+    "5": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "4gdqRv2kyIKS19SjR6YFiR1wvfMiBhGPba1/HYqAhp8="
+    },
+    "6": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "mDoycY6VaKqTxTbejwTEn9Djv2BKkgkdgkZHdmOkgg0="
     }
   }
 }

@@ -21,7 +21,7 @@
 					"S3Bucket": "amplify-leadsmanagementsys-dev-225611-deployment",
 					"S3Key": "amplify-builds/leadmanagementsysnodemodules-build.zip"
 				},
-				"Description": "Lambda layer version 4",
+				"Description": "Lambda layer version 6",
 				"LayerName": "leadmanagementsysnodemodules"
 			},
 			"DeletionPolicy": "Retain",
@@ -134,7 +134,13 @@
 			"Properties": {
 				"Action": "lambda:GetLayerVersion",
 				"LayerVersionArn": {
-					"Ref": "LambdaLayer"
+					"Fn::Sub": [
+						"arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}:${layerVersion}",
+						{
+							"layerName": "leadmanagementsysnodemodules",
+							"layerVersion": "4"
+						}
+					]
 				},
 				"Principal": {
 					"Ref": "AWS::AccountId"
@@ -142,6 +148,68 @@
 			}
 		},
 		"LambdaLayerPermissionawsAccounts0461194591884": {
+			"Type": "AWS::Lambda::LayerVersionPermission",
+			"Properties": {
+				"Action": "lambda:GetLayerVersion",
+				"LayerVersionArn": {
+					"Fn::Sub": [
+						"arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}:${layerVersion}",
+						{
+							"layerName": "leadmanagementsysnodemodules",
+							"layerVersion": "4"
+						}
+					]
+				},
+				"Principal": "046119459188"
+			}
+		},
+		"LambdaLayerPermissionprivate5": {
+			"Type": "AWS::Lambda::LayerVersionPermission",
+			"Properties": {
+				"Action": "lambda:GetLayerVersion",
+				"LayerVersionArn": {
+					"Fn::Sub": [
+						"arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}:${layerVersion}",
+						{
+							"layerName": "leadmanagementsysnodemodules",
+							"layerVersion": "5"
+						}
+					]
+				},
+				"Principal": {
+					"Ref": "AWS::AccountId"
+				}
+			}
+		},
+		"LambdaLayerPermissionawsAccounts0461194591885": {
+			"Type": "AWS::Lambda::LayerVersionPermission",
+			"Properties": {
+				"Action": "lambda:GetLayerVersion",
+				"LayerVersionArn": {
+					"Fn::Sub": [
+						"arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}:${layerVersion}",
+						{
+							"layerName": "leadmanagementsysnodemodules",
+							"layerVersion": "5"
+						}
+					]
+				},
+				"Principal": "046119459188"
+			}
+		},
+		"LambdaLayerPermissionprivate6": {
+			"Type": "AWS::Lambda::LayerVersionPermission",
+			"Properties": {
+				"Action": "lambda:GetLayerVersion",
+				"LayerVersionArn": {
+					"Ref": "LambdaLayer"
+				},
+				"Principal": {
+					"Ref": "AWS::AccountId"
+				}
+			}
+		},
+		"LambdaLayerPermissionawsAccounts0461194591886": {
 			"Type": "AWS::Lambda::LayerVersionPermission",
 			"Properties": {
 				"Action": "lambda:GetLayerVersion",

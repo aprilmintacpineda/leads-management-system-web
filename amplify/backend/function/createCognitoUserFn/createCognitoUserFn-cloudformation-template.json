@@ -130,7 +130,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-leadsmanagementsys-dev-225611-deployment",
-					"S3Key": "amplify-builds/createCognitoUserFn-4b4a364f677249504c31-build.zip"
+					"S3Key": "amplify-builds/createCognitoUserFn-494b7536564b4e643842-build.zip"
 				}
 			}
 		},
