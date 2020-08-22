@@ -1,6 +1,6 @@
 enum UserStatues {
   FORCE_CHANGE_PASSWORD
-  CONFIRM
+  CONFIRMED
 }
 
 type User
