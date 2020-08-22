@@ -1,3 +1,8 @@
+enum UserStatuses = {
+  FORCE_CHANGE_PASSWORD
+  CONFIRMED
+}
+
 type User
   @model
   @searchable
@@ -11,6 +16,8 @@ type User
   firstName: String
   middleName: String
   lastName: String
+  isDisabled: Boolean
+  status: UserStatuses
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
