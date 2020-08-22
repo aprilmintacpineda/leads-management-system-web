@@ -1,5 +1,3 @@
-/** @format */
-
 const { GraphQLClient, gql } = require('graphql-request');
 
 const graphqlClient = new GraphQLClient(
