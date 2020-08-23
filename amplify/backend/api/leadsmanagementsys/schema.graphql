@@ -8,7 +8,9 @@ type User
   @searchable
   @auth (
     rules: [
-      { allow: private, groups: ["admins"] }
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"], operations: [create] }
+      { allow: owner, ownerField: id, operations: [edit] }
       { allow: public, provider: iam }
     ]
   ) {
