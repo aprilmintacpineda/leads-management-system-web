@@ -140,4 +140,14 @@ type Mutation {
     @function (name: "resendTempPass-${env}")
     @aws_iam
     @aws_cognito_user_pools
+
+  enableUserAccount (id: String): AWSJSON
+    @function (name: "enableUserAccount-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  disableUserAccount (id: String): AWSJSON
+    @function (name: "disableUserAccount-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
 }
