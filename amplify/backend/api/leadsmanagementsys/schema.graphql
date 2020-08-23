@@ -115,7 +115,7 @@ type Note
   @searchable
   @auth (
     rules: [
-      { allow: private, operations: [create] }
+      { allow: private, operations: [create, read] }
       { allow: owner, ownerField: "userId", operations: [update, delete] }
       { allow: public, provider: iam }
     ]
