@@ -115,9 +115,9 @@ type Note
   @searchable
   @auth (
     rules: [
-      { allow: private }
-      { allow: public, provider: iam }
+      { allow: private, operations: [create] }
       { allow: owner, ownerField: "userId", operations: [update, delete] }
+      { allow: public, provider: iam }
     ]
   )
   @key (name: "byLeadId", fields: ["leadId", "createdAt"]) {
