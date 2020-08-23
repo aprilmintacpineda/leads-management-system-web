@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { updateStore } from 'fluxible-js';

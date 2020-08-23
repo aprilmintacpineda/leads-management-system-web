@@ -1,18 +1,20 @@
-/** @format */
-
 import React from 'react';
 
-import { Auth } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 
 import TextField from 'components/TextField';
 import useForm from 'hooks/useForm';
 import validate from 'libs/validate';
+import { updateUser } from 'graphql/mutations';
 
 import Form from './Form';
 
 const formOptions = {
   initialFormValues: {
     newPassword: ''
+  },
+  initialContext: {
+    cognitoUser: null
   },
   validators: {
     newPassword ({ newPassword }) {
@@ -21,6 +23,15 @@ const formOptions = {
   },
   async onSubmit ({ formValues, formContext }) {
     await Auth.completeNewPassword(formContext.cognitoUser, formValues.newPassword);
+
+    await API.graphql(
+      graphqlOperation(updateUser, {
+        input: {
+          id: formContext.cognitoUser.username,
+          status: 'CONFIRMED'
+        }
+      })
+    );
   }
 };
 

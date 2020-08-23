@@ -1,9 +1,15 @@
-/** @format */
-
 import React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 
-function usePaginator ({ query, queryName, sort }) {
+export const PaginatorContext = React.createContext();
+
+export function PaginatorProvider ({
+  query,
+  queryName,
+  sort = null,
+  filter = null,
+  children
+}) {
   const [
     {
       data,
@@ -42,7 +48,8 @@ function usePaginator ({ query, queryName, sort }) {
         graphqlOperation(query, {
           limit: nextLimit || limit,
           nextToken: refresh ? null : nextToken,
-          sort
+          sort,
+          filter
         })
       );
 
@@ -71,7 +78,7 @@ function usePaginator ({ query, queryName, sort }) {
         status: 'fetchError'
       }));
     }
-  }, [nextToken, limit, nextLimit, refresh, query, queryName, sort]);
+  }, [nextToken, limit, nextLimit, refresh, query, queryName, sort, filter]);
 
   const refreshData = React.useCallback(() => {
     setState(oldState => ({
@@ -115,20 +122,23 @@ function usePaginator ({ query, queryName, sort }) {
     if (status === 'initial') fetchData();
   }, [status, fetchData]);
 
-  return {
-    data,
-    status,
-    limit,
-    page,
-    totalCount,
-    refresh,
-    isFetching: status === 'fetching',
-    setPage,
-    setLimit,
-    fetchData,
-    refreshData,
-    setData
-  };
+  return (
+    <PaginatorContext.Provider
+      value={{
+        data,
+        status,
+        limit,
+        page,
+        totalCount,
+        refresh,
+        isFetching: status === 'fetching',
+        setPage,
+        setLimit,
+        fetchData,
+        refreshData,
+        setData
+      }}>
+      {children}
+    </PaginatorContext.Provider>
+  );
 }
-
-export default usePaginator;

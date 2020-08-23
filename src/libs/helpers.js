@@ -1,5 +1,3 @@
-/** @format */
-
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
 export function countryToFlag (isoCode) {

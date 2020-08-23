@@ -1,5 +1,3 @@
-/** @format */
-
 export function sanitizeInput (value) {
   return value
     .replace(/\s{2,}/gim, ' ')

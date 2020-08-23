@@ -1,9 +1,4 @@
-/**
- * /* eslint-disable
- *
- * @format
- */
-
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUser = /* GraphQL */ `
@@ -13,6 +8,9 @@ export const onCreateUser = /* GraphQL */ `
       firstName
       middleName
       lastName
+      isDisabled
+      status
+      email
       createdAt
       updatedAt
     }
@@ -25,6 +23,9 @@ export const onUpdateUser = /* GraphQL */ `
       firstName
       middleName
       lastName
+      isDisabled
+      status
+      email
       createdAt
       updatedAt
     }
@@ -37,6 +38,9 @@ export const onDeleteUser = /* GraphQL */ `
       firstName
       middleName
       lastName
+      isDisabled
+      status
+      email
       createdAt
       updatedAt
     }
@@ -93,6 +97,9 @@ export const onCreateLead = /* GraphQL */ `
             firstName
             middleName
             lastName
+            isDisabled
+            status
+            email
             createdAt
             updatedAt
           }
@@ -153,6 +160,9 @@ export const onUpdateLead = /* GraphQL */ `
             firstName
             middleName
             lastName
+            isDisabled
+            status
+            email
             createdAt
             updatedAt
           }
@@ -213,6 +223,9 @@ export const onDeleteLead = /* GraphQL */ `
             firstName
             middleName
             lastName
+            isDisabled
+            status
+            email
             createdAt
             updatedAt
           }
@@ -323,6 +336,9 @@ export const onCreateNote = /* GraphQL */ `
         firstName
         middleName
         lastName
+        isDisabled
+        status
+        email
         createdAt
         updatedAt
       }
@@ -343,6 +359,9 @@ export const onUpdateNote = /* GraphQL */ `
         firstName
         middleName
         lastName
+        isDisabled
+        status
+        email
         createdAt
         updatedAt
       }
@@ -363,6 +382,9 @@ export const onDeleteNote = /* GraphQL */ `
         firstName
         middleName
         lastName
+        isDisabled
+        status
+        email
         createdAt
         updatedAt
       }

@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import useFluxibleStore from 'react-fluxible/lib/useFluxibleStore';
@@ -14,6 +12,7 @@ import Login from './guest/Login';
 
 import LeadView from './auth/Lead/View';
 import LeadList from './auth/Lead/List';
+import UserList from './auth/User/List';
 import Dashboard from './auth/Dashboard';
 
 import FabWidget from './FabWidget';
@@ -38,6 +37,7 @@ function Routes () {
         <Box mt={2}>
           <Container maxWidth="lg">
             <Switch>
+              <Route path="/user/list" component={UserList} />
               <Route path="/lead/list" component={LeadList} />
               <Route path="/lead/view/:id" component={LeadView} />
               <Route path="/" exact component={Dashboard} />

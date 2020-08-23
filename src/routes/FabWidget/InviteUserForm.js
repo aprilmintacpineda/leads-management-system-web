@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import { addEvent } from 'fluxible-js';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -47,7 +45,10 @@ const formOptions = {
           id,
           firstName: formValues.firstName,
           middleName: formValues.middleName,
-          lastName: formValues.lastName
+          lastName: formValues.lastName,
+          status: 'FORCE_CHANGE_PASSWORD',
+          isDisabled: false,
+          email: formValues.email
         }
       })
     );

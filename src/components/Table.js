@@ -1,5 +1,3 @@
-/** @format */
-
 import MuiTableCell from '@material-ui/core/TableCell';
 import MuiTableRow from '@material-ui/core/TableRow';
 import withStyles from '@material-ui/core/styles/withStyles';

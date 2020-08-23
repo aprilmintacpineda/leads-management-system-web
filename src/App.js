@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 
 import useFluxibleStore from 'react-fluxible/lib/useFluxibleStore';

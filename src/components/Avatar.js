@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import { Storage } from 'aws-amplify';
 import MuiAvatar from '@material-ui/core/Avatar';
@@ -8,10 +6,11 @@ function Avatar ({ firstName = '', lastName = '', src, ...muiAvatarProps }) {
   const [imgSrc, setImgSrc] = React.useState('');
 
   const onError = React.useCallback(() => {
-    if (firstName || lastName)
-      {setImgSrc(
+    if (firstName || lastName) {
+      setImgSrc(
         `https://ui-avatars.com/api/?name=${firstName}+${lastName}&rounded=true&size=150`
-      );}
+      );
+    }
   }, [firstName, lastName]);
 
   const getSrc = React.useCallback(async () => {

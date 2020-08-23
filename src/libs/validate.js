@@ -1,5 +1,3 @@
-/** @format */
-
 const validationRules = {
   email (value) {
     if (

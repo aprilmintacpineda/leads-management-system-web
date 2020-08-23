@@ -1,28 +1,22 @@
-/** @format */
-
 import React from 'react';
 import { updateStore } from 'fluxible-js';
 
 import Box from '@material-ui/core/Box';
 
 import { searchNotes } from 'graphql/queries';
-import usePaginator from 'hooks/usePaginator';
+import { PaginatorProvider, PaginatorContext } from 'components/PaginatorProvider';
 
 import NoteForm from './NoteForm';
 import NotesList from './NotesList';
 import NotesContext from './NotesContext';
 
-const paginatorOptions = {
-  query: searchNotes,
-  queryName: 'searchNotes',
-  sort: {
-    field: 'createdAt',
-    direction: 'desc'
-  }
+const sort = {
+  field: 'createdAt',
+  direction: 'desc'
 };
 
-function NotesTab () {
-  const { data, setData, isFetching } = usePaginator(paginatorOptions);
+function Body () {
+  const { data, setData, isFetching } = React.useContext(PaginatorContext);
 
   React.useEffect(() => {
     if (isFetching) updateStore({ loading: true });
@@ -40,6 +34,14 @@ function NotesTab () {
         <NoteForm />
       </Box>
     </NotesContext.Provider>
+  );
+}
+
+function NotesTab () {
+  return (
+    <PaginatorProvider query={searchNotes} queryName="searchNotes" sort={sort}>
+      <Body />
+    </PaginatorProvider>
   );
 }
 

@@ -1,5 +1,3 @@
-/** @format */
-
 import { updateStore, store } from 'fluxible-js';
 
 export function closePopup () {

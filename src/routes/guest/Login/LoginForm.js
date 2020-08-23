@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 
 import { Auth } from 'aws-amplify';
@@ -31,9 +29,13 @@ const formOptions = {
     setContext({ cognitoUser });
   },
   onSubmitError ({ code }) {
-    if (code === 'UserNotFoundException' || code === 'NotAuthorizedException')
-      alertMessage({ message: 'Incorrect credentials.' });
-    else unknownError();
+    if (code === 'UserNotFoundException' || code === 'NotAuthorizedException') {
+      alertMessage({
+        message: 'The credentials may be incorrect or the account may have been disabled.'
+      });
+    } else {
+      unknownError();
+    }
   }
 };
 

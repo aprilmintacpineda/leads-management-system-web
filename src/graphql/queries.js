@@ -1,9 +1,4 @@
-/**
- * /* eslint-disable
- *
- * @format
- */
-
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const listUsers = /* GraphQL */ `
@@ -14,6 +9,9 @@ export const listUsers = /* GraphQL */ `
         firstName
         middleName
         lastName
+        isDisabled
+        status
+        email
         createdAt
         updatedAt
       }
@@ -28,6 +26,9 @@ export const getUser = /* GraphQL */ `
       firstName
       middleName
       lastName
+      isDisabled
+      status
+      email
       createdAt
       updatedAt
     }
@@ -46,6 +47,9 @@ export const searchUsers = /* GraphQL */ `
         firstName
         middleName
         lastName
+        isDisabled
+        status
+        email
         createdAt
         updatedAt
       }
@@ -105,6 +109,9 @@ export const getLead = /* GraphQL */ `
             firstName
             middleName
             lastName
+            isDisabled
+            status
+            email
             createdAt
             updatedAt
           }
@@ -166,6 +173,9 @@ export const listLeads = /* GraphQL */ `
               firstName
               middleName
               lastName
+              isDisabled
+              status
+              email
               createdAt
               updatedAt
             }
@@ -234,6 +244,9 @@ export const searchLeads = /* GraphQL */ `
               firstName
               middleName
               lastName
+              isDisabled
+              status
+              email
               createdAt
               updatedAt
             }
@@ -380,6 +393,9 @@ export const getNote = /* GraphQL */ `
         firstName
         middleName
         lastName
+        isDisabled
+        status
+        email
         createdAt
         updatedAt
       }
@@ -401,6 +417,9 @@ export const listNotes = /* GraphQL */ `
           firstName
           middleName
           lastName
+          isDisabled
+          status
+          email
           createdAt
           updatedAt
         }
@@ -429,6 +448,9 @@ export const searchNotes = /* GraphQL */ `
           firstName
           middleName
           lastName
+          isDisabled
+          status
+          email
           createdAt
           updatedAt
         }

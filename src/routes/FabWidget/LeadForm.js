@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import { addEvent, emitEvent } from 'fluxible-js';
 import { useHistory } from 'react-router-dom';

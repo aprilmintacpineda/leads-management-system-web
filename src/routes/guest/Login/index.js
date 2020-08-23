@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 
 import { Auth, API, graphqlOperation } from 'aws-amplify';

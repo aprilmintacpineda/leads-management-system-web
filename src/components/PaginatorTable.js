@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import { updateStore } from 'fluxible-js';
 
@@ -14,9 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 
 import RefreshIcon from '@material-ui/icons/Refresh';
 
-import usePaginator from 'hooks/usePaginator';
+import { PaginatorProvider, PaginatorContext } from 'components/PaginatorProvider';
 
-function PaginatorTable ({ query, queryName, renderRow, tableHead }) {
+function Body ({ renderRow, tableHead }) {
   const {
     data,
     limit: rowsPerPage,
@@ -26,7 +24,7 @@ function PaginatorTable ({ query, queryName, renderRow, tableHead }) {
     setLimit,
     setPage,
     isFetching
-  } = usePaginator({ query, queryName });
+  } = React.useContext(PaginatorContext);
 
   const resultsList = React.useMemo(() => {
     if (!data) return null;
@@ -85,6 +83,21 @@ function PaginatorTable ({ query, queryName, renderRow, tableHead }) {
         />
       </Box>
     </Paper>
+  );
+}
+
+function PaginatorTable ({
+  query,
+  queryName,
+  renderRow,
+  tableHead,
+  filter = null,
+  sort = null
+}) {
+  return (
+    <PaginatorProvider query={query} queryName={queryName} filter={filter} sort={sort}>
+      <Body renderRow={renderRow} tableHead={tableHead} />
+    </PaginatorProvider>
   );
 }
 

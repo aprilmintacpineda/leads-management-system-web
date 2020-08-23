@@ -1,5 +1,3 @@
-/** @format */
-
 import 'react-image-crop/dist/ReactCrop.css';
 
 import React from 'react';

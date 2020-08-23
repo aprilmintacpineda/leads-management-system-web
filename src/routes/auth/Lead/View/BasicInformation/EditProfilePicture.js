@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import ReactImgCrop from 'react-image-crop';
 import { API, graphqlOperation, Storage } from 'aws-amplify';

@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react';
 import { store } from 'fluxible-js';
 import { useParams } from 'react-router-dom';
