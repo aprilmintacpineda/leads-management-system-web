@@ -1,13 +1,16 @@
 import React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
+import { emitEvent } from 'fluxible-js';
 
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 
 import BlockIcon from '@material-ui/icons/Block';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import SendIcon from '@material-ui/icons/Send';
+import GroupIcon from '@material-ui/icons/Group';
 
 import Avatar from 'components/Avatar';
 import TimeAgo from 'components/TimeAgo';
@@ -32,7 +35,8 @@ function UserRow ({
     createdAt,
     isDisabled,
     status,
-    email
+    email,
+    groups
   }
 }) {
   const [loading, setLoading] = React.useState(false);
@@ -128,6 +132,10 @@ function UserRow ({
     }
   }, [email]);
 
+  const changeUserGroup = React.useCallback(() => {
+    emitEvent('changeUserGroup', { id, groups });
+  }, [id, groups]);
+
   return (
     <TableRow key={id} hover>
       <TableCell>
@@ -140,6 +148,9 @@ function UserRow ({
       </TableCell>
       <TableCell>{middleName}</TableCell>
       <TableCell>{lastName}</TableCell>
+      <TableCell>
+        {groups ? groups.join(',') : <Typography color="error">No groups</Typography>}
+      </TableCell>
       <TableCell>
         <TimeAgo pastTime={createdAt} />
       </TableCell>
@@ -170,18 +181,33 @@ function UserRow ({
               </span>
             </Tooltip>
           )}
-          {status === 'FORCE_CHANGE_PASSWORD' && !isDisabled ? (
-            <Tooltip title="Resend temporary password">
-              <span>
-                <IconButton
-                  size="small"
-                  onClick={resendTempPassword}
-                  color="primary"
-                  disabled={loading}>
-                  <SendIcon fontSize="small" />
-                </IconButton>
-              </span>
-            </Tooltip>
+          {!isDisabled ? (
+            <>
+              {status === 'FORCE_CHANGE_PASSWORD' ? (
+                <Tooltip title="Resend temporary password">
+                  <span>
+                    <IconButton
+                      size="small"
+                      onClick={resendTempPassword}
+                      color="primary"
+                      disabled={loading}>
+                      <SendIcon fontSize="small" />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              ) : null}
+              <Tooltip title="Change user groups">
+                <span>
+                  <IconButton
+                    size="small"
+                    onClick={changeUserGroup}
+                    color="primary"
+                    disabled={loading}>
+                    <GroupIcon fontSize="small" />
+                  </IconButton>
+                </span>
+              </Tooltip>
+            </>
           ) : null}
         </Box>
       </TableCell>

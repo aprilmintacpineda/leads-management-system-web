@@ -1,5 +1,5 @@
 import React from 'react';
-import { addEvent } from 'fluxible-js';
+import { addEvent, emitEvent } from 'fluxible-js';
 import { API, graphqlOperation } from 'aws-amplify';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -7,10 +7,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import TextField from 'components/TextField';
+import Select from 'components/Select';
 
 import useForm from 'hooks/useForm';
 import validate from 'libs/validate';
-import TextField from 'components/TextField';
 import { createCognitoUser, createUser } from 'graphql/mutations';
 import { alertMessage, unknownError } from 'fluxible/popup';
 
@@ -19,7 +22,8 @@ const formOptions = {
     email: '',
     firstName: '',
     middleName: '',
-    lastName: ''
+    lastName: '',
+    groups: []
   },
   formContext: {
     resultRecord: null
@@ -28,12 +32,17 @@ const formOptions = {
     email: ({ email }) => validate(email, ['required', 'email']),
     firstName: ({ firstName }) => validate(firstName, ['required', 'maxLength:255']),
     middleName: ({ middleName }) => validate(middleName, ['maxLength:255']),
-    lastName: ({ lastName }) => validate(lastName, ['required', 'maxLength:255'])
+    lastName: ({ lastName }) => validate(lastName, ['required', 'maxLength:255']),
+    groups: ({ groups }) => validate(groups, ['options:Admin,Test1'])
   },
-  onSubmit: async ({ formValues, setContext }) => {
+  onSubmit: async ({
+    formValues: { email, firstName, middleName, lastName, groups },
+    setContext
+  }) => {
     const cognitoRecord = await API.graphql(
       graphqlOperation(createCognitoUser, {
-        email: formValues.email
+        email: email,
+        groups: JSON.stringify(groups)
       })
     );
 
@@ -43,12 +52,13 @@ const formOptions = {
       graphqlOperation(createUser, {
         input: {
           id,
-          firstName: formValues.firstName,
-          middleName: formValues.middleName,
-          lastName: formValues.lastName,
+          firstName: firstName,
+          middleName: middleName,
+          lastName: lastName,
           status: 'FORCE_CHANGE_PASSWORD',
           isDisabled: false,
-          email: formValues.email
+          email: email,
+          groups: !groups.length ? null : groups
         }
       })
     );
@@ -86,6 +96,7 @@ function InviteUserForm () {
           'User was successfully invited into the system. A temporary password was sent to the user. The user will be asked to change this password on the first login.'
       });
 
+      emitEvent('inviteUserSuccess', resultRecord);
       toggle();
     }
   }, [resultRecord, toggle]);
@@ -106,6 +117,15 @@ function InviteUserForm () {
             onChange={onChangeHandlers.email}
             label="Email"
           />
+          <Select
+            label="Groups (optional)"
+            value={formValues.groups}
+            error={formErrors.groups}
+            onChange={onChangeHandlers.groups}
+            multiple
+            renderValue={selectedOptions => selectedOptions.join(', ')}>
+            <MenuItem value="Admin">Admin</MenuItem>
+          </Select>
           <TextField
             value={formValues.firstName}
             error={formErrors.firstName}

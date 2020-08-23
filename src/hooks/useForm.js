@@ -256,6 +256,14 @@ function useForm ({
     });
   }, [initialFormValues, initialContext]);
 
+  const setForm = React.useCallback(({ formValues = null, formContext = null }) => {
+    setState(oldState => ({
+      ...oldState,
+      formValues: formValues || oldState.formValues,
+      formContext: formContext || oldState.formContext
+    }));
+  }, []);
+
   return {
     previousFormValues,
     formValues,
@@ -272,7 +280,8 @@ function useForm ({
     operation,
     resetForm,
     fileSelect,
-    valueChanged
+    valueChanged,
+    setForm
   };
 }
 

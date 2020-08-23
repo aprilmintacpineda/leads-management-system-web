@@ -17,14 +17,14 @@ import Dashboard from './auth/Dashboard';
 
 import FabWidget from './FabWidget';
 
-function mapStates ({ authUser }) {
-  return { authUser };
+function mapStates ({ authUser, isAuthenticated }) {
+  return { authUser, isAuthenticated };
 }
 
 function Routes () {
-  const { authUser } = useFluxibleStore(mapStates);
+  const { authUser, isAuthenticated } = useFluxibleStore(mapStates);
 
-  if (authUser) {
+  if (authUser && isAuthenticated) {
     return (
       <BrowserRouter>
         <AppBar position="fixed">

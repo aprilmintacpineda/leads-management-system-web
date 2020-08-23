@@ -11,6 +11,7 @@ export const onCreateUser = /* GraphQL */ `
       isDisabled
       status
       email
+      groups
       createdAt
       updatedAt
     }
@@ -26,6 +27,7 @@ export const onUpdateUser = /* GraphQL */ `
       isDisabled
       status
       email
+      groups
       createdAt
       updatedAt
     }
@@ -41,6 +43,7 @@ export const onDeleteUser = /* GraphQL */ `
       isDisabled
       status
       email
+      groups
       createdAt
       updatedAt
     }
@@ -100,6 +103,7 @@ export const onCreateLead = /* GraphQL */ `
             isDisabled
             status
             email
+            groups
             createdAt
             updatedAt
           }
@@ -163,6 +167,7 @@ export const onUpdateLead = /* GraphQL */ `
             isDisabled
             status
             email
+            groups
             createdAt
             updatedAt
           }
@@ -226,6 +231,7 @@ export const onDeleteLead = /* GraphQL */ `
             isDisabled
             status
             email
+            groups
             createdAt
             updatedAt
           }
@@ -339,6 +345,7 @@ export const onCreateNote = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }
@@ -362,6 +369,7 @@ export const onUpdateNote = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }
@@ -385,6 +393,7 @@ export const onDeleteNote = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }

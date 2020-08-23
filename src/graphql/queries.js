@@ -12,6 +12,7 @@ export const listUsers = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }
@@ -29,6 +30,7 @@ export const getUser = /* GraphQL */ `
       isDisabled
       status
       email
+      groups
       createdAt
       updatedAt
     }
@@ -50,6 +52,7 @@ export const searchUsers = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }
@@ -112,6 +115,7 @@ export const getLead = /* GraphQL */ `
             isDisabled
             status
             email
+            groups
             createdAt
             updatedAt
           }
@@ -176,6 +180,7 @@ export const listLeads = /* GraphQL */ `
               isDisabled
               status
               email
+              groups
               createdAt
               updatedAt
             }
@@ -247,6 +252,7 @@ export const searchLeads = /* GraphQL */ `
               isDisabled
               status
               email
+              groups
               createdAt
               updatedAt
             }
@@ -396,6 +402,7 @@ export const getNote = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }
@@ -420,6 +427,7 @@ export const listNotes = /* GraphQL */ `
           isDisabled
           status
           email
+          groups
           createdAt
           updatedAt
         }
@@ -451,6 +459,7 @@ export const searchNotes = /* GraphQL */ `
           isDisabled
           status
           email
+          groups
           createdAt
           updatedAt
         }

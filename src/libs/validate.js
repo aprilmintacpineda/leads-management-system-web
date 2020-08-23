@@ -12,7 +12,7 @@ const validationRules = {
     return '';
   },
   required (value) {
-    if (!value) return 'Required.';
+    if (!value || !value.length) return 'Required.';
     return '';
   },
   maxLength (value, max) {
@@ -24,7 +24,13 @@ const validationRules = {
     return '';
   },
   options (value, ...options) {
-    if (!options.includes(value)) return 'Please select from the options.';
+    if (value.constructor === Array) {
+      if (value.find(val => !options.includes(val)))
+        return 'Please select from the options.';
+    } else if (!options.includes(value)) {
+      return 'Please select from the options.';
+    }
+
     return '';
   }
 };

@@ -18,9 +18,6 @@ exports.handler = async ({
   arguments: { groups: newGroups, id },
   identity: { groups: requestorGroups }
 }) => {
-  console.log('groups', newGroups);
-  console.log('id', id);
-
   if (!requestorGroups.includes('Admin')) throw new Error('Unauthorized');
 
   const poolId = process.env.AUTH_LEADSMANAGEMENTSYS71FD0E2271FD0E22_USERPOOLID;
@@ -31,11 +28,9 @@ exports.handler = async ({
   }).promise();
 
   oldGroups = oldGroups.reduce(
-    ({ GroupName }, accumulator) => accumulator.concat(GroupName),
+    (accumulator, { GroupName }) => accumulator.concat(GroupName),
     []
   );
-
-  console.log('oldGroups', oldGroups);
 
   await Promise.all(
     [].concat(

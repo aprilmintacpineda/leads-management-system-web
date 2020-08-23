@@ -12,6 +12,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import OpenIcon from '@material-ui/icons/ExpandLess';
 import CloseIcon from '@material-ui/icons/ExpandMore';
 
+import RestrictToGroups from 'components/RestrictToGroups';
+
 const useStyles = makeStyles({
   fabBtn: {
     position: 'fixed',
@@ -55,7 +57,9 @@ function FabButton () {
           <Box mb={1}>
             <Paper className={classes.paper}>
               <MenuItem onClick={addLead}>Add lead</MenuItem>
-              <MenuItem onClick={inviteUser}>Invite user</MenuItem>
+              <RestrictToGroups allowedGroups={['Admin']}>
+                <MenuItem onClick={inviteUser}>Invite user</MenuItem>
+              </RestrictToGroups>
             </Paper>
           </Box>
         </ClickAwayListener>

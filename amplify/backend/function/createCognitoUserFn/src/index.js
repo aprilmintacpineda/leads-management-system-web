@@ -14,9 +14,17 @@ const aws = require('aws-sdk');
 
 const CognitoISP = new aws.CognitoIdentityServiceProvider();
 
-exports.handler = async ({ arguments: { email } }) => {
+exports.handler = async ({
+  arguments: { email, groups },
+  identity: { groups: requestorGroups }
+}) => {
+  if (!requestorGroups || !requestorGroups.includes('Admin'))
+    throw new Error('Unauthorized');
+
+  const poolId = process.env.AUTH_LEADSMANAGEMENTSYS71FD0E2271FD0E22_USERPOOLID;
+
   const response = await CognitoISP.adminCreateUser({
-    UserPoolId: process.env.AUTH_LEADSMANAGEMENTSYS71FD0E2271FD0E22_USERPOOLID,
+    UserPoolId: poolId,
     Username: email,
     DesiredDeliveryMediums: ['EMAIL'],
     UserAttributes: [
@@ -31,6 +39,18 @@ exports.handler = async ({ arguments: { email } }) => {
     ],
     TemporaryPassword: Math.random().toString(36).substr(2, 6)
   }).promise();
+
+  if (groups && groups.length) {
+    await Promise.all(
+      groups.map(group =>
+        CognitoISP.adminAddUserToGroup({
+          UserPoolId: poolId,
+          GroupName: group,
+          Username: response.User.Username
+        }).promise()
+      )
+    );
+  }
 
   return response;
 };

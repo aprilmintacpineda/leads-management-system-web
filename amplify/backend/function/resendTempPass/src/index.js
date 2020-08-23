@@ -15,8 +15,6 @@ const aws = require('aws-sdk');
 const CognitoISP = new aws.CognitoIdentityServiceProvider();
 
 exports.handler = async ({ arguments: { email } }) => {
-  console.log(JSON.stringify(process.env, null, 2));
-
   const response = CognitoISP.adminCreateUser({
     UserPoolId: process.env.AUTH_LEADSMANAGEMENTSYS71FD0E2271FD0E22_USERPOOLID,
     Username: email,

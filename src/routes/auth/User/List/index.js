@@ -5,8 +5,10 @@ import PaginatorTable from 'components/PaginatorTable';
 import { TableRow, TableCell } from 'components/Table';
 
 import { searchUsers } from 'graphql/queries';
+import withGroupRestrictions from 'hocs/withGroupRestrictions';
 
 import UserRow from './UserRow';
+import ExtendedChild from './ExtendedChild';
 
 function mapStates ({ authUser }) {
   return { authUser };
@@ -31,6 +33,7 @@ function UserList () {
         <TableCell>First name</TableCell>
         <TableCell>Middle name</TableCell>
         <TableCell>Last name</TableCell>
+        <TableCell>Groups</TableCell>
         <TableCell>Invited</TableCell>
         <TableCell>Actions</TableCell>
       </TableRow>
@@ -45,8 +48,9 @@ function UserList () {
       renderRow={renderRow}
       tableHead={tableHead}
       filter={filter}
+      ExtendedChild={ExtendedChild}
     />
   );
 }
 
-export default React.memo(UserList);
+export default withGroupRestrictions(['Admin'], React.memo(UserList));

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { updateStore } from 'fluxible-js';
+import useFluxibleStore from 'react-fluxible/lib/useFluxibleStore';
 
 import { getUser } from 'graphql/queries';
 import getInitialStore from 'fluxible/getInitialStore';
@@ -9,34 +10,48 @@ import getInitialStore from 'fluxible/getInitialStore';
 import LoginForm from './LoginForm';
 import ChangePasswordForm from './ChangePasswordForm';
 
-function Login () {
-  React.useEffect(() => {
-    Auth.signOut();
-    updateStore(getInitialStore());
-  }, []);
+function mapStates ({ authUser }) {
+  return { authUser };
+}
 
+function Login () {
   const [{ cognitoUser, step }, setState] = React.useState({
     cognitoUser: null,
     step: 'loginForm'
   });
 
+  const { authUser } = useFluxibleStore(mapStates);
+
   const authenticate = React.useCallback(async () => {
-    const authUser = await Auth.currentAuthenticatedUser();
+    try {
+      updateStore({ loading: true });
+      const authUser = await Auth.currentAuthenticatedUser();
 
-    const {
-      data: { getUser: userData }
-    } = await API.graphql(
-      graphqlOperation(getUser, {
-        id: authUser.username
-      })
-    );
+      const {
+        data: { getUser: userData }
+      } = await API.graphql(
+        graphqlOperation(getUser, {
+          id: authUser.username
+        })
+      );
 
-    updateStore({
-      authUser: {
-        email: authUser.attributes.email,
-        ...userData
-      }
-    });
+      updateStore({
+        loading: false,
+        isAuthenticated: true,
+        authUser: {
+          email: authUser.attributes.email,
+          ...userData
+        }
+      });
+    } catch (error) {
+      updateStore({ loading: false });
+      Auth.signOut();
+
+      updateStore({
+        ...getInitialStore(),
+        isAuthenticated: true
+      });
+    }
   }, []);
 
   const onLoginSuccess = React.useCallback(
@@ -53,8 +68,21 @@ function Login () {
     [authenticate]
   );
 
-  if (step === 'loginForm') return <LoginForm onSuccess={onLoginSuccess} />;
+  React.useEffect(() => {
+    if (authUser) {
+      authenticate();
+    } else {
+      Auth.signOut();
 
+      updateStore({
+        ...getInitialStore(),
+        isAuthenticated: true
+      });
+    }
+  }, [authUser, authenticate]);
+
+  if (authUser) return null;
+  if (step === 'loginForm') return <LoginForm onSuccess={onLoginSuccess} />;
   return <ChangePasswordForm onSuccess={authenticate} cognitoUser={cognitoUser} />;
 }
 

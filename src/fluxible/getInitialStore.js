@@ -1,6 +1,7 @@
 export default () => ({
   authUser: null,
   loading: false,
+  isAuthenticated: false,
   popup: {
     type: '',
     isOpen: false,

@@ -15,10 +15,10 @@ const aws = require('aws-sdk');
 const CognitoISP = new aws.CognitoIdentityServiceProvider();
 
 exports.handler = async ({ arguments: { id } }) => {
-  const response = await CognitoISP.adminEnableUser({
+  await CognitoISP.adminEnableUser({
     UserPoolId: process.env.AUTH_LEADSMANAGEMENTSYS71FD0E2271FD0E22_USERPOOLID,
     Username: id
-  });
+  }).promise();
 
-  return response;
+  return { status: 'success' };
 };

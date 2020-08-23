@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const createCognitoUser = /* GraphQL */ `
-  mutation CreateCognitoUser($email: String) {
-    createCognitoUser(email: $email)
+  mutation CreateCognitoUser($email: String, $groups: AWSJSON) {
+    createCognitoUser(email: $email, groups: $groups)
   }
 `;
 export const resendTempPass = /* GraphQL */ `
@@ -21,6 +21,11 @@ export const disableUserAccount = /* GraphQL */ `
     disableUserAccount(id: $id)
   }
 `;
+export const updateUserGroups = /* GraphQL */ `
+  mutation UpdateUserGroups($id: String, $groups: AWSJSON) {
+    updateUserGroups(id: $id, groups: $groups)
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser($input: CreateUserInput!, $condition: ModelUserConditionInput) {
     createUser(input: $input, condition: $condition) {
@@ -31,6 +36,7 @@ export const createUser = /* GraphQL */ `
       isDisabled
       status
       email
+      groups
       createdAt
       updatedAt
     }
@@ -46,6 +52,7 @@ export const updateUser = /* GraphQL */ `
       isDisabled
       status
       email
+      groups
       createdAt
       updatedAt
     }
@@ -61,6 +68,7 @@ export const deleteUser = /* GraphQL */ `
       isDisabled
       status
       email
+      groups
       createdAt
       updatedAt
     }
@@ -120,6 +128,7 @@ export const createLead = /* GraphQL */ `
             isDisabled
             status
             email
+            groups
             createdAt
             updatedAt
           }
@@ -183,6 +192,7 @@ export const updateLead = /* GraphQL */ `
             isDisabled
             status
             email
+            groups
             createdAt
             updatedAt
           }
@@ -246,6 +256,7 @@ export const deleteLead = /* GraphQL */ `
             isDisabled
             status
             email
+            groups
             createdAt
             updatedAt
           }
@@ -377,6 +388,7 @@ export const createNote = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }
@@ -400,6 +412,7 @@ export const updateNote = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }
@@ -423,6 +436,7 @@ export const deleteNote = /* GraphQL */ `
         isDisabled
         status
         email
+        groups
         createdAt
         updatedAt
       }
