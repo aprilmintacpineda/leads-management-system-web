@@ -134,7 +134,7 @@ type Note
 }
 
 type Mutation {
-  createCognitoUser (email: String): AWSJSON
+  createCognitoUser (email: String, groups: AWSJSON): AWSJSON
     @function (name: "createCognitoUserFn-${env}")
     @aws_iam
     @aws_cognito_user_pools

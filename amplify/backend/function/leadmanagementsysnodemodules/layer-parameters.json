@@ -91,6 +91,34 @@
         }
       ],
       "hash": "mDoycY6VaKqTxTbejwTEn9Djv2BKkgkdgkZHdmOkgg0="
+    },
+    "7": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "5qRGCGckFEN1dm/k0u/quMaBdJcDJqsfPnldhdeyDOo="
+    },
+    "8": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "b5c3dRai74ZgiT7/Rz1AFiaucuGPR5kNyJspLu9a5NE="
     }
   }
 }
