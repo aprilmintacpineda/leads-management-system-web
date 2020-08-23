@@ -9,7 +9,7 @@ type User
   @auth (
     rules: [
       { allow: private, operations: [read] }
-      { allow: groups, groups: ["Admin"], operations: [create] }
+      { allow: groups, groups: ["Admin"], operations: [create, update] }
       { allow: owner, ownerField: "id", operations: [update] }
       { allow: public, provider: iam }
     ]
