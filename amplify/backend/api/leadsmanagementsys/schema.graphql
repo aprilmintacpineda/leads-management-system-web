@@ -18,6 +18,7 @@ type User
   lastName: String
   isDisabled: Boolean
   status: UserStatues
+  email: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
