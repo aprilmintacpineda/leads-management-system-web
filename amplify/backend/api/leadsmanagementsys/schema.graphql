@@ -153,4 +153,9 @@ type Mutation {
     @function (name: "disableUserAccount-${env}")
     @aws_iam
     @aws_cognito_user_pools
+
+  updateUserGroups (id: String, groups: AWSJSON): AWSJSON
+    @function (name: "updateUserGroups-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
 }
