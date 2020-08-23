@@ -10,7 +10,7 @@ type User
     rules: [
       { allow: private, operations: [read] }
       { allow: groups, groups: ["Admin"], operations: [create] }
-      { allow: owner, ownerField: "id", operations: [edit] }
+      { allow: owner, ownerField: "id", operations: [update] }
       { allow: public, provider: iam }
     ]
   ) {
