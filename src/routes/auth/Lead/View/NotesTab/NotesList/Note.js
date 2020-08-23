@@ -11,9 +11,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import Avatar from 'components/Avatar';
 import TimeAgo from 'components/TimeAgo';
+import OwnerOnly from 'components/OwnerOnly';
 
 import { deleteNote } from 'graphql/mutations';
-import { alertDialog } from 'fluxible/popup';
+import { alertDialog, unknownError } from 'fluxible/popup';
 
 import NoteForm from '../NoteForm';
 import NotesContext from '../NotesContext';
@@ -45,6 +46,8 @@ function Note ({ data }) {
       setData(oldData => oldData.filter(({ id }) => id !== data.id));
     } catch (error) {
       console.error(error);
+      setIsDeleting(false);
+      unknownError();
     }
   }, [data, setData]);
 
@@ -67,7 +70,7 @@ function Note ({ data }) {
     id,
     body,
     createdAt,
-    user: { firstName, middleName, lastName, profilePicture }
+    user: { id: ownerId, firstName, middleName, lastName, profilePicture }
   } = data;
 
   const fullName = `${firstName}${middleName ? ` ${middleName} ` : ' '}${lastName}`;
@@ -82,14 +85,16 @@ function Note ({ data }) {
             <strong>{fullName}</strong>
           </Typography>
           {isReadMode ? (
-            <Box ml={2}>
-              <IconButton size="small" disabled={isDeleting} onClick={editMode}>
-                <EditIcon fontSize="small" />
-              </IconButton>
-              <IconButton size="small" onClick={onDelete} disabled={isDeleting}>
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </Box>
+            <OwnerOnly ownerId={ownerId}>
+              <Box ml={2}>
+                <IconButton size="small" disabled={isDeleting} onClick={editMode}>
+                  <EditIcon fontSize="small" />
+                </IconButton>
+                <IconButton size="small" onClick={onDelete} disabled={isDeleting}>
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </OwnerOnly>
           ) : null}
         </Box>
         <Typography variant="caption">

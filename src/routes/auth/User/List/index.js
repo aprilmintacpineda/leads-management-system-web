@@ -13,7 +13,7 @@ function mapStates ({ authUser }) {
 }
 
 function UserList () {
-  const renderRow = React.useCallback(user => <UserRow user={user} />, []);
+  const renderRow = React.useCallback(user => <UserRow key={user.id} user={user} />, []);
   const { authUser } = useFluxibleStore(mapStates);
 
   const filter = React.useMemo(

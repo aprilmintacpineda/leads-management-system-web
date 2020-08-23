@@ -12,6 +12,7 @@ import TextField from 'components/TextField';
 import { createNote, updateNote } from 'graphql/mutations';
 
 import NotesContext from './NotesContext';
+import { unknownError } from 'fluxible/popup';
 
 const formOptions = {
   initialFormValues: {
@@ -42,7 +43,8 @@ const formOptions = {
         resultRecord: data.updateNote
       });
     }
-  }
+  },
+  onSubmitError: unknownError
 };
 
 const useStyles = makeStyles({
