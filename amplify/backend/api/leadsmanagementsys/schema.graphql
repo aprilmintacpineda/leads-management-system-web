@@ -42,6 +42,7 @@ type LeadStatus
   ) {
   id: ID!
   name: String
+  deletedAt: AWSDateTime
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
