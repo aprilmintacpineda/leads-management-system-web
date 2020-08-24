@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { updateStore } from 'fluxible-js';
 
 import Box from '@material-ui/core/Box';
@@ -38,8 +39,18 @@ function Body () {
 }
 
 function NotesTab () {
+  const { id: leadId } = useParams();
+
   return (
-    <PaginatorProvider query={searchNotes} queryName="searchNotes" sort={sort}>
+    <PaginatorProvider
+      query={searchNotes}
+      queryName="searchNotes"
+      sort={sort}
+      filter={{
+        leadId: {
+          eq: leadId
+        }
+      }}>
       <Body />
     </PaginatorProvider>
   );
