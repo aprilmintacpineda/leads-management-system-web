@@ -36,7 +36,7 @@ type LeadStatus
   @auth (
     rules: [
       { allow: private, operations: [read] }
-      { allow: groups, groups: ["Admin"] }
+      { allow: groups, groups: ["Admin"], operations: [create, read, update] }
       { allow: public, provider: iam }
     ]
   ) {
