@@ -16,6 +16,7 @@ import UserList from './auth/User/List';
 import Dashboard from './auth/Dashboard';
 
 import FabWidget from './FabWidget';
+import FetchLeadStatuses from './FetchLeadStatuses';
 
 function mapStates ({ authUser, isAuthenticated }) {
   return { authUser, isAuthenticated };
@@ -44,6 +45,7 @@ function Routes () {
             </Switch>
           </Container>
         </Box>
+        <FetchLeadStatuses />
       </BrowserRouter>
     );
   }

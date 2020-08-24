@@ -11,12 +11,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import TextField from 'components/TextField';
 import Select from 'components/Select';
+import LeadStatusSelect from 'components/LeadStatusSelect';
 
 import validate from 'libs/validate';
 import { sanitizeInput } from 'libs/inputs';
 
 import useForm from 'hooks/useForm';
 import { createLead, updateLead } from 'graphql/mutations';
+import { unknownError } from 'fluxible/popup';
 
 const formOptions = {
   initialContext: {
@@ -26,7 +28,8 @@ const formOptions = {
     firstName: '',
     middleName: '',
     lastName: '',
-    gender: ''
+    gender: '',
+    leadStatusId: ''
   },
   isGraphql: true,
   createMutation: createLead,
@@ -35,7 +38,8 @@ const formOptions = {
     firstName: ({ firstName }) => validate(firstName, ['required', 'maxLength:255']),
     middleName: ({ middleName }) => validate(middleName, ['maxLength:255']),
     lastName: ({ lastName }) => validate(lastName, ['required', 'maxLength:255']),
-    gender: ({ gender }) => validate(gender, ['required', 'options:Male,Female'])
+    gender: ({ gender }) => validate(gender, ['required', 'options:Male,Female']),
+    leadStatusId: ({ leadStatusId }) => validate(leadStatusId, ['required', 'leadStatus'])
   },
   transformInput ({ formValues }) {
     return Object.keys(formValues).reduce(
@@ -57,7 +61,8 @@ const formOptions = {
         resultRecord: data.createLead
       });
     }
-  }
+  },
+  onSubmitError: unknownError
 };
 
 function LeadForm () {
@@ -84,7 +89,14 @@ function LeadForm () {
       'toggleLeadForm',
       targetLead => {
         if (targetLead) {
-          const { id, firstName, middleName, lastName, gender } = targetLead;
+          const {
+            id,
+            firstName,
+            middleName,
+            lastName,
+            gender,
+            leadStatusId
+          } = targetLead;
 
           setEditMode(({ formValues }) => ({
             targetRecordId: id,
@@ -93,7 +105,8 @@ function LeadForm () {
               firstName,
               middleName,
               lastName,
-              gender
+              gender,
+              leadStatusId
             }
           }));
         }
@@ -154,6 +167,13 @@ function LeadForm () {
             <MenuItem value="Male">Male</MenuItem>
             <MenuItem value="Female">Female</MenuItem>
           </Select>
+          <LeadStatusSelect
+            label="Status"
+            value={formValues.leadStatusId}
+            error={formErrors.leadStatusId}
+            onChange={onChangeHandlers.leadStatusId}
+            disabled={isSubmitting}
+          />
         </DialogContent>
         <DialogActions>
           <Button color="secondary" onClick={toggle} disabled={isSubmitting}>

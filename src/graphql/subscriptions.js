@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
+  subscription OnCreateUser($id: String) {
+    onCreateUser(id: $id) {
       id
       firstName
       middleName
@@ -18,8 +18,8 @@ export const onCreateUser = /* GraphQL */ `
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
+  subscription OnUpdateUser($id: String) {
+    onUpdateUser(id: $id) {
       id
       firstName
       middleName
@@ -34,8 +34,8 @@ export const onUpdateUser = /* GraphQL */ `
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
+  subscription OnDeleteUser($id: String) {
+    onDeleteUser(id: $id) {
       id
       firstName
       middleName
@@ -44,6 +44,39 @@ export const onDeleteUser = /* GraphQL */ `
       status
       email
       groups
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateLeadStatus = /* GraphQL */ `
+  subscription OnCreateLeadStatus {
+    onCreateLeadStatus {
+      id
+      name
+      deletedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLeadStatus = /* GraphQL */ `
+  subscription OnUpdateLeadStatus {
+    onUpdateLeadStatus {
+      id
+      name
+      deletedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLeadStatus = /* GraphQL */ `
+  subscription OnDeleteLeadStatus {
+    onDeleteLeadStatus {
+      id
+      name
+      deletedAt
       createdAt
       updatedAt
     }
@@ -58,8 +91,16 @@ export const onCreateLead = /* GraphQL */ `
       lastName
       gender
       profilePicture
+      leadStatusId
       createdAt
       updatedAt
+      leadStatus {
+        id
+        name
+        deletedAt
+        createdAt
+        updatedAt
+      }
       addresses {
         items {
           id
@@ -122,8 +163,16 @@ export const onUpdateLead = /* GraphQL */ `
       lastName
       gender
       profilePicture
+      leadStatusId
       createdAt
       updatedAt
+      leadStatus {
+        id
+        name
+        deletedAt
+        createdAt
+        updatedAt
+      }
       addresses {
         items {
           id
@@ -186,8 +235,16 @@ export const onDeleteLead = /* GraphQL */ `
       lastName
       gender
       profilePicture
+      leadStatusId
       createdAt
       updatedAt
+      leadStatus {
+        id
+        name
+        deletedAt
+        createdAt
+        updatedAt
+      }
       addresses {
         items {
           id

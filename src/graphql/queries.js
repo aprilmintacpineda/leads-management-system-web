@@ -61,6 +61,60 @@ export const searchUsers = /* GraphQL */ `
     }
   }
 `;
+export const listLeadStatuss = /* GraphQL */ `
+  query ListLeadStatuss(
+    $filter: ModelLeadStatusFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLeadStatuss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getLeadStatus = /* GraphQL */ `
+  query GetLeadStatus($id: ID!) {
+    getLeadStatus(id: $id) {
+      id
+      name
+      deletedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const searchLeadStatuss = /* GraphQL */ `
+  query SearchLeadStatuss(
+    $filter: SearchableLeadStatusFilterInput
+    $sort: SearchableLeadStatusSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchLeadStatuss(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
 export const getLead = /* GraphQL */ `
   query GetLead($id: ID!) {
     getLead(id: $id) {
@@ -70,8 +124,16 @@ export const getLead = /* GraphQL */ `
       lastName
       gender
       profilePicture
+      leadStatusId
       createdAt
       updatedAt
+      leadStatus {
+        id
+        name
+        deletedAt
+        createdAt
+        updatedAt
+      }
       addresses {
         items {
           id
@@ -135,8 +197,16 @@ export const listLeads = /* GraphQL */ `
         lastName
         gender
         profilePicture
+        leadStatusId
         createdAt
         updatedAt
+        leadStatus {
+          id
+          name
+          deletedAt
+          createdAt
+          updatedAt
+        }
         addresses {
           items {
             id
@@ -207,8 +277,16 @@ export const searchLeads = /* GraphQL */ `
         lastName
         gender
         profilePicture
+        leadStatusId
         createdAt
         updatedAt
+        leadStatus {
+          id
+          name
+          deletedAt
+          createdAt
+          updatedAt
+        }
         addresses {
           items {
             id

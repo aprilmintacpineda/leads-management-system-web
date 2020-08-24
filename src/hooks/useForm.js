@@ -13,7 +13,8 @@ function useForm ({
   createMutation = null,
   isGraphql = false,
   updateMutation = null,
-  transformInput = null
+  transformInput = null,
+  onBeforeSaveConfirm = null
 }) {
   const [
     { formContext, formValues, formErrors, status, targetRecordId, previousFormValues },
@@ -54,7 +55,8 @@ function useForm ({
         previousFormValues: { ...formValues },
         formContext,
         formValues,
-        targetRecordId
+        targetRecordId,
+        formErrors: {}
       };
     });
   }, []);
@@ -111,12 +113,94 @@ function useForm ({
     return hasError;
   }, [initialFormValues, formValues, validateField]);
 
+  const confirmSubmit = React.useCallback(async () => {
+    try {
+      updateStore({ loading: true });
+      let data = null;
+
+      if (isGraphql) {
+        const inputData = transformInput
+          ? transformInput({ formValues, formContext })
+          : formValues;
+
+        let input = {};
+        let mutation = null;
+
+        if (operation === 'create') {
+          mutation = createMutation;
+          input = {
+            id: uuid(),
+            ...inputData
+          };
+        } else {
+          // update
+          mutation = updateMutation;
+          input = {
+            id: targetRecordId,
+            ...inputData
+          };
+        }
+
+        const result = await API.graphql(
+          graphqlOperation(mutation, {
+            input
+          })
+        );
+
+        data = result.data;
+      } else {
+        await onSubmit({ formValues, formContext, setContext });
+      }
+
+      if (onSubmitSuccess)
+        onSubmitSuccess({ data, formValues, formContext, setContext, operation });
+
+      setState(oldState => ({
+        ...oldState,
+        status: 'submitSuccess'
+      }));
+
+      updateStore({ loading: false });
+    } catch (error) {
+      console.error('useForm confirmSubmit', error);
+
+      if (onSubmitError)
+        await onSubmitError(error, { formValues, formContext, setContext });
+
+      updateStore({ loading: false });
+
+      setState(oldState => ({
+        ...oldState,
+        status: 'submitError'
+      }));
+    }
+  }, [
+    onSubmit,
+    formValues,
+    formContext,
+    setContext,
+    onSubmitError,
+    onSubmitSuccess,
+    transformInput,
+    operation,
+    isGraphql,
+    targetRecordId,
+    updateMutation,
+    createMutation
+  ]);
+
+  const cancelSubmit = React.useCallback(() => {
+    setState(oldState => ({
+      ...oldState,
+      status: 'submitCancelled'
+    }));
+  }, []);
+
   const submitHandler = React.useCallback(
     async ev => {
-      if (ev && ev.preventDefault) ev.preventDefault();
-      if (isSubmitting) return;
-
       try {
+        if (ev && ev.preventDefault) ev.preventDefault();
+        if (isSubmitting) return;
         if (validateForm()) return;
 
         setState(oldState => ({
@@ -124,59 +208,30 @@ function useForm ({
           status: 'submitting'
         }));
 
-        updateStore({ loading: true });
-        let data = null;
+        if (onBeforeSaveConfirm) {
+          const result = await onBeforeSaveConfirm({
+            formValues,
+            formContext,
+            onConfirm: confirmSubmit,
+            onCancel: cancelSubmit,
+            operation,
+            targetRecordId
+          });
 
-        if (isGraphql) {
-          const inputData = transformInput
-            ? transformInput({ formValues, formContext })
-            : formValues;
-
-          let input = {};
-          let mutation = null;
-
-          if (operation === 'create') {
-            mutation = createMutation;
-            input = {
-              id: uuid(),
-              ...inputData
-            };
-          } else {
-            // update
-            mutation = updateMutation;
-            input = {
-              id: targetRecordId,
-              ...inputData
-            };
+          if (!result) {
+            setState(oldState => ({
+              ...oldState,
+              status: 'submitConfirmError'
+            }));
           }
-
-          const result = await API.graphql(
-            graphqlOperation(mutation, {
-              input
-            })
-          );
-
-          data = result.data;
         } else {
-          await onSubmit({ formValues, formContext, setContext });
+          confirmSubmit();
         }
-
-        if (onSubmitSuccess)
-          onSubmitSuccess({ data, formValues, formContext, setContext, operation });
-
-        setState(oldState => ({
-          ...oldState,
-          status: 'submitSuccess'
-        }));
-
-        updateStore({ loading: false });
       } catch (error) {
-        console.error('useForm', error);
+        console.error('useForm submitHandler', error);
 
         if (onSubmitError)
           await onSubmitError(error, { formValues, formContext, setContext });
-
-        updateStore({ loading: false });
 
         setState(oldState => ({
           ...oldState,
@@ -186,19 +241,16 @@ function useForm ({
     },
     [
       validateForm,
-      onSubmit,
-      formValues,
-      formContext,
-      setContext,
-      onSubmitError,
-      onSubmitSuccess,
       isSubmitting,
-      transformInput,
+      confirmSubmit,
+      formContext,
+      formValues,
+      onBeforeSaveConfirm,
+      onSubmitError,
+      setContext,
+      cancelSubmit,
       operation,
-      isGraphql,
-      targetRecordId,
-      updateMutation,
-      createMutation
+      targetRecordId
     ]
   );
 
@@ -256,13 +308,17 @@ function useForm ({
     });
   }, [initialFormValues, initialContext]);
 
-  const setForm = React.useCallback(({ formValues = null, formContext = null }) => {
-    setState(oldState => ({
-      ...oldState,
-      formValues: formValues || oldState.formValues,
-      formContext: formContext || oldState.formContext
-    }));
-  }, []);
+  const setForm = React.useCallback(
+    ({ formValues = null, formContext = null, formErrors = null }) => {
+      setState(oldState => ({
+        ...oldState,
+        formValues: formValues || oldState.formValues,
+        formContext: formContext || oldState.formContext,
+        formErrors: formErrors || oldState.formErrors
+      }));
+    },
+    []
+  );
 
   return {
     previousFormValues,

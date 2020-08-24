@@ -42,6 +42,10 @@ function FabButton () {
     emitEvent('toggleInviteUserForm');
   }, []);
 
+  const leadStatuses = React.useCallback(() => {
+    emitEvent('toggleLeadStatusesForm');
+  }, []);
+
   return (
     <>
       <Fab
@@ -59,6 +63,7 @@ function FabButton () {
               <MenuItem onClick={addLead}>Add lead</MenuItem>
               <RestrictToGroups allowedGroups={['Admin']}>
                 <MenuItem onClick={inviteUser}>Invite user</MenuItem>
+                <MenuItem onClick={leadStatuses}>Lead statuses</MenuItem>
               </RestrictToGroups>
             </Paper>
           </Box>

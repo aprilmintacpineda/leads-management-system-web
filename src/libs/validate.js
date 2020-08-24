@@ -1,3 +1,5 @@
+import { store } from 'fluxible-js';
+
 const validationRules = {
   email (value) {
     if (
@@ -30,6 +32,12 @@ const validationRules = {
     } else if (!options.includes(value)) {
       return 'Please select from the options.';
     }
+
+    return '';
+  },
+  leadStatus (value) {
+    if (!store.leadStatuses.data.find(leadStatus => leadStatus.id === value))
+      return 'Please select from the options';
 
     return '';
   }

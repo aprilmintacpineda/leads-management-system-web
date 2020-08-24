@@ -13,7 +13,15 @@ function LeadList () {
   const history = useHistory();
 
   const renderRow = React.useCallback(
-    ({ id, firstName, middleName, lastName, gender, profilePicture }) => (
+    ({
+      id,
+      firstName,
+      middleName,
+      lastName,
+      gender,
+      profilePicture,
+      leadStatus: { name: statusName }
+    }) => (
       <TableRow
         key={id}
         hover
@@ -31,6 +39,7 @@ function LeadList () {
         <TableCell>{middleName}</TableCell>
         <TableCell>{lastName}</TableCell>
         <TableCell>{gender}</TableCell>
+        <TableCell>{statusName}</TableCell>
       </TableRow>
     ),
     [history]
@@ -43,6 +52,7 @@ function LeadList () {
         <TableCell>Middle name</TableCell>
         <TableCell>Last name</TableCell>
         <TableCell>Gender</TableCell>
+        <TableCell>Status</TableCell>
       </TableRow>
     ),
     []

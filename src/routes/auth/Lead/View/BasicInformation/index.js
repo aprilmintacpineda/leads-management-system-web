@@ -15,6 +15,7 @@ import Avatar from 'components/Avatar';
 import LeadViewContext from '../LeadViewContext';
 
 import EditProfilePicture from './EditProfilePicture';
+import LeadStatus from './LeadStatus';
 
 const useStyles = makeStyles({
   profilePicture: {
@@ -42,17 +43,17 @@ function BasicInformation () {
     return removeEvent;
   }, [setData]);
 
-  const fullname = `${data.firstName}${data.middleName ? ` ${data.middleName} ` : ' '}${
-    data.lastName
-  }`;
+  const { firstName, middleName, lastName, profilePicture, createdAt, gender } = data;
+
+  const fullname = `${firstName}${middleName ? ` ${middleName} ` : ' '}${lastName}`;
 
   return (
     <Box p={2} display="flex">
       <Box className={classes.profilePictureContainer}>
         <Avatar
-          firstName={data.firstName}
-          lastName={data.lastName}
-          src={data.profilePicture}
+          firstName={firstName}
+          lastName={lastName}
+          src={profilePicture}
           className={classes.profilePicture}
         />
         <EditProfilePicture />
@@ -67,12 +68,15 @@ function BasicInformation () {
           </Box>
         </Box>
         <Typography variant="caption">
-          Created at {format(new Date(data.createdAt), 'PPpp')}
+          Created at {format(new Date(createdAt), 'PPpp')}
         </Typography>
         <Divider mt={1} mb={1} />
         <Typography>
-          <strong>Gender</strong>: {data.gender}
+          <strong>Gender</strong>: {gender}
         </Typography>
+        <Box mt={2}>
+          <LeadStatus />
+        </Box>
       </Box>
     </Box>
   );
