@@ -8,9 +8,8 @@ type User
   @searchable
   @auth (
     rules: [
-      { allow: private, operations: [read] }
-      { allow: groups, groups: ["Admin"], operations: [create, update] }
-      { allow: owner, ownerField: "id", operations: [update] }
+      { allow: groups, groups: ["Admin"], operations: [read, create, update] }
+      { allow: owner, ownerField: "id", operations: [read, update] }
       { allow: public, provider: iam }
     ]
   ) {
@@ -31,6 +30,22 @@ enum Genders {
   Female
 }
 
+type LeadStatus
+  @model
+  @searchable
+  @auth (
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: public, provider: iam }
+    ]
+  ) {
+  id: ID!
+  name: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
 type Lead
   @model
   @searchable
@@ -49,6 +64,8 @@ type Lead
   addresses: [Address] @connection(keyName: "byLeadId", fields: ["id"])
   contactDetails: [ContactDetail] @connection(keyName: "byLeadId", fields: ["id"])
   notes: [Note] @connection(keyName: "byLeadId", fields: ["id"])
+  leadStatusId: ID!
+  leadStatus: LeadStatus @connection(fields: ["leadStatusId"])
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
