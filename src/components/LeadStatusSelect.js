@@ -5,6 +5,7 @@ import useFluxibleStore from 'react-fluxible/lib/useFluxibleStore';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import RefreshIcon from '@material-ui/icons/Refresh';
 
@@ -14,7 +15,12 @@ function mapStates ({ leadStatuses }) {
   return { leadStatuses };
 }
 
-function LeadStatusSelect ({ disabled, ...selectProps }) {
+function LeadStatusSelect ({
+  disabled,
+  includeDeleted = false,
+  allowAll = false,
+  ...selectProps
+}) {
   const {
     leadStatuses: { data, status }
   } = useFluxibleStore(mapStates);
@@ -24,25 +30,32 @@ function LeadStatusSelect ({ disabled, ...selectProps }) {
   }, []);
 
   const options = React.useMemo(() => {
-    return data
-      .filter(({ deletedAt }) => !deletedAt)
-      .map(({ id, name }) => (
-        <MenuItem key={id} value={id}>
-          {name}
-        </MenuItem>
-      ));
-  }, [data]);
+    let filteredData = data;
+
+    if (!includeDeleted)
+      filteredData = data.filter(({ deletedAt }) => !deletedAt && !includeDeleted);
+
+
+    return filteredData.map(({ id, name }) => (
+      <MenuItem key={id} value={id}>
+        {name}
+      </MenuItem>
+    ));
+  }, [data, includeDeleted]);
 
   const isDisabled = status === 'fetching' || disabled;
 
   return (
     <Box display="flex" alignItems="center">
-      <Select {...selectProps} disabled={isDisabled}>
+      <Select {...selectProps} label="Status" disabled={isDisabled}>
+        {allowAll ? <MenuItem value="all">All</MenuItem> : null}
         {options}
       </Select>
-      <IconButton size="small" onClick={refresh} disabled={isDisabled}>
-        <RefreshIcon />
-      </IconButton>
+      <Tooltip title="Refresh statuses">
+        <IconButton size="small" onClick={refresh} disabled={isDisabled}>
+          <RefreshIcon />
+        </IconButton>
+      </Tooltip>
     </Box>
   );
 }

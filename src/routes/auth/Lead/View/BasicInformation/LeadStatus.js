@@ -100,7 +100,6 @@ function LeadStatus () {
           <DialogTitle>Change lead status</DialogTitle>
           <DialogContent>
             <LeadStatusSelect
-              label="Status"
               value={formValues.leadStatusId}
               error={formErrors.leadStatusId}
               onChange={onChangeHandlers.leadStatusId}

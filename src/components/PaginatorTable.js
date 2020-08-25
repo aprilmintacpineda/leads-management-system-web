@@ -93,10 +93,12 @@ function PaginatorTable ({
   tableHead,
   filter = null,
   sort = null,
-  ExtendedChild = null
+  ExtendedChild = null,
+  PreExtendedChild = null
 }) {
   return (
     <PaginatorProvider query={query} queryName={queryName} filter={filter} sort={sort}>
+      {PreExtendedChild && <PreExtendedChild />}
       <Body renderRow={renderRow} tableHead={tableHead} />
       {ExtendedChild && <ExtendedChild />}
     </PaginatorProvider>

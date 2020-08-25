@@ -168,7 +168,6 @@ function LeadForm () {
             <MenuItem value="Female">Female</MenuItem>
           </Select>
           <LeadStatusSelect
-            label="Status"
             value={formValues.leadStatusId}
             error={formErrors.leadStatusId}
             onChange={onChangeHandlers.leadStatusId}

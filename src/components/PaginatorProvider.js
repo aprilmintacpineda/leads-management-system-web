@@ -10,6 +10,7 @@ export function PaginatorProvider ({
   filter = null,
   children
 }) {
+  const prevFilter = React.useRef(filter);
   const [
     {
       data,
@@ -121,6 +122,13 @@ export function PaginatorProvider ({
   React.useEffect(() => {
     if (status === 'initial') fetchData();
   }, [status, fetchData]);
+
+  React.useEffect(() => {
+    if (prevFilter.current !== filter) {
+      refreshData();
+      prevFilter.current = filter;
+    }
+  }, [filter, refreshData]);
 
   return (
     <PaginatorContext.Provider
