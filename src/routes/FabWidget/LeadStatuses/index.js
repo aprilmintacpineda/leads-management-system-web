@@ -66,7 +66,11 @@ function LeadStatuses () {
 
   const selectField = React.useCallback(targetField => {
     setState(oldState => {
-      if (oldState.selectedField && oldState.selectedField.id === targetField.id) {
+      if (
+        targetField &&
+        oldState.selectedField &&
+        oldState.selectedField.id === targetField.id
+      ) {
         return {
           ...oldState,
           selectedField: null

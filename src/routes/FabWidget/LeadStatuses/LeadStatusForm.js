@@ -101,7 +101,7 @@ function LeadStatusForm () {
 
   const isUpdateOperation = operation === 'update';
 
-  const { isOpen, selectedField } = React.useContext(LeadStatusContext);
+  const { isOpen, selectedField, selectField } = React.useContext(LeadStatusContext);
 
   React.useEffect(() => {
     if (resultRecord) {
@@ -115,8 +115,11 @@ function LeadStatusForm () {
   }, [resultRecord, resetForm, isUpdateOperation]);
 
   React.useEffect(() => {
-    if (!isOpen) resetForm();
-  }, [isOpen, resetForm]);
+    if (!isOpen) {
+      resetForm();
+      selectField(null);
+    }
+  }, [isOpen, resetForm, selectField]);
 
   React.useEffect(() => {
     if (selectedField) {
