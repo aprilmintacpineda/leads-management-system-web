@@ -7,6 +7,7 @@ function useForm ({
   initialContext = {},
   initialFormValues,
   validators,
+  validatorChains = null,
   onSubmit = null,
   onSubmitError = null,
   onSubmitSuccess = null,
@@ -69,18 +70,30 @@ function useForm ({
           [field]: value
         };
 
+        const newFormErrors = {
+          ...oldState.formErrors,
+          [field]: validateField(field, newFormValues)
+        };
+
+        if (validatorChains) {
+          const chain = validatorChains[field];
+
+          if (chain) {
+            chain.forEach(field => {
+              newFormErrors[field] = validateField(field, newFormValues);
+            });
+          }
+        }
+
         return {
           ...oldState,
           previousFormValues: { ...oldState.formValues },
           formValues: newFormValues,
-          formErrors: {
-            ...oldState.formErrors,
-            [field]: validateField(field, newFormValues)
-          }
+          formErrors: newFormErrors
         };
       });
     },
-    [validateField]
+    [validateField, validatorChains]
   );
 
   const setContext = React.useCallback(newContext => {

@@ -13,6 +13,7 @@ import Login from './guest/Login';
 import LeadView from './auth/Lead/View';
 import LeadList from './auth/Lead/List';
 import UserList from './auth/User/List';
+import UserView from './auth/User/View';
 import Dashboard from './auth/Dashboard';
 
 import FabWidget from './FabWidget';
@@ -39,6 +40,7 @@ function Routes () {
           <Container maxWidth="lg">
             <Switch>
               <Route path="/user/list" component={UserList} />
+              <Route path="/user/profile" component={UserView} />
               <Route path="/lead/list" component={LeadList} />
               <Route path="/lead/view/:id" component={LeadView} />
               <Route path="/" exact component={Dashboard} />

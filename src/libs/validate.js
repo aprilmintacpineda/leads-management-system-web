@@ -40,6 +40,12 @@ const validationRules = {
       return 'Please select from the options';
 
     return '';
+  },
+  matches (value, payload, fieldName) {
+    console.log(value, payload, fieldName);
+
+    if (value !== payload) return `${fieldName} must match.`;
+    return '';
   }
 };
 
