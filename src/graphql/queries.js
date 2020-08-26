@@ -13,6 +13,7 @@ export const listUsers = /* GraphQL */ `
         status
         email
         groups
+        profilePicture
         createdAt
         updatedAt
       }
@@ -31,6 +32,7 @@ export const getUser = /* GraphQL */ `
       status
       email
       groups
+      profilePicture
       createdAt
       updatedAt
     }
@@ -53,6 +55,7 @@ export const searchUsers = /* GraphQL */ `
         status
         email
         groups
+        profilePicture
         createdAt
         updatedAt
       }
@@ -178,6 +181,7 @@ export const getLead = /* GraphQL */ `
             status
             email
             groups
+            profilePicture
             createdAt
             updatedAt
           }
@@ -251,6 +255,7 @@ export const listLeads = /* GraphQL */ `
               status
               email
               groups
+              profilePicture
               createdAt
               updatedAt
             }
@@ -331,6 +336,7 @@ export const searchLeads = /* GraphQL */ `
               status
               email
               groups
+              profilePicture
               createdAt
               updatedAt
             }
@@ -481,6 +487,7 @@ export const getNote = /* GraphQL */ `
         status
         email
         groups
+        profilePicture
         createdAt
         updatedAt
       }
@@ -506,6 +513,7 @@ export const listNotes = /* GraphQL */ `
           status
           email
           groups
+          profilePicture
           createdAt
           updatedAt
         }
@@ -538,6 +546,7 @@ export const searchNotes = /* GraphQL */ `
           status
           email
           groups
+          profilePicture
           createdAt
           updatedAt
         }

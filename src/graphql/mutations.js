@@ -37,6 +37,7 @@ export const createUser = /* GraphQL */ `
       status
       email
       groups
+      profilePicture
       createdAt
       updatedAt
     }
@@ -53,6 +54,7 @@ export const updateUser = /* GraphQL */ `
       status
       email
       groups
+      profilePicture
       createdAt
       updatedAt
     }
@@ -69,6 +71,7 @@ export const deleteUser = /* GraphQL */ `
       status
       email
       groups
+      profilePicture
       createdAt
       updatedAt
     }
@@ -179,6 +182,7 @@ export const createLead = /* GraphQL */ `
             status
             email
             groups
+            profilePicture
             createdAt
             updatedAt
           }
@@ -251,6 +255,7 @@ export const updateLead = /* GraphQL */ `
             status
             email
             groups
+            profilePicture
             createdAt
             updatedAt
           }
@@ -323,6 +328,7 @@ export const deleteLead = /* GraphQL */ `
             status
             email
             groups
+            profilePicture
             createdAt
             updatedAt
           }
@@ -455,6 +461,7 @@ export const createNote = /* GraphQL */ `
         status
         email
         groups
+        profilePicture
         createdAt
         updatedAt
       }
@@ -479,6 +486,7 @@ export const updateNote = /* GraphQL */ `
         status
         email
         groups
+        profilePicture
         createdAt
         updatedAt
       }
@@ -503,6 +511,7 @@ export const deleteNote = /* GraphQL */ `
         status
         email
         groups
+        profilePicture
         createdAt
         updatedAt
       }
