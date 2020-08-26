@@ -21,6 +21,7 @@ type User
   status: UserStatues
   email: String
   groups: [String]
+  profilePicture: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
