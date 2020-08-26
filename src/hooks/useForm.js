@@ -162,7 +162,7 @@ function useForm ({
 
         data = result.data;
       } else {
-        await onSubmit({ formValues, formContext, setContext });
+        data = await onSubmit({ formValues, formContext, setContext });
       }
 
       if (onSubmitSuccess)

@@ -1,6 +1,7 @@
 import React from 'react';
 import format from 'date-fns/format';
 import { emitEvent, addEvent } from 'fluxible-js';
+import { useParams } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -11,11 +12,12 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import Divider from 'components/Divider';
 import Avatar from 'components/Avatar';
+import ChangeProfilePictureForm from 'components/ChangeProfilePictureForm';
 
 import LeadViewContext from '../LeadViewContext';
 
-import EditProfilePicture from './EditProfilePicture';
 import LeadStatus from './LeadStatus';
+import { updateLead } from 'graphql/mutations';
 
 const useStyles = makeStyles({
   profilePicture: {
@@ -27,9 +29,14 @@ const useStyles = makeStyles({
   }
 });
 
+function onSubmitSuccess ({ data: { updateLead: resultRecord } }) {
+  emitEvent('leadEditSuccess', resultRecord);
+}
+
 function BasicInformation () {
   const classes = useStyles();
   const { data, setData } = React.useContext(LeadViewContext);
+  const { id: targetRecordId } = useParams();
 
   const editLead = React.useCallback(() => {
     emitEvent('toggleLeadForm', data);
@@ -56,7 +63,14 @@ function BasicInformation () {
           src={profilePicture}
           className={classes.profilePicture}
         />
-        <EditProfilePicture />
+        <ChangeProfilePictureForm
+          updateMutation={updateLead}
+          mutationName="updateLead"
+          targetRecordId={targetRecordId}
+          savePath="/uploads/leads/profilePictures/"
+          title="Change lead profile picture"
+          onSubmitSuccess={onSubmitSuccess}
+        />
       </Box>
       <Box ml={2} flex="1" display="flex" justifyContent="center" flexDirection="column">
         <Box display="flex" alignItems="center">

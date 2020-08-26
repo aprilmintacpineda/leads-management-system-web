@@ -2,8 +2,6 @@ import React from 'react';
 import ReactImgCrop from 'react-image-crop';
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { v4 as uuid } from 'uuid';
-import { useParams } from 'react-router-dom';
-import { emitEvent } from 'fluxible-js';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
@@ -22,7 +20,6 @@ import { getCroppedImg } from 'libs/helpers';
 
 import useForm from 'hooks/useForm';
 import { alertMessage } from 'fluxible/popup';
-import { updateLead } from 'graphql/mutations';
 
 const useStyles = makeStyles({
   editProfileIconBtn: {
@@ -43,53 +40,71 @@ const cropConfig = {
   y: 0
 };
 
-const formOptions = {
-  initialFormValues: {
-    selectedFiles: null,
-    crop: cropConfig
-  },
-  initialContext: {
-    leadId: null,
-    resultRecord: null
-  },
-  validators: {
-    selectedFiles: ({ selectedFiles }) => validate(selectedFiles, ['required', 'len:1'])
-  },
-  onSubmit: async ({ formValues, formContext, setContext }) => {
-    const fileName = uuid();
-    const croppedImage = await getCroppedImg(
-      formValues.selectedFiles[0],
-      formValues.crop,
-      fileName
-    );
-
-    const { key: profilePicture } = await Storage.put(
-      `uploads/leads/profilePictures/${fileName}.jpg`,
-      croppedImage
-    );
-
-    const {
-      data: { updateLead: resultRecord }
-    } = await API.graphql(
-      graphqlOperation(updateLead, {
-        input: {
-          id: formContext.leadId,
-          profilePicture
-        }
-      })
-    );
-
-    emitEvent('leadEditSuccess', resultRecord);
-    setContext({ resultRecord });
-  }
-};
-
-function EditProfilePicture () {
+function ChangeProfilePictureForm ({
+  updateMutation,
+  mutationName,
+  savePath,
+  targetRecordId,
+  onSubmitSuccess = null,
+  title
+}) {
   const classes = useStyles();
   const fileInputRef = React.useRef();
   const [isOpen, setIsOpen] = React.useState(false);
   const [src, setSrc] = React.useState(null);
-  const { id: leadId } = useParams();
+
+  const onSubmit = React.useCallback(
+    async ({ formValues, setContext }) => {
+      const fileName = uuid();
+      const croppedImage = await getCroppedImg(
+        formValues.selectedFiles[0],
+        formValues.crop,
+        fileName
+      );
+
+      const trimmedPath = savePath.replace(/[/]+$/, '').replace(/^[/]+/, '');
+
+      const { key: profilePicture } = await Storage.put(
+        `${trimmedPath}/${fileName}.jpg`,
+        croppedImage
+      );
+
+      const { data } = await API.graphql(
+        graphqlOperation(updateMutation, {
+          input: {
+            id: targetRecordId,
+            profilePicture
+          }
+        })
+      );
+
+      setContext({
+        resultRecord: data[mutationName]
+      });
+
+      return data;
+    },
+    [updateMutation, savePath, targetRecordId, mutationName]
+  );
+
+  const formOptions = React.useMemo(
+    () => ({
+      initialFormValues: {
+        selectedFiles: null,
+        crop: cropConfig
+      },
+      initialContext: {
+        resultRecord: null
+      },
+      validators: {
+        selectedFiles: ({ selectedFiles }) =>
+          validate(selectedFiles, ['required', 'len:1'])
+      },
+      onSubmit,
+      onSubmitSuccess
+    }),
+    [onSubmit, onSubmitSuccess]
+  );
 
   const {
     formValues,
@@ -98,7 +113,6 @@ function EditProfilePicture () {
     setField,
     valueChanged,
     submitHandler,
-    setContext,
     resetForm,
     isSubmitting
   } = useForm(formOptions);
@@ -130,10 +144,6 @@ function EditProfilePicture () {
     }
   }, [setField, formValues.selectedFiles]);
 
-  const setLeadId = React.useCallback(() => {
-    setContext({ leadId });
-  }, [setContext, leadId]);
-
   React.useEffect(() => {
     if (formValues.selectedFiles) readDataUrl();
   }, [formValues.selectedFiles, readDataUrl]);
@@ -152,9 +162,8 @@ function EditProfilePicture () {
         disableBackdropClick
         disableEscapeKeyDown
         fullWidth
-        onExit={resetForm}
-        onEntered={setLeadId}>
-        <DialogTitle>Lead profile picture</DialogTitle>
+        onExit={resetForm}>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           {!formValues.selectedFiles ? (
             <Box display="flex" justifyContent="center" alignItems="center" p={5}>
@@ -206,4 +215,4 @@ function EditProfilePicture () {
   );
 }
 
-export default React.memo(EditProfilePicture);
+export default React.memo(ChangeProfilePictureForm);
