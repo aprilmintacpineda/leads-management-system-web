@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import useFluxibleStore from 'react-fluxible/lib/useFluxibleStore';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -7,6 +7,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+
+import RestrictToGroups from 'components/RestrictToGroups';
 
 import Login from './guest/Login';
 
@@ -18,6 +21,7 @@ import Dashboard from './auth/Dashboard';
 
 import FabWidget from './FabWidget';
 import FetchLeadStatuses from './FetchLeadStatuses';
+import ProfileMenu from './ProfileMenu';
 
 function mapStates ({ authUser, isAuthenticated }) {
   return { authUser, isAuthenticated };
@@ -31,7 +35,26 @@ function Routes () {
       <BrowserRouter>
         <AppBar position="fixed">
           <Toolbar>
-            <Typography>Leads Management System</Typography>
+            <Box
+              display="flex"
+              flex="1"
+              alignItems="center"
+              justifyContent="space-between">
+              <Typography>Leads Management System</Typography>
+              <Box display="flex" alignItems="center">
+                <RestrictToGroups allowedGroups={['Admin']}>
+                  <Button color="inherit" component={Link} to="/user/list">
+                    User list
+                  </Button>
+                  <Box mr={1} />
+                </RestrictToGroups>
+                <Button color="inherit" component={Link} to="/lead/list">
+                  Lead list
+                </Button>
+                <Box mr={1} />
+                <ProfileMenu />
+              </Box>
+            </Box>
           </Toolbar>
         </AppBar>
         <Toolbar />

@@ -51,9 +51,11 @@ function LeadStatusSelect ({
         {options}
       </Select>
       <Tooltip title="Refresh statuses">
-        <IconButton size="small" onClick={refresh} disabled={isDisabled}>
-          <RefreshIcon />
-        </IconButton>
+        <span>
+          <IconButton size="small" onClick={refresh} disabled={isDisabled}>
+            <RefreshIcon />
+          </IconButton>
+        </span>
       </Tooltip>
     </Box>
   );
