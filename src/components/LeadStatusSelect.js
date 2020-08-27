@@ -35,7 +35,6 @@ function LeadStatusSelect ({
     if (!includeDeleted)
       filteredData = data.filter(({ deletedAt }) => !deletedAt && !includeDeleted);
 
-
     return filteredData.map(({ id, name }) => (
       <MenuItem key={id} value={id}>
         {name}
