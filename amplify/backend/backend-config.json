@@ -45,5 +45,168 @@
             "service": "amplifyhosting",
             "type": "cicd"
         }
+    },
+    "function": {
+        "createCognitoUserFn": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "leadsmanagementsys71fd0e2271fd0e22",
+                    "attributes": [
+                        "UserPoolId"
+                    ]
+                },
+                {
+                    "category": "storage",
+                    "resourceName": "s3453d1bd4",
+                    "attributes": [
+                        "BucketName"
+                    ]
+                },
+                {
+                    "category": "api",
+                    "resourceName": "leadsmanagementsys",
+                    "attributes": [
+                        "GraphQLAPIIdOutput"
+                    ]
+                }
+            ]
+        },
+        "leadmanagementsysnodemodules": {
+            "runtimes": [],
+            "layerVersionMap": {
+                "1": {
+                    "permissions": [
+                        {
+                            "type": "awsAccounts",
+                            "accounts": [
+                                "046119459188"
+                            ]
+                        },
+                        {
+                            "type": "private"
+                        }
+                    ]
+                }
+            },
+            "providerPlugin": "awscloudformation",
+            "service": "LambdaLayer",
+            "build": true
+        },
+        "resendTempPass": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "leadsmanagementsys71fd0e2271fd0e22",
+                    "attributes": [
+                        "UserPoolId"
+                    ]
+                },
+                {
+                    "category": "storage",
+                    "resourceName": "s3453d1bd4",
+                    "attributes": [
+                        "BucketName"
+                    ]
+                },
+                {
+                    "category": "api",
+                    "resourceName": "leadsmanagementsys",
+                    "attributes": [
+                        "GraphQLAPIIdOutput"
+                    ]
+                }
+            ]
+        },
+        "disableUserAccount": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "leadsmanagementsys71fd0e2271fd0e22",
+                    "attributes": [
+                        "UserPoolId"
+                    ]
+                },
+                {
+                    "category": "storage",
+                    "resourceName": "s3453d1bd4",
+                    "attributes": [
+                        "BucketName"
+                    ]
+                },
+                {
+                    "category": "api",
+                    "resourceName": "leadsmanagementsys",
+                    "attributes": [
+                        "GraphQLAPIIdOutput"
+                    ]
+                }
+            ]
+        },
+        "enableUserAccount": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "leadsmanagementsys71fd0e2271fd0e22",
+                    "attributes": [
+                        "UserPoolId"
+                    ]
+                },
+                {
+                    "category": "storage",
+                    "resourceName": "s3453d1bd4",
+                    "attributes": [
+                        "BucketName"
+                    ]
+                },
+                {
+                    "category": "api",
+                    "resourceName": "leadsmanagementsys",
+                    "attributes": [
+                        "GraphQLAPIIdOutput"
+                    ]
+                }
+            ]
+        },
+        "updateUserGroups": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "leadsmanagementsys71fd0e2271fd0e22",
+                    "attributes": [
+                        "UserPoolId"
+                    ]
+                },
+                {
+                    "category": "storage",
+                    "resourceName": "s3453d1bd4",
+                    "attributes": [
+                        "BucketName"
+                    ]
+                },
+                {
+                    "category": "api",
+                    "resourceName": "leadsmanagementsys",
+                    "attributes": [
+                        "GraphQLAPIIdOutput"
+                    ]
+                }
+            ]
+        }
     }
 }

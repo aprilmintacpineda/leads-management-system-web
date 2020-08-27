@@ -1,5 +1,181 @@
-type Todo @model {
+enum UserStatues {
+  FORCE_CHANGE_PASSWORD
+  CONFIRMED
+}
+
+type User
+  @model
+  @searchable
+  @auth (
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"], operations: [read, create, update] }
+      { allow: owner, ownerField: "id", operations: [read, update] }
+      { allow: public, provider: iam }
+    ]
+  ) {
   id: ID!
-  name: String!
+  firstName: String
+  middleName: String
+  lastName: String
+  isDisabled: Boolean
+  status: UserStatues
+  email: String
+  groups: [String]
+  profilePicture: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+enum Genders {
+  Male
+  Female
+}
+
+type LeadStatus
+  @model
+  @searchable
+  @auth (
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"], operations: [create, read, update] }
+      { allow: public, provider: iam }
+    ]
+  ) {
+  id: ID!
+  name: String
+  deletedAt: AWSDateTime
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Lead
+  @model
+  @searchable
+  @auth (
+    rules: [
+      { allow: private }
+      { allow: public, provider: iam }
+    ]
+  ) {
+  id: ID!
+  firstName: String
+  middleName: String
+  lastName: String
+  gender: Genders
+  profilePicture: String
+  addresses: [Address] @connection(keyName: "byLeadId", fields: ["id"])
+  contactDetails: [ContactDetail] @connection(keyName: "byLeadId", fields: ["id"])
+  notes: [Note] @connection(keyName: "byLeadId", fields: ["id"])
+  leadStatusId: ID!
+  leadStatus: LeadStatus @connection(fields: ["leadStatusId"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+enum AddressTypes {
+  Work
+  Home
+  Province
+}
+
+type Address
+  @model 
+  @searchable
+  @auth (
+    rules: [
+      { allow: private }
+      { allow: public, provider: iam }
+    ]
+  )
+  @key (name: "byLeadId", fields: ["leadId", "createdAt"]) {
+  id: ID!
+  type: AddressTypes
+  country: String
+  state: String
+  line1: String
+  line2: String
+  leadId: ID!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+enum ContactDetailCategories {
+  Email
+  Mobile
+  Telephone
+}
+
+enum ContactDetailTypes {
+  Work
+  Personal
+  Relative
+  Friend
+}
+
+type ContactDetail
+  @model 
+  @searchable
+  @auth (
+    rules: [
+      { allow: private }
+      { allow: public, provider: iam }
+    ]
+  )
+  @key (name: "byLeadId", fields: ["leadId", "createdAt"]) {
+  id: ID!
+  leadId: ID!
+  category: ContactDetailCategories
+  type: ContactDetailTypes
   description: String
+  value: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Note
+  @model 
+  @searchable
+  @auth (
+    rules: [
+      { allow: private, operations: [create, read] }
+      { allow: owner, ownerField: "userId", operations: [update, delete] }
+      { allow: public, provider: iam }
+    ]
+  )
+  @key (name: "byLeadId", fields: ["leadId", "createdAt"]) {
+  id: ID!
+  userId: ID!
+  leadId: ID!
+  body: String
+  user: User @connection(fields: ["userId"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Mutation {
+  createCognitoUser (email: String, groups: AWSJSON): AWSJSON
+    @function (name: "createCognitoUserFn-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  resendTempPass (email: String): AWSJSON
+    @function (name: "resendTempPass-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  enableUserAccount (id: String): AWSJSON
+    @function (name: "enableUserAccount-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  disableUserAccount (id: String): AWSJSON
+    @function (name: "disableUserAccount-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  updateUserGroups (id: String, groups: AWSJSON): AWSJSON
+    @function (name: "updateUserGroups-${env}")
+    @aws_iam
+    @aws_cognito_user_pools
 }

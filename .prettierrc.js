@@ -1,5 +1,3 @@
-/** @format */
-
 module.exports = {
   tabWidth: 2,
   printWidth: 90,
@@ -10,5 +8,5 @@ module.exports = {
   bracketSpacing: true,
   jsxBracketSameLine: true,
   arrowParens: 'avoid',
-  insertPragma: true
+  insertPragma: false
 };

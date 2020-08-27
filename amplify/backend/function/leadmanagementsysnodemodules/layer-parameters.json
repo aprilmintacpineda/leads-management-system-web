@@ -1,0 +1,124 @@
+{
+  "runtimes": [
+    {
+      "value": "nodejs",
+      "name": "NodeJS",
+      "layerExecutablePath": "nodejs/node_modules",
+      "cloudTemplateValue": "nodejs12.x"
+    }
+  ],
+  "layerVersionMap": {
+    "1": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "UveOAPkZ0lD0QwTu86hhaerekebzMuv956yCEdFv86E="
+    },
+    "2": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "mb35xi1XuvWlAicQiKsA4dWSV+aNN67QZpvWpD+VvcQ="
+    },
+    "3": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "4gdqRv2kyIKS19SjR6YFiR1wvfMiBhGPba1/HYqAhp8="
+    },
+    "4": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "mDoycY6VaKqTxTbejwTEn9Djv2BKkgkdgkZHdmOkgg0="
+    },
+    "5": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "4gdqRv2kyIKS19SjR6YFiR1wvfMiBhGPba1/HYqAhp8="
+    },
+    "6": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "mDoycY6VaKqTxTbejwTEn9Djv2BKkgkdgkZHdmOkgg0="
+    },
+    "7": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "5qRGCGckFEN1dm/k0u/quMaBdJcDJqsfPnldhdeyDOo="
+    },
+    "8": {
+      "permissions": [
+        {
+          "type": "awsAccounts",
+          "accounts": [
+            "046119459188"
+          ]
+        },
+        {
+          "type": "private"
+        }
+      ],
+      "hash": "b5c3dRai74ZgiT7/Rz1AFiaucuGPR5kNyJspLu9a5NE="
+    }
+  }
+}
