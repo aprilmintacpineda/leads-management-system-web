@@ -9,6 +9,7 @@ import getInitialStore from 'fluxible/getInitialStore';
 
 import LoginForm from './LoginForm';
 import ChangePasswordForm from './ChangePasswordForm';
+import ForgotPassword from './ForgotPassword';
 
 function mapStates ({ authUser }) {
   return { authUser };
@@ -68,6 +69,20 @@ function Login () {
     [authenticate]
   );
 
+  const resetStep = React.useCallback(() => {
+    setState(oldState => ({
+      ...oldState,
+      step: 'loginForm'
+    }));
+  }, []);
+
+  const onForgotPassword = React.useCallback(() => {
+    setState(oldState => ({
+      ...oldState,
+      step: 'forgotPassword'
+    }));
+  }, []);
+
   React.useEffect(() => {
     if (authUser) {
       authenticate();
@@ -82,7 +97,10 @@ function Login () {
   }, [authUser, authenticate]);
 
   if (authUser) return null;
-  if (step === 'loginForm') return <LoginForm onSuccess={onLoginSuccess} />;
+  if (step === 'forgotPassword')
+    return <ForgotPassword onSuccess={resetStep} resetLogin={resetStep} />;
+  if (step === 'loginForm')
+    return <LoginForm onSuccess={onLoginSuccess} onForgotPassword={onForgotPassword} />;
   return <ChangePasswordForm onSuccess={authenticate} cognitoUser={cognitoUser} />;
 }
 

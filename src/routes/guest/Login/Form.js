@@ -16,17 +16,28 @@ const useStyles = makeStyles(({ spacing }) => ({
   titleContainer: {
     display: 'flex',
     flexDirection: 'column'
+  },
+  container: {
+    width: '500px'
   }
 }));
 
-function Form ({ title, subtitle, submitLabel, onSubmit, isSubmitting, children }) {
+function Form ({
+  title,
+  subtitle,
+  submitLabel,
+  onSubmit,
+  isSubmitting,
+  children,
+  extendedChild = null
+}) {
   const classes = useStyles();
 
   return (
     <form onSubmit={onSubmit}>
       <Box className={classes.wrapper}>
         <Paper>
-          <Box p={2}>
+          <Box p={2} className={classes.container}>
             <Box className={classes.titleContainer}>
               <Typography variant="h4">{title}</Typography>
               <Typography>{subtitle}</Typography>
@@ -41,6 +52,7 @@ function Form ({ title, subtitle, submitLabel, onSubmit, isSubmitting, children 
               disabled={isSubmitting}>
               {submitLabel}
             </Button>
+            {extendedChild}
           </Box>
         </Paper>
       </Box>

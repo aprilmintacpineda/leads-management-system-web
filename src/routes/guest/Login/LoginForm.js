@@ -2,6 +2,9 @@ import React from 'react';
 
 import { Auth } from 'aws-amplify';
 
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+
 import TextField from 'components/TextField';
 import { alertMessage, unknownError } from 'fluxible/popup';
 import useForm from 'hooks/useForm';
@@ -39,7 +42,7 @@ const formOptions = {
   }
 };
 
-function LoginForm ({ onSuccess }) {
+function LoginForm ({ onSuccess, onForgotPassword }) {
   const {
     formContext: { cognitoUser },
     formValues,
@@ -59,7 +62,12 @@ function LoginForm ({ onSuccess }) {
       submitLabel="Login"
       title="Leads Management System"
       subtitle="Login to your account"
-      isSubmitting={isSubmitting}>
+      isSubmitting={isSubmitting}
+      extendedChild={
+        <Box mt={1}>
+          <Button onClick={onForgotPassword}>Forgot password</Button>
+        </Box>
+      }>
       <TextField
         value={formValues.email}
         error={formErrors.email}
