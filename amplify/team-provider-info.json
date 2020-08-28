@@ -1,98 +1,98 @@
 {
-	"dev": {
-		"awscloudformation": {
-			"AuthRoleName": "amplify-leadsmanagementsys-dev-225611-authRole",
-			"UnauthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-dev-225611-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-dev-225611-authRole",
-			"Region": "ap-southeast-1",
-			"DeploymentBucketName": "amplify-leadsmanagementsys-dev-225611-deployment",
-			"UnauthRoleName": "amplify-leadsmanagementsys-dev-225611-unauthRole",
-			"StackName": "amplify-leadsmanagementsys-dev-225611",
-			"StackId": "arn:aws:cloudformation:ap-southeast-1:046119459188:stack/amplify-leadsmanagementsys-dev-225611/d27cea50-c906-11ea-a461-02f584878410",
-			"AmplifyAppId": "d3endy4meolkad"
-		},
-		"categories": {
-			"auth": {
-				"leadsmanagementsys71fd0e2271fd0e22": {}
-			},
-			"hosting": {
-				"amplifyhosting": {
-					"appId": "d3endy4meolkad",
-					"type": "cicd"
-				}
-			},
-			"function": {
-				"createCognitoUserFn": {},
-				"leadmanagementsysnodemodules": {},
-				"resendTempPass": {},
-				"disableUserAccount": {},
-				"enableUserAccount": {},
-				"updateUserGroups": {}
-			}
-		}
-	},
-	"uat": {
-		"awscloudformation": {
-			"AuthRoleName": "amplify-leadsmanagementsys-uat-140919-authRole",
-			"UnauthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-uat-140919-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-uat-140919-authRole",
-			"Region": "ap-southeast-1",
-			"DeploymentBucketName": "amplify-leadsmanagementsys-uat-140919-deployment",
-			"UnauthRoleName": "amplify-leadsmanagementsys-uat-140919-unauthRole",
-			"StackName": "amplify-leadsmanagementsys-uat-140919",
-			"StackId": "arn:aws:cloudformation:ap-southeast-1:046119459188:stack/amplify-leadsmanagementsys-uat-140919/e6abd950-e86e-11ea-9e18-020de04cec9a",
-			"AmplifyAppId": "d3endy4meolkad"
-		},
-		"categories": {
-			"auth": {
-				"leadsmanagementsys71fd0e2271fd0e22": {}
-			},
-			"function": {
-				"createCognitoUserFn": {},
-				"leadmanagementsysnodemodules": {},
-				"resendTempPass": {},
-				"disableUserAccount": {},
-				"enableUserAccount": {},
-				"updateUserGroups": {}
-			},
-			"hosting": {
-				"amplifyhosting": {
-					"appId": "d3endy4meolkad",
-					"type": "cicd"
-				}
-			}
-		}
-	},
-	"master": {
-		"awscloudformation": {
-			"AuthRoleName": "amplify-leadsmanagementsys-master-150626-authRole",
-			"UnauthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-master-150626-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-master-150626-authRole",
-			"Region": "ap-southeast-1",
-			"DeploymentBucketName": "amplify-leadsmanagementsys-master-150626-deployment",
-			"UnauthRoleName": "amplify-leadsmanagementsys-master-150626-unauthRole",
-			"StackName": "amplify-leadsmanagementsys-master-150626",
-			"StackId": "arn:aws:cloudformation:ap-southeast-1:046119459188:stack/amplify-leadsmanagementsys-master-150626/e1055730-e876-11ea-bcda-02e842d24598",
-			"AmplifyAppId": "d3endy4meolkad"
-		},
-		"categories": {
-			"auth": {
-				"leadsmanagementsys71fd0e2271fd0e22": {}
-			},
-			"function": {
-				"createCognitoUserFn": {},
-				"leadmanagementsysnodemodules": {},
-				"resendTempPass": {},
-				"disableUserAccount": {},
-				"enableUserAccount": {},
-				"updateUserGroups": {}
-			},
-			"hosting": {
-				"amplifyhosting": {
-					"appId": "d3endy4meolkad",
-					"type": "cicd"
-				}
-			}
-		}
-	}
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-leadsmanagementsys-dev-225611-authRole",
+            "UnauthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-dev-225611-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-dev-225611-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "amplify-leadsmanagementsys-dev-225611-deployment",
+            "UnauthRoleName": "amplify-leadsmanagementsys-dev-225611-unauthRole",
+            "StackName": "amplify-leadsmanagementsys-dev-225611",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:046119459188:stack/amplify-leadsmanagementsys-dev-225611/d27cea50-c906-11ea-a461-02f584878410",
+            "AmplifyAppId": "d3endy4meolkad"
+        },
+        "categories": {
+            "auth": {
+                "leadsmanagementsys71fd0e2271fd0e22": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d3endy4meolkad",
+                    "type": "cicd"
+                }
+            },
+            "function": {
+                "createCognitoUserFn": {},
+                "leadmanagementsysnodemodules": {},
+                "resendTempPass": {},
+                "disableUserAccount": {},
+                "enableUserAccount": {},
+                "updateUserGroups": {}
+            }
+        }
+    },
+    "uat": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-leadsmanagementsys-uat-140919-authRole",
+            "UnauthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-uat-140919-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-uat-140919-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "amplify-leadsmanagementsys-uat-140919-deployment",
+            "UnauthRoleName": "amplify-leadsmanagementsys-uat-140919-unauthRole",
+            "StackName": "amplify-leadsmanagementsys-uat-140919",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:046119459188:stack/amplify-leadsmanagementsys-uat-140919/e6abd950-e86e-11ea-9e18-020de04cec9a",
+            "AmplifyAppId": "d3endy4meolkad"
+        },
+        "categories": {
+            "auth": {
+                "leadsmanagementsys71fd0e2271fd0e22": {}
+            },
+            "function": {
+                "createCognitoUserFn": {},
+                "leadmanagementsysnodemodules": {},
+                "resendTempPass": {},
+                "disableUserAccount": {},
+                "enableUserAccount": {},
+                "updateUserGroups": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d3endy4meolkad",
+                    "type": "cicd"
+                }
+            }
+        }
+    },
+    "master": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-leadsmanagementsys-master-150626-authRole",
+            "UnauthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-master-150626-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::046119459188:role/amplify-leadsmanagementsys-master-150626-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "amplify-leadsmanagementsys-master-150626-deployment",
+            "UnauthRoleName": "amplify-leadsmanagementsys-master-150626-unauthRole",
+            "StackName": "amplify-leadsmanagementsys-master-150626",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:046119459188:stack/amplify-leadsmanagementsys-master-150626/e1055730-e876-11ea-bcda-02e842d24598",
+            "AmplifyAppId": "d3endy4meolkad"
+        },
+        "categories": {
+            "auth": {
+                "leadsmanagementsys71fd0e2271fd0e22": {}
+            },
+            "function": {
+                "createCognitoUserFn": {},
+                "leadmanagementsysnodemodules": {},
+                "resendTempPass": {},
+                "disableUserAccount": {},
+                "enableUserAccount": {},
+                "updateUserGroups": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d3endy4meolkad",
+                    "type": "cicd"
+                }
+            }
+        }
+    }
 }
