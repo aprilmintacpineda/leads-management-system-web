@@ -45,7 +45,8 @@ const formOptions = {
     return Object.keys(formValues).reduce(
       (accumulator, field) => ({
         ...accumulator,
-        [field]: sanitizeInput(formValues[field])
+        [field]:
+          field === 'leadStatusId' ? formValues[field] : sanitizeInput(formValues[field])
       }),
       {}
     );

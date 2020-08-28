@@ -14,7 +14,8 @@ const validationRules = {
     return '';
   },
   required (value) {
-    if (!value || !value.length) return 'Required.';
+    if (!value || (value.constructor === Array && !value.length)) return 'Required.';
+
     return '';
   },
   maxLength (value, max) {
