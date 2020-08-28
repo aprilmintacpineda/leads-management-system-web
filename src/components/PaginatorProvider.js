@@ -65,7 +65,7 @@ export function PaginatorProvider ({
           nextToken: result.nextToken,
           page: newPage,
           maxPageReached: newPage,
-          totalCount: oldState.totalCount || result.total,
+          totalCount: oldState.totalCount || result.total || 0,
           refresh: false,
           nextLimit: null,
           limit: oldState.nextLimit || oldState.limit
